@@ -1,0 +1,50 @@
+/.vs
+/packages
+
+# DigitalArena/Database/*
+
+# Ignore everything in 3d_model except selected files
+DigitalArena/Assets/3d_model/*
+!DigitalArena/Assets/3d_model/
+!DigitalArena/Assets/3d_model/README.md
+!DigitalArena/Assets/3d_model/3d-model.jpg
+
+# Ignore everything in ebook except selected files
+DigitalArena/Assets/ebook/*
+!DigitalArena/Assets/ebook/
+!DigitalArena/Assets/ebook/README.md
+!DigitalArena/Assets/ebook/ebook.jpg
+
+# Ignore everything in Carousel except selected files
+DigitalArena/Assets/carousel_images/*
+!DigitalArena/Assets/carousel_images/
+!DigitalArena/Assets/carousel_images/README.md
+
+!DigitalArena/Assets/ebook/subcat-ebook-business-and-career.jpg
+!DigitalArena/Assets/ebook/subcat-ebook-civil-engineering.jpg
+!DigitalArena/Assets/ebook/subcat-ebook-machine-learning.jpg
+!DigitalArena/Assets/ebook/subcat-ebook-self-improvement.jpg
+
+# Ignore everything in graphics_template except selected files
+DigitalArena/Assets/graphics_template/*
+!DigitalArena/Assets/graphics_template/
+!DigitalArena/Assets/graphics_template/README.md
+!DigitalArena/Assets/graphics_template/graphics-template.jpg
+
+!DigitalArena/Assets/graphics_template/subcat-graphics-template-business-card.jpg
+!DigitalArena/Assets/graphics_template/subcat-graphics-template-Id-card.jpg
+!DigitalArena/Assets/graphics_template/subcat-graphics-template-letterhead.jpg
+!DigitalArena/Assets/graphics_template/subcat-graphics-template-logo.jpg
+
+# Ignore everything in presentation_slide except selected files
+DigitalArena/Assets/presentation_slide/*
+!DigitalArena/Assets/presentation_slide/
+!DigitalArena/Assets/presentation_slide/README.md
+!DigitalArena/Assets/presentation_slide/presentation-slide.jpg
+
+# Ignore everything in user_profile_image except selected files
+DigitalArena/Assets/user_profile_image/*
+!DigitalArena/Assets/user_profile_image/
+!DigitalArena/Assets/user_profile_image/digital-arena-logo.png
+!DigitalArena/Assets/user_profile_image/avatar.jpg
+!DigitalArena/Assets/user_profile_image/README.md

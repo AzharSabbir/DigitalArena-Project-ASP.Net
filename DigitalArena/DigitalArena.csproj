@@ -1,0 +1,604 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.5.1\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.props')" />
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3329F703-DB0E-498F-9049-6308FBEB7A75}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DigitalArena</RootNamespace>
+    <AssemblyName>DigitalArena</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.2.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.9\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.9\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.9\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.9\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.9\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AuthController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="DBContext\Carousel.cs">
+      <DependentUpon>DigitalArenaDBContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBContext\Cart.cs">
+      <DependentUpon>DigitalArenaDBContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBContext\CartItem.cs">
+      <DependentUpon>DigitalArenaDBContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBContext\Category.cs">
+      <DependentUpon>DigitalArenaDBContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBContext\Coupon.cs">
+      <DependentUpon>DigitalArenaDBContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBContext\DigitalArenaDBContext.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DigitalArenaDBContext.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBContext\DigitalArenaDBContext.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DigitalArenaDBContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBContext\DigitalArenaDBContext.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DigitalArenaDBContext.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="DBContext\GiftCard.cs">
+      <DependentUpon>DigitalArenaDBContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBContext\Notification.cs">
+      <DependentUpon>DigitalArenaDBContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBContext\Order.cs">
+      <DependentUpon>DigitalArenaDBContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBContext\OrderItem.cs">
+      <DependentUpon>DigitalArenaDBContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBContext\Permission.cs">
+      <DependentUpon>DigitalArenaDBContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBContext\Product.cs">
+      <DependentUpon>DigitalArenaDBContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBContext\ProductFile.cs">
+      <DependentUpon>DigitalArenaDBContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBContext\Review.cs">
+      <DependentUpon>DigitalArenaDBContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBContext\Transaction.cs">
+      <DependentUpon>DigitalArenaDBContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBContext\User.cs">
+      <DependentUpon>DigitalArenaDBContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBContext\Verification.cs">
+      <DependentUpon>DigitalArenaDBContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBContext\Wallet.cs">
+      <DependentUpon>DigitalArenaDBContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBContext\Wishlist.cs">
+      <DependentUpon>DigitalArenaDBContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CarouselModel.cs" />
+    <Compile Include="Models\CartItemModel.cs" />
+    <Compile Include="Models\CartModel.cs" />
+    <Compile Include="Models\CategoryModel.cs" />
+    <Compile Include="Models\CouponModel.cs" />
+    <Compile Include="Models\GiftCardModel.cs" />
+    <Compile Include="Models\NotificationModel.cs" />
+    <Compile Include="Models\OrderItemModel.cs" />
+    <Compile Include="Models\OrderModel.cs" />
+    <Compile Include="Models\PermissionModel.cs" />
+    <Compile Include="Models\ProductFileModel.cs" />
+    <Compile Include="Models\ProductModel.cs" />
+    <Compile Include="Models\ReviewModel.cs" />
+    <Compile Include="Models\TransactionModel.cs" />
+    <Compile Include="Models\UserModel.cs" />
+    <Compile Include="Models\VerificationModel.cs" />
+    <Compile Include="Models\WalletModel.cs" />
+    <Compile Include="Models\WishlistModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\3d_model\3d-model.jpg" />
+    <Content Include="Assets\3d_model\product_10\thumbnails\PC SETUP.png" />
+    <Content Include="Assets\3d_model\product_11\thumbnails\MousePad.png" />
+    <Content Include="Assets\3d_model\product_12\thumbnails\Mousepad With Tube.png" />
+    <Content Include="Assets\3d_model\product_13\thumbnails\Logitech G733.png" />
+    <Content Include="Assets\3d_model\product_14\thumbnails\Headphone.png" />
+    <Content Include="Assets\3d_model\product_15\thumbnails\Eyewear.png" />
+    <Content Include="Assets\3d_model\product_16\thumbnails\Environment.png" />
+    <Content Include="Assets\3d_model\product_17\thumbnails\Couch.png" />
+    <Content Include="Assets\3d_model\product_18\thumbnails\Chest Backpack.png" />
+    <Content Include="Assets\3d_model\product_19\thumbnails\Braided Charger Cable.png" />
+    <Content Include="Assets\3d_model\product_1\thumbnails\Spaceship.png" />
+    <Content Include="Assets\3d_model\product_20\thumbnails\Drone Model.png" />
+    <Content Include="Assets\3d_model\product_2\thumbnails\Video Recorder.jpg" />
+    <Content Include="Assets\3d_model\product_3\thumbnails\Shoe.png" />
+    <Content Include="Assets\3d_model\product_4\thumbnails\Sci-Fi Robot.jpg" />
+    <Content Include="Assets\3d_model\product_5\thumbnails\DECORATED TABLE and GIFT CARD.png" />
+    <Content Include="Assets\3d_model\product_6\thumbnails\Sauce Bottle.png" />
+    <Content Include="Assets\3d_model\product_7\thumbnails\Rolex Submariner 41mm Watch.png" />
+    <Content Include="Assets\3d_model\product_8\thumbnails\Robo Energy Drink.png" />
+    <Content Include="Assets\3d_model\product_9\thumbnails\Radio.png" />
+    <Content Include="Assets\carousel_images\homepage\1.jpg" />
+    <Content Include="Assets\carousel_images\homepage\2.jpg" />
+    <Content Include="Assets\carousel_images\homepage\3.jpg" />
+    <Content Include="Assets\carousel_images\homepage\4.jpg" />
+    <Content Include="Assets\carousel_images\homepage\5.jpg" />
+    <Content Include="Assets\carousel_images\homepage\6.jpg" />
+    <Content Include="Assets\carousel_images\product\10.jpg" />
+    <Content Include="Assets\carousel_images\product\11.jpg" />
+    <Content Include="Assets\carousel_images\product\12.jpg" />
+    <Content Include="Assets\carousel_images\product\8.jpg" />
+    <Content Include="Assets\carousel_images\product\9.jpg" />
+    <Content Include="Assets\carousel_images\trending\7.jpg" />
+    <Content Include="Assets\ebook\ebook.jpg" />
+    <Content Include="Assets\ebook\product_21\thumbnails\Atomic Habits.png" />
+    <Content Include="Assets\ebook\product_22\thumbnails\Getting Motivated to Change.png" />
+    <Content Include="Assets\ebook\product_23\thumbnails\Go Motivate Yourself.png" />
+    <Content Include="Assets\ebook\product_24\thumbnails\Improving Your Self-Esteem.png" />
+    <Content Include="Assets\ebook\product_25\thumbnails\Machine learning - The power and promise of computers that learn by example.png" />
+    <Content Include="Assets\ebook\product_26\thumbnails\Machine Learning Algorithms, Model and Applications.png" />
+    <Content Include="Assets\ebook\product_27\thumbnails\McKinsey Special CollectionBusiness strategy.png" />
+    <Content Include="Assets\ebook\product_28\thumbnails\Mind Tools on Motivation.png" />
+    <Content Include="Assets\ebook\product_29\thumbnails\Modern Methods of Construction.png" />
+    <Content Include="Assets\ebook\product_30\thumbnails\Motivating Skills.png" />
+    <Content Include="Assets\ebook\product_31\thumbnails\Practical Guide For Motivating Employees.png" />
+    <Content Include="Assets\ebook\product_32\thumbnails\Residential Structural Design Guide.png" />
+    <Content Include="Assets\ebook\product_33\thumbnails\Shaping the Future of Construction A Breakthrough in Mindset and Technology.png" />
+    <Content Include="Assets\ebook\product_34\thumbnails\The Foundation for Best Practices in Machine Learning.png" />
+    <Content Include="Assets\ebook\product_35\thumbnails\Zero to One Notes on Startups or How to Build the Future.png" />
+    <Content Include="Assets\ebook\product_36\thumbnails\Iron Bars of Freedom_Matiur Rahman.png" />
+    <Content Include="Assets\ebook\product_37\thumbnails\The Black Coat.png" />
+    <Content Include="Assets\ebook\product_38\thumbnails\Bangladesh Today by Matiur Rahman.png" />
+    <Content Include="Assets\ebook\product_39\thumbnails\A Stranger in My Own Country.png" />
+    <Content Include="Assets\ebook\product_40\thumbnails\From_consultation_to_confrontation.jpg" />
+    <Content Include="Assets\graphics_template\graphics-template.jpg" />
+    <Content Include="Assets\graphics_template\product_41\files\Fonts.txt" />
+    <Content Include="Assets\graphics_template\product_41\files\License free.txt" />
+    <Content Include="Assets\graphics_template\product_41\files\License premium.txt" />
+    <Content Include="Assets\graphics_template\product_41\thumbnails\Light business-id-card-concept.jpg" />
+    <Content Include="Assets\graphics_template\product_42\files\4237530.txt" />
+    <Content Include="Assets\graphics_template\product_42\files\Fonts.txt" />
+    <Content Include="Assets\graphics_template\product_42\files\License free.txt" />
+    <Content Include="Assets\graphics_template\product_42\files\License premium.txt" />
+    <Content Include="Assets\graphics_template\product_42\thumbnails\abstract-id-cards-collection-template-with-picture.jpg" />
+    <Content Include="Assets\graphics_template\product_43\files\License free.txt" />
+    <Content Include="Assets\graphics_template\product_43\files\License premium.txt" />
+    <Content Include="Assets\graphics_template\product_43\thumbnails\abstract-logo-flame-shape.jpg" />
+    <Content Include="Assets\graphics_template\product_44\files\Fonts.txt" />
+    <Content Include="Assets\graphics_template\product_44\files\License free.txt" />
+    <Content Include="Assets\graphics_template\product_44\files\License premium.txt" />
+    <Content Include="Assets\graphics_template\product_44\thumbnails\business-card-template-gold-foil.jpg" />
+    <Content Include="Assets\graphics_template\product_45\files\Fonts.txt" />
+    <Content Include="Assets\graphics_template\product_45\files\License free.txt" />
+    <Content Include="Assets\graphics_template\product_45\files\License premium.txt" />
+    <Content Include="Assets\graphics_template\product_45\thumbnails\business-id-card-concept.jpg" />
+    <Content Include="Assets\graphics_template\product_46\files\Fonts.txt" />
+    <Content Include="Assets\graphics_template\product_46\files\License free.txt" />
+    <Content Include="Assets\graphics_template\product_46\files\License premium.txt" />
+    <Content Include="Assets\graphics_template\product_46\thumbnails\business-id-card-template.jpg" />
+    <Content Include="Assets\graphics_template\product_47\files\4471201.txt" />
+    <Content Include="Assets\graphics_template\product_47\files\Fonts.txt" />
+    <Content Include="Assets\graphics_template\product_47\files\License free.txt" />
+    <Content Include="Assets\graphics_template\product_47\files\License premium.txt" />
+    <Content Include="Assets\graphics_template\product_47\thumbnails\business-id-card-template-with-minimalist-elements.jpg" />
+    <Content Include="Assets\graphics_template\product_48\files\4471115.txt" />
+    <Content Include="Assets\graphics_template\product_48\files\Fonts.txt" />
+    <Content Include="Assets\graphics_template\product_48\files\License free.txt" />
+    <Content Include="Assets\graphics_template\product_48\files\License premium.txt" />
+    <Content Include="Assets\graphics_template\product_48\thumbnails\business-id-card-with-minimalist-shapes.jpg" />
+    <Content Include="Assets\graphics_template\product_49\files\Fonts.txt" />
+    <Content Include="Assets\graphics_template\product_49\files\License free.txt" />
+    <Content Include="Assets\graphics_template\product_49\files\License premium.txt" />
+    <Content Include="Assets\graphics_template\product_49\thumbnails\business-id-card-without-photo.jpg" />
+    <Content Include="Assets\graphics_template\product_50\files\Fonts.txt" />
+    <Content Include="Assets\graphics_template\product_50\files\License free.txt" />
+    <Content Include="Assets\graphics_template\product_50\files\License premium.txt" />
+    <Content Include="Assets\graphics_template\product_50\thumbnails\business-id-card-yellow-black-with-white-colours.jpg" />
+    <Content Include="Assets\graphics_template\product_51\files\Fonts.txt" />
+    <Content Include="Assets\graphics_template\product_51\thumbnails\businesswoman-letterhead-template-with-elegant-elements.jpg" />
+    <Content Include="Assets\graphics_template\product_52\files\Fonts.txt" />
+    <Content Include="Assets\graphics_template\product_52\thumbnails\creative-professional-cn-logo-template.jpg" />
+    <Content Include="Assets\graphics_template\product_53\thumbnails\flat-design-ac-logo-design.jpg" />
+    <Content Include="Assets\graphics_template\product_54\files\Fonts.txt" />
+    <Content Include="Assets\graphics_template\product_54\thumbnails\flat-design-architect-letterhead-template.jpg" />
+    <Content Include="Assets\graphics_template\product_55\files\6731041.txt" />
+    <Content Include="Assets\graphics_template\product_55\files\Fonts.txt" />
+    <Content Include="Assets\graphics_template\product_55\thumbnails\flat-design-driving-school-id-card.jpg" />
+    <Content Include="Assets\graphics_template\product_56\files\Fonts.txt" />
+    <Content Include="Assets\graphics_template\product_56\thumbnails\flat-design-medical-letterhead.jpg" />
+    <Content Include="Assets\graphics_template\product_57\files\Fonts.txt" />
+    <Content Include="Assets\graphics_template\product_57\thumbnails\flat-design-minimal-dental-clinic-letterhead.jpg" />
+    <Content Include="Assets\graphics_template\product_58\files\License free.txt" />
+    <Content Include="Assets\graphics_template\product_58\files\License premium.txt" />
+    <Content Include="Assets\graphics_template\product_58\thumbnails\floral-visiting-card.jpg" />
+    <Content Include="Assets\graphics_template\product_59\files\Fonts.txt" />
+    <Content Include="Assets\graphics_template\product_59\files\License free.txt" />
+    <Content Include="Assets\graphics_template\product_59\files\License premium.txt" />
+    <Content Include="Assets\graphics_template\product_59\thumbnails\general-business-letterhead-template.jpg" />
+    <Content Include="Assets\graphics_template\product_60\files\Fonts.txt" />
+    <Content Include="Assets\graphics_template\product_60\files\License free.txt" />
+    <Content Include="Assets\graphics_template\product_60\files\License premium.txt" />
+    <Content Include="Assets\graphics_template\product_60\thumbnails\gold-foil-business-card-template.jpg" />
+    <Content Include="Assets\presentation_slide\presentation-slide.jpg" />
+    <Content Include="Assets\site-images\cart_icon.png" />
+    <Content Include="Assets\site-images\facebook-icon.png" />
+    <Content Include="Assets\site-images\instagram-icon.png" />
+    <Content Include="Assets\site-images\site-logo.png" />
+    <Content Include="Assets\site-images\x-icon.png" />
+    <Content Include="Assets\user_profile_image\avatar.jpg" />
+    <Content Include="Assets\user_profile_image\user_2\ProfileImage-BUYER-2-1733949040998.jpg" />
+    <Content Include="Content\bootstrap-grid.css" />
+    <Content Include="Content\bootstrap-grid.min.css" />
+    <Content Include="Content\bootstrap-grid.rtl.css" />
+    <Content Include="Content\bootstrap-grid.rtl.min.css" />
+    <Content Include="Content\bootstrap-reboot.css" />
+    <Content Include="Content\bootstrap-reboot.min.css" />
+    <Content Include="Content\bootstrap-reboot.rtl.css" />
+    <Content Include="Content\bootstrap-reboot.rtl.min.css" />
+    <Content Include="Content\bootstrap-utilities.css" />
+    <Content Include="Content\bootstrap-utilities.min.css" />
+    <Content Include="Content\bootstrap-utilities.rtl.css" />
+    <Content Include="Content\bootstrap-utilities.rtl.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\bootstrap.rtl.css" />
+    <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="DBContext\DigitalArenaDBContext.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DigitalArenaDBContext.edmx</DependentUpon>
+      <LastGenOutput>DigitalArenaDBContext.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="DBContext\DigitalArenaDBContext.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DigitalArenaDBContext.edmx</DependentUpon>
+      <LastGenOutput>DigitalArenaDBContext.cs</LastGenOutput>
+    </Content>
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Scripts\bootstrap.bundle.js" />
+    <Content Include="Scripts\bootstrap.bundle.min.js" />
+    <Content Include="Scripts\bootstrap.esm.js" />
+    <Content Include="Scripts\bootstrap.esm.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Assets\3d_model\product_10\files\PC SETUP.blend" />
+    <Content Include="Assets\3d_model\product_11\files\MousePad.blend" />
+    <Content Include="Assets\3d_model\product_12\files\Mousepad With Tube.blend" />
+    <Content Include="Assets\3d_model\product_13\files\Logitech G733.blend" />
+    <Content Include="Assets\3d_model\product_14\files\Headphone.blend" />
+    <Content Include="Assets\3d_model\product_15\files\Eyewear.blend" />
+    <Content Include="Assets\3d_model\product_16\files\Environment.blend" />
+    <Content Include="Assets\3d_model\product_17\files\Couch.blend" />
+    <Content Include="Assets\3d_model\product_18\files\Chest Backpack.blend" />
+    <Content Include="Assets\3d_model\product_19\files\Braided Charger Cable.blend" />
+    <Content Include="Assets\3d_model\product_1\files\Spaceship.blend" />
+    <Content Include="Assets\3d_model\product_20\files\Drone Model.blend" />
+    <Content Include="Assets\3d_model\product_2\files\Video Recorder.blend" />
+    <Content Include="Assets\3d_model\product_3\files\Shoe.blend" />
+    <Content Include="Assets\3d_model\product_4\files\Sci-Fi Robot.blend" />
+    <Content Include="Assets\3d_model\product_5\files\DECORATED TABLE and GIFT CARD.blend" />
+    <Content Include="Assets\3d_model\product_6\files\Sauce Bottle.blend" />
+    <Content Include="Assets\3d_model\product_7\files\Rolex Submariner 41mm Watch.blend" />
+    <Content Include="Assets\3d_model\product_8\files\Robo Energy Drink.blend" />
+    <Content Include="Assets\3d_model\product_9\files\Radio.blend" />
+    <Content Include="Assets\3d_model\README.md" />
+    <Content Include="Assets\carousel_images\README.md" />
+    <Content Include="Assets\ebook\product_21\files\Atomic Habits.pdf" />
+    <Content Include="Assets\ebook\product_22\files\Getting Motivated to Change.pdf" />
+    <Content Include="Assets\ebook\product_23\files\Go Motivate Yourself.pdf" />
+    <Content Include="Assets\ebook\product_24\files\Improving Your Self-Esteem.pdf" />
+    <Content Include="Assets\ebook\product_25\files\Machine learning - The power and promise of computers that learn by example.pdf" />
+    <Content Include="Assets\ebook\product_26\files\Machine Learning Algorithms, Model and Applications.pdf" />
+    <Content Include="Assets\ebook\product_27\files\McKinsey Special CollectionBusiness strategy.pdf" />
+    <Content Include="Assets\ebook\product_28\files\Mind Tools on Motivation.pdf" />
+    <Content Include="Assets\ebook\product_29\files\Modern Methods of Construction.pdf" />
+    <Content Include="Assets\ebook\product_30\files\Motivating Skills.pdf" />
+    <Content Include="Assets\ebook\product_31\files\Practical Guide For Motivating Employees.pdf" />
+    <Content Include="Assets\ebook\product_32\files\Residential Structural Design Guide.pdf" />
+    <Content Include="Assets\ebook\product_33\files\Shaping the Future of Construction A Breakthrough in Mindset and Technology.pdf" />
+    <Content Include="Assets\ebook\product_34\files\The Foundation for Best Practices in Machine Learning.pdf" />
+    <Content Include="Assets\ebook\product_35\files\Zero to One Notes on Startups or How to Build the Future.pdf" />
+    <Content Include="Assets\ebook\product_36\files\Iron Bars of Freedom_Matiur Rahman.pdf" />
+    <Content Include="Assets\ebook\product_37\files\The Black Coat.pdf" />
+    <Content Include="Assets\ebook\product_38\files\Bangladesh Today by Matiur Rahman.pdf" />
+    <Content Include="Assets\ebook\product_39\files\A Stranger in My Own Country.pdf" />
+    <Content Include="Assets\ebook\product_40\files\From_consultation_to_confrontation.pdf" />
+    <Content Include="Assets\ebook\README.md" />
+    <Content Include="Assets\graphics_template\product_41\files\4212400.eps" />
+    <Content Include="Assets\graphics_template\product_41\files\4212401.ai" />
+    <Content Include="Assets\graphics_template\product_42\files\4237527.ai" />
+    <Content Include="Assets\graphics_template\product_42\files\4237528.eps" />
+    <Content Include="Assets\graphics_template\product_43\files\file.eps" />
+    <Content Include="Assets\graphics_template\product_44\files\5123466.ai" />
+    <Content Include="Assets\graphics_template\product_44\files\5123467.eps" />
+    <Content Include="Assets\graphics_template\product_45\files\4286736.eps" />
+    <Content Include="Assets\graphics_template\product_45\files\4286737.ai" />
+    <Content Include="Assets\graphics_template\product_46\files\4144913.ai" />
+    <Content Include="Assets\graphics_template\product_46\files\4144914.eps" />
+    <Content Include="Assets\graphics_template\product_47\files\4471205.ai" />
+    <Content Include="Assets\graphics_template\product_47\files\4471206.eps" />
+    <Content Include="Assets\graphics_template\product_48\files\4471112.ai" />
+    <Content Include="Assets\graphics_template\product_48\files\4471113.eps" />
+    <Content Include="Assets\graphics_template\product_49\files\4197947.eps" />
+    <Content Include="Assets\graphics_template\product_49\files\4197949.ai" />
+    <Content Include="Assets\graphics_template\product_50\files\4198173.ai" />
+    <Content Include="Assets\graphics_template\product_50\files\4198178.eps" />
+    <Content Include="Assets\graphics_template\product_51\files\5291864.eps" />
+    <Content Include="Assets\graphics_template\product_51\files\5291866.ai" />
+    <Content Include="Assets\graphics_template\product_52\files\6491845.ai" />
+    <Content Include="Assets\graphics_template\product_52\files\6491846.eps" />
+    <Content Include="Assets\graphics_template\product_53\files\7459345.ai" />
+    <Content Include="Assets\graphics_template\product_53\files\7459346.eps" />
+    <Content Include="Assets\graphics_template\product_54\files\7343808.eps" />
+    <Content Include="Assets\graphics_template\product_54\files\7343810.ai" />
+    <Content Include="Assets\graphics_template\product_55\files\6731036.ai" />
+    <Content Include="Assets\graphics_template\product_55\files\6731037.eps" />
+    <Content Include="Assets\graphics_template\product_56\files\6245246.ai" />
+    <Content Include="Assets\graphics_template\product_56\files\6245247.eps" />
+    <Content Include="Assets\graphics_template\product_57\files\6865466.ai" />
+    <Content Include="Assets\graphics_template\product_57\files\6865467.eps" />
+    <Content Include="Assets\graphics_template\product_58\files\1891.ai" />
+    <Content Include="Assets\graphics_template\product_58\files\1891.eps" />
+    <Content Include="Assets\graphics_template\product_59\files\5119332.ai" />
+    <Content Include="Assets\graphics_template\product_59\files\5119336.eps" />
+    <Content Include="Assets\graphics_template\product_60\files\5073118.ai" />
+    <Content Include="Assets\graphics_template\product_60\files\5073119.eps" />
+    <Content Include="Assets\graphics_template\README.md" />
+    <Content Include="Assets\presentation_slide\README.md" />
+    <Content Include="Assets\user_profile_image\README.md" />
+    <EntityDeploy Include="DBContext\DigitalArenaDBContext.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>DigitalArenaDBContext.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="DBContext\DigitalArenaDBContext.edmx.diagram">
+      <DependentUpon>DigitalArenaDBContext.edmx</DependentUpon>
+    </Content>
+    <None Include="Scripts\jquery-3.7.0.intellisense.js" />
+    <Content Include="Scripts\jquery-3.7.0.js" />
+    <Content Include="Scripts\jquery-3.7.0.min.js" />
+    <Content Include="Scripts\jquery-3.7.0.slim.js" />
+    <Content Include="Scripts\jquery-3.7.0.slim.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Web.config" />
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\_Footer.cshtml" />
+    <Content Include="Views\Shared\_Header.cshtml" />
+    <Content Include="Views\Auth\Login.cshtml" />
+    <Content Include="Views\Auth\Register.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="DBOperations\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap.rtl.min.css.map" />
+    <Content Include="Content\bootstrap.rtl.css.map" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-utilities.rtl.min.css.map" />
+    <Content Include="Content\bootstrap-utilities.rtl.css.map" />
+    <Content Include="Content\bootstrap-utilities.min.css.map" />
+    <Content Include="Content\bootstrap-utilities.css.map" />
+    <Content Include="Content\bootstrap-reboot.rtl.min.css.map" />
+    <Content Include="Content\bootstrap-reboot.rtl.css.map" />
+    <Content Include="Content\bootstrap-reboot.min.css.map" />
+    <Content Include="Content\bootstrap-reboot.css.map" />
+    <Content Include="Content\bootstrap-grid.rtl.min.css.map" />
+    <Content Include="Content\bootstrap-grid.rtl.css.map" />
+    <Content Include="Content\bootstrap-grid.min.css.map" />
+    <Content Include="Content\bootstrap-grid.css.map" />
+    <None Include="packages.config" />
+    <Content Include="Scripts\bootstrap.min.js.map" />
+    <Content Include="Scripts\bootstrap.js.map" />
+    <Content Include="Scripts\bootstrap.esm.min.js.map" />
+    <Content Include="Scripts\bootstrap.esm.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.min.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.js.map" />
+    <Content Include="Scripts\jquery-3.7.0.slim.min.map" />
+    <Content Include="Scripts\jquery-3.7.0.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>64977</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:64977/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.5.1\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.5.1\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.5.1\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>
