@@ -1,7 +1,8 @@
 /.vs
 /packages
 
-# DigitalArena/Database/*
+DigitalArena/bin/*
+DigitalArena/obj/*
 
 # Ignore everything in 3d_model except selected files
 DigitalArena/Assets/3d_model/*
