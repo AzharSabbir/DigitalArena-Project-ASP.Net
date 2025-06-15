@@ -142,8 +142,10 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AdminDashboardController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\SellerDashboardController.cs" />
     <Compile Include="DBContext\Carousel.cs">
       <DependentUpon>DigitalArenaDBContext.tt</DependentUpon>
     </Compile>
@@ -222,6 +224,7 @@
     <Compile Include="Models\CategoryModel.cs" />
     <Compile Include="Models\CouponModel.cs" />
     <Compile Include="Models\GiftCardModel.cs" />
+    <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\NotificationModel.cs" />
     <Compile Include="Models\OrderItemModel.cs" />
     <Compile Include="Models\OrderModel.cs" />
@@ -527,6 +530,8 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="DBOperations\" />
+    <Folder Include="Views\AdminDashboard\" />
+    <Folder Include="Views\SellerDashboard\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
