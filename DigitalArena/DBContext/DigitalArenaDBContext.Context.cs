@@ -25,7 +25,6 @@ namespace DigitalArena.DBContext
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Carousel> Carousel { get; set; }
         public virtual DbSet<Cart> Cart { get; set; }
         public virtual DbSet<CartItem> CartItem { get; set; }
         public virtual DbSet<Category> Category { get; set; }
@@ -43,5 +42,6 @@ namespace DigitalArena.DBContext
         public virtual DbSet<Verification> Verification { get; set; }
         public virtual DbSet<Wallet> Wallet { get; set; }
         public virtual DbSet<Wishlist> Wishlist { get; set; }
+        public virtual DbSet<Carousel> Carousel { get; set; }
     }
 }

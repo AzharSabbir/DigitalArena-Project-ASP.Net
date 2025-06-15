@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="DigitalArenaDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
   <EntityContainer Name="DigitalArenaDBContext" annotation:LazyLoadingEnabled="true">
-    <EntitySet Name="Carousel" EntityType="DigitalArenaDBModel.Carousel" />
     <EntitySet Name="Cart" EntityType="DigitalArenaDBModel.Cart" />
     <EntitySet Name="CartItem" EntityType="DigitalArenaDBModel.CartItem" />
     <EntitySet Name="Category" EntityType="DigitalArenaDBModel.Category" />
@@ -107,17 +106,8 @@
       <End Role="User" EntitySet="User" />
       <End Role="Wishlist" EntitySet="Wishlist" />
     </AssociationSet>
+    <EntitySet Name="Carousel" EntityType="DigitalArenaDBModel.Carousel" />
   </EntityContainer>
-  <EntityType Name="Carousel">
-    <Key>
-      <PropertyRef Name="CarouselId" />
-    </Key>
-    <Property Name="CarouselId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Image" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="Page" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="IsActive" Type="Boolean" Nullable="false" />
-    <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
-  </EntityType>
   <EntityType Name="Cart">
     <Key>
       <PropertyRef Name="CartId" />
@@ -619,4 +609,14 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <EntityType Name="Carousel">
+    <Key>
+      <PropertyRef Name="CarouselId" />
+    </Key>
+    <Property Name="CarouselId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Image" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Page" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="IsActive" Type="Boolean" Nullable="false" />
+    <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+  </EntityType>
 </Schema>

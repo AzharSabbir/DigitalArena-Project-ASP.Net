@@ -5,7 +5,6 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="9f2cf0eafdf24a9cbd778081edea83e5" Name="Diagram1" >
-        <EntityTypeShape EntityType="DigitalArenaDBModel.Carousel" Width="1.5" PointX="0.75" PointY="0.75" />
         <EntityTypeShape EntityType="DigitalArenaDBModel.Cart" Width="1.5" PointX="3" PointY="11" />
         <EntityTypeShape EntityType="DigitalArenaDBModel.CartItem" Width="1.5" PointX="5.25" PointY="10.75" />
         <EntityTypeShape EntityType="DigitalArenaDBModel.Category" Width="1.5" PointX="0.75" PointY="14.375" />
@@ -45,6 +44,7 @@
         <AssociationConnector Association="DigitalArenaDBModel.FK__Verificat__UserI__403A8C7D" />
         <AssociationConnector Association="DigitalArenaDBModel.FK__Wallet__UserId__44FF419A" />
         <AssociationConnector Association="DigitalArenaDBModel.FK__Wishlist__UserId__0C85DE4D" />
+        <EntityTypeShape EntityType="DigitalArenaDBModel.Carousel" Width="1.5" PointX="0.75" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

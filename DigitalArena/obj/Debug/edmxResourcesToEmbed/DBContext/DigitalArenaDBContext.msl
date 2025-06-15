@@ -1,17 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="DigitalArenaDBModelStoreContainer" CdmEntityContainer="DigitalArenaDBContext">
-    <EntitySetMapping Name="Carousel">
-      <EntityTypeMapping TypeName="DigitalArenaDBModel.Carousel">
-        <MappingFragment StoreEntitySet="Carousel">
-          <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
-          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-          <ScalarProperty Name="Page" ColumnName="Page" />
-          <ScalarProperty Name="Image" ColumnName="Image" />
-          <ScalarProperty Name="CarouselId" ColumnName="CarouselId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Cart">
       <EntityTypeMapping TypeName="DigitalArenaDBModel.Cart">
         <MappingFragment StoreEntitySet="Cart">
@@ -219,6 +208,17 @@
           <ScalarProperty Name="UserId" ColumnName="UserId" />
           <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
           <ScalarProperty Name="WishlistId" ColumnName="WishlistId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Carousel">
+      <EntityTypeMapping TypeName="DigitalArenaDBModel.Carousel">
+        <MappingFragment StoreEntitySet="Carousel">
+          <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="Page" ColumnName="Page" />
+          <ScalarProperty Name="Image" ColumnName="Image" />
+          <ScalarProperty Name="CarouselId" ColumnName="CarouselId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
