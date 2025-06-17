@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace DigitalArena.Controllers
 {
+    [Authorize(Roles = "SELLER")]
     public class SellerDashboardController : Controller
     {
         // GET: SellerDashboard

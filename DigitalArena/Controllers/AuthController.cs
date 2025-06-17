@@ -1,22 +1,16 @@
 ﻿using DigitalArena.DBContext;
 using DigitalArena.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
-using System.Web.Services.Description;
-using System.Web.UI;
 
 namespace DigitalArena.Controllers
 {
     [AllowAnonymous]
     public class AuthController : Controller
     {
-
         private readonly DigitalArenaDBContext _dbContext = new DigitalArenaDBContext();
 
         public ActionResult Login()
@@ -25,7 +19,6 @@ namespace DigitalArena.Controllers
             
             return View();
         }
-
         [HttpPost]
         public ActionResult Login(LoginModel model)
         {
@@ -42,21 +35,16 @@ namespace DigitalArena.Controllers
             if (user != null && user.IsActive)
             {
                 Session["UserId"] = user.UserId;
-                Session["Role"] = user.Role;
                 user.LastLoginAt = DateTime.Now;
                 _dbContext.SaveChanges();
 
                 FormsAuthentication.SetAuthCookie(model.Username, true);
 
-                if(user.Role == "SELLER")
-                {
+                if(user.Role == "SELLER"){
                     return RedirectToAction("Index", "SellerDashboard");
-                }else if(user.Role == "ADMIN")
-                {
+                }else if(user.Role == "ADMIN"){
                     return RedirectToAction("Index", "AdminDashboard");
-                }
-                else
-                {
+                }else{
                     return RedirectToAction("Index", "Home");
                 }
             }
@@ -65,13 +53,15 @@ namespace DigitalArena.Controllers
             ViewBag.IsSuccess = false;
             return View(model);
         }
-
+        
+        
+        
+        
         public ActionResult Register()
         {
             if (Request.IsAuthenticated) return RedirectToAction("Index", "Home");
             return View();
         }
-
         [HttpPost]
         public ActionResult Register(UserModel model)
         {
@@ -123,17 +113,14 @@ namespace DigitalArena.Controllers
             return View("Login");
         }
 
-        public ActionResult Logout()
-        {
-            FormsAuthentication.SignOut();
-            return RedirectToAction("Index", "Home");
-        }
 
+        
+        
         public ActionResult ForgotPassword()
         {
+            if (Request.IsAuthenticated) return RedirectToAction("Index", "Home");
             return View();
         }
-
         [HttpPost]
         public ActionResult ForgotPassword(string Identifier)
         {
@@ -183,6 +170,8 @@ namespace DigitalArena.Controllers
 
             return View();
         }
+
+
 
 
         public ActionResult OTPVerification()
@@ -239,17 +228,23 @@ namespace DigitalArena.Controllers
             Session.Remove("OtpUserId");
             Session.Remove("OtpExpiry");
 
-            // Optional: store a temp flag/session to allow password reset
             Session["AllowPasswordResetUserId"] = userId;
 
             return RedirectToAction("ResetPassword");
         }
 
+
+
+
         public ActionResult ResetPassword()
         {
+            // Check if user allowed to reset password
+            if (Session["AllowPasswordResetUserId"] == null)
+            {
+                return RedirectToAction("ForgotPassword", "Auth");
+            }
             return View();
         }
-
         [HttpPost]
         public ActionResult ResetPassword(string NewPassword, string ConfirmPassword)
         {
@@ -295,5 +290,15 @@ namespace DigitalArena.Controllers
             return RedirectToAction("Login");
         }
 
+
+
+
+        public ActionResult Logout()
+        {
+            if (!Request.IsAuthenticated) return RedirectToAction("Login", "Auth");
+
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Index", "Home");
+        }
     }
 }
