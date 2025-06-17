@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace DigitalArena.Controllers
 {
-    
+    [AllowAnonymous]
     public class HomeController : Controller
     {
         public ActionResult Index()
@@ -21,7 +21,6 @@ namespace DigitalArena.Controllers
             return View();
         }
 
-        [Authorize]
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";

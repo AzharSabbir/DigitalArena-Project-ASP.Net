@@ -52,17 +52,34 @@
     @if (ViewBag.Message != null)
     {
         var alertClass = ViewBag.IsSuccess != null && (bool)ViewBag.IsSuccess ? "success" : "danger";
-        <div class="alert alert-@alertClass mt-3" role="alert">
+        <div class="alert alert-@alertClass alert-dismissible fade show mt-3" role="alert" id="statusAlert">
             @ViewBag.Message
         </div>
+        <script>
+            setTimeout(function () {
+                var alertBox = document.getElementById('statusAlert');
+                if (alertBox) {
+                    alertBox.classList.remove('show');
+                    alertBox.classList.add('fade');
+                    setTimeout(function () {
+                        alertBox.remove();
+                    }, 300); // wait for fade transition to complete
+                }
+            }, 2000);
+        </script>
     }
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
+    <header class="p-3 bg-white fixed-top">
+        <div class="container-fluid d-flex align-items-center">
+            <a href="/" class="d-flex align-items-center text-decoration-none">
+                <img src="~/assets/site-images/site-logo.png" alt="Logo" width="40" height="40" class="me-2" />
+                <span class="fs-5 fw-bold text-dark">Digital Arena</span>
+            </a>
+        </div>
+    </header>
     <div class="login-card">
         <h4 class="text-muted mb-1">Welcome back to</h4>
-        <h3 class="fw-bold text-primary mb-4">
-            <a href="@Url.Action("Index", "Home")" class="brand-link">Digital Arena</a>
-        </h3>
+        <h3 class="fw-bold text-primary mb-4">Digital Arena</h3>
 
         @using (Html.BeginForm("Login", "Auth", FormMethod.Post))
         {

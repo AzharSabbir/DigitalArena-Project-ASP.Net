@@ -52,16 +52,34 @@
     @if (ViewBag.Message != null)
     {
         var alertClass = ViewBag.IsSuccess != null && (bool)ViewBag.IsSuccess ? "success" : "danger";
-        <div class="alert alert-@alertClass mt-3" role="alert">
+        <div class="alert alert-@alertClass alert-dismissible fade show mt-3" role="alert" id="statusAlert">
             @ViewBag.Message
         </div>
+        <script>
+            setTimeout(function () {
+                var alertBox = document.getElementById('statusAlert');
+                if (alertBox) {
+                    alertBox.classList.remove('show');
+                    alertBox.classList.add('fade');
+                    setTimeout(function () {
+                        alertBox.remove();
+                    }, 300); // wait for fade transition to complete
+                }
+            }, 2000);
+        </script>
     }
+    <header class="p-3 bg-white fixed-top">
+        <div class="container-fluid d-flex align-items-center">
+            <a href="/" class="d-flex align-items-center text-decoration-none">
+                <img src="~/assets/site-images/site-logo.png" alt="Logo" width="40" height="40" class="me-2" />
+                <span class="fs-5 fw-bold text-dark">Digital Arena</span>
+            </a>
+        </div>
+    </header>
 
     <div class="signup-card">
         <h4 class="text-muted mb-1">Welcome to</h4>
-        <h3 class="fw-bold text-primary mb-4">
-            <a href="@Url.Action("Index", "Home")" class="brand-link">Digital Arena</a>
-        </h3>
+        <h3 class="fw-bold text-primary mb-4">Digital Arena</h3>
 
         @using (Html.BeginForm("Register", "Auth", FormMethod.Post))
         {
@@ -78,8 +96,8 @@
                     {
                         @class = "form-control",
                         placeholder = "Username",
-                        pattern = "^[a-z0-9]{8}$",
-                        title = "Username must contain exactly 8 characters, only lowercase letters and digits",
+                        pattern = "^[a-z0-9]{3,32}$",
+                        title = "Username must be 3 to 32 characters long and contain only lowercase letters and digits",
                         required = "required"
                     })
                     @Html.ValidationMessageFor(m => m.Username, "", new { @class = "text-danger small" })

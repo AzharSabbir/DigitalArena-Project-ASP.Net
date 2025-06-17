@@ -8,7 +8,7 @@ namespace DigitalArena.Models
         public int UserId { get; set; }
 
         [Required(ErrorMessage = "Username is required")]
-        [RegularExpression("^[a-z0-9]{8}$", ErrorMessage = "Username must be exactly 8 lowercase letters or digits")]
+        [RegularExpression("^[a-z0-9]{3,32}$", ErrorMessage = "Username must be 3 to 32 lowercase letters or digits")]
         public string Username { get; set; }
 
         [Required(ErrorMessage = "Email is required")]
