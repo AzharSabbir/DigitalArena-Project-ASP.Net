@@ -41,5 +41,8 @@ namespace DigitalArena.Models
 
         [Display(Name = "Last Login At")]
         public DateTime LastLoginAt { get; set; }
+
+        public WalletModel Wallet { get; set; }
+
     }
 }

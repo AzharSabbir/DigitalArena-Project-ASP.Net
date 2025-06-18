@@ -143,6 +143,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Admin\AdminDashboardController.cs" />
+    <Compile Include="Controllers\Admin\ManageBuyerController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Seller\SellerDashboardController.cs" />
@@ -536,6 +537,12 @@
     <Content Include="Views\Shared\_AdminHeader.cshtml" />
     <Content Include="Views\Shared\_SellerHeader.cshtml" />
     <Content Include="Views\Shared\_AdminSidebar.cshtml" />
+    <Content Include="Views\AdminDashboard\ManageBuyers.cshtml" />
+    <Content Include="Views\ManageBuyer\BuyerDetails.cshtml" />
+    <Content Include="Views\Shared\_BuyersTable.cshtml" />
+    <Content Include="Views\ManageBuyer\ViewCoupons.cshtml" />
+    <Content Include="Views\ManageBuyer\ViewOrders.cshtml" />
+    <Content Include="Views\ManageBuyer\ViewOrderDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

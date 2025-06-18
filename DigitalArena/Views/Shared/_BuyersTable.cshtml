@@ -1,0 +1,71 @@
+﻿<table class="table table-hover table-bordered align-middle">
+    <thead class="table-light text-center align-middle">
+        <tr>
+            <th>Profile</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Full Name</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td class="text-center align-middle">
+                    @if (!string.IsNullOrEmpty(user.ProfileImage))
+                    {
+                        var imagePath = $"~/Assets/user_profile_image/user_{user.UserId}/{user.ProfileImage}";
+                        <img src="@Url.Content(imagePath)" alt="Profile" width="40" height="40" class="rounded-circle" />
+                    }
+                    else
+                    {
+                        <img src="~/Assets/user_profile_image/avatar.jpg" alt="No Image" width="40" height="40" class="rounded-circle opacity-50" />
+                    }
+                </td>
+                <td class="text-center align-middle">@user.Username</td>
+                <td class="text-center align-middle">@user.Email</td>
+                <td class="text-center align-middle" style="white-space: nowrap;">@user.FullName</td>
+                <td class="text-center align-middle">
+                    @if (user.IsActive)
+                    {
+                        <span class="badge bg-success">Active</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">Inactive</span>
+                    }
+                </td>
+                <td class="text-center align-middle">
+                    <a href="@Url.RouteUrl("BuyerDetailsRoute", new { id = user.UserId })" class="btn btn-sm btn-primary">View Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@* Pagination *@
+@{
+    int currentPage = ViewBag.CurrentPage ?? 1;
+    int totalPages = ViewBag.TotalPages ?? 1;
+}
+
+<nav aria-label="Buyer pagination">
+    <ul class="pagination pagination-sm justify-content-center mt-4">
+        <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+            <a href="#" class="page-link rounded-pill px-3" data-page="@(currentPage - 1)">« Prev</a>
+        </li>
+
+        @for (int i = 1; i <= totalPages; i++)
+        {
+            <li class="page-item @(i == currentPage ? "active" : "")">
+                <a href="#" class="page-link rounded-pill px-3 @(i == currentPage ? "bg-primary text-white border-0" : "")" data-page="@i">@i</a>
+            </li>
+        }
+
+        <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+            <a href="#" class="page-link rounded-pill px-3" data-page="@(currentPage + 1)">Next »</a>
+        </li>
+    </ul>
+</nav>

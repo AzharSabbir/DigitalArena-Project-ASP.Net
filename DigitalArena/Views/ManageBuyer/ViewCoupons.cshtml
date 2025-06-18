@@ -1,0 +1,73 @@
+﻿@model List<DigitalArena.Models.CouponModel>
+
+@{
+    ViewBag.Title = "Coupons for " + ViewBag.UserName;
+}
+
+<!-- Breadcrumb Navigation -->
+<nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb bg-white px-3 py-2 rounded shadow-sm">
+        <li class="breadcrumb-item">
+            <a href="@Url.Action("Index", "AdminDashboard")" class="text-decoration-none text-dark">Admin</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="@Url.RouteUrl("ManageBuyersRoute")" class="text-decoration-none text-dark">Manage Buyers</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="@Url.RouteUrl("BuyerDetailsRoute", new { id = ViewBag.UserId })" class="text-decoration-none text-dark">@ViewBag.UserName</a>
+        </li>
+        <li class="breadcrumb-item active text-primary" aria-current="page">
+            Coupons
+        </li>
+    </ol>
+</nav>
+
+<h2>Coupons for @ViewBag.UserName</h2>
+
+@if (Model == null || !Model.Any())
+{
+    <div class="alert alert-info">No coupons found for this user.</div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+            <thead class="table-light text-center">
+                <tr>
+                    <th>Coupon Code</th>
+                    <th>Discount (%)</th>
+                    <th>Valid From</th>
+                    <th>Expiry Date</th>
+                    <th>Max Usage</th>
+                    <th>Used</th>
+                    <th>User Specific</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var coupon in Model)
+                {
+                    <tr class="text-center">
+                        <td>@coupon.CouponCode</td>
+                        <td>@coupon.DiscountPercentage%</td>
+                        <td>@coupon.ValidFrom.ToString("dd MMM yyyy")</td>
+                        <td>@coupon.ExpiryDate.ToString("dd MMM yyyy")</td>
+                        <td>@coupon.MaxUsage</td>
+                        <td>@coupon.UsageCount</td>
+                        <td>
+                            @if (coupon.UserSpecific)
+                            {
+                                <span class="badge bg-primary">Yes</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">No</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+<a href="@Url.RouteUrl("BuyerDetailsRoute", new { id = ViewBag.UserId })" class="btn btn-secondary mt-3">Back to Buyer Details</a>

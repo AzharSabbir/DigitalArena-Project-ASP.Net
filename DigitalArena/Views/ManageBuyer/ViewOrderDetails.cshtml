@@ -1,0 +1,91 @@
+﻿@model List<DigitalArena.DBContext.OrderItem>
+
+@{
+    ViewBag.Title = $"Order Details - Order #{Model.First().OrderId}";
+}
+
+<!-- Breadcrumb Navigation -->
+<nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb bg-white px-3 py-2 rounded shadow-sm">
+        <li class="breadcrumb-item">
+            <a href="@Url.Action("Index", "AdminDashboard")" class="text-decoration-none text-dark">Admin</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="@Url.RouteUrl("ManageBuyersRoute")" class="text-decoration-none text-dark">Manage Buyers</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="@Url.RouteUrl("BuyerDetailsRoute", new { id = ViewBag.UserId })" class="text-decoration-none text-dark">@ViewBag.UserName</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="@Url.RouteUrl("ViewOrdersRoute", new { userId = ViewBag.UserId })" class="text-decoration-none text-dark">Orders</a>
+        </li>
+        <li class="breadcrumb-item active text-primary" aria-current="page">
+            Order Items
+        </li>
+    </ol>
+</nav>
+
+<h2>Order Items for Order #@Model.First().OrderId</h2>
+
+@if (Model == null || !Model.Any())
+{
+    <div class="alert alert-info">No order items found for this order.</div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+            <thead class="table-light text-center">
+                <tr>
+                    <th>Thumbnail</th>
+                    <th>Product Name</th>
+                    <th>Price</th>
+                    <th>Category</th>
+                    <th>Seller</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="text-center">
+                        <td>
+                            @if (!string.IsNullOrEmpty(item.Product.Thumbnail))
+                            {
+                                if (item.Product.Category.Name == "3D Model")
+                                {
+                                    ViewBag.categoryPath = "3d_model";
+                                }
+                                else if (item.Product.Category.Name == "E-Book")
+                                {
+                                    ViewBag.categoryPath = "ebook";
+                                }
+                                else if (item.Product.Category.Name == "Presentation Slide")
+                                {
+                                    ViewBag.categoryPath = "presentation_slide";
+                                }
+                                else if (item.Product.Category.Name == "Graphics Template")
+                                {
+                                    ViewBag.categoryPath = "graphics_template";
+                                }
+                                <img src="~/Assets/@ViewBag.categoryPath/product_@item.ProductId/thumbnails/@item.Product.Thumbnail"
+                                     alt="@item.Product.Name"
+                                     style="width: 60px; height: 60px; object-fit: cover;"
+                                     class="rounded" />
+                            }
+                            else
+                            {
+                                <span class="text-muted">No Image</span>
+                            }
+                        </td>
+                        <td>@item.Product.Name</td>
+                        <td>@item.Price.ToString("C")</td>
+                        <td>@item.Product.Category.Name</td>
+                        <td>@item.Product.User.Username</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+<a href="@Url.RouteUrl("ViewOrdersRoute", new { userId = ViewBag.UserId })" class="btn btn-secondary mt-3">Back to Orders</a>

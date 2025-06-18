@@ -1,21 +1,70 @@
-﻿<div class="d-flex flex-column p-3 bg-light" style="width: 250px; min-height: 100vh;">
-    <a href="@Url.Action("Index", "AdminDashboard")" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+﻿@{
+    string currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+    string currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+}
+
+<!-- Sidebar Start -->
+<div class="d-flex flex-column p-3 bg-light position-fixed"
+     style="width: 250px; height: 100vh; top: 0; left: 0; z-index: 1000;">
+
+    <a href="@Url.Action("Index", "AdminDashboard")"
+       class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
         <img src="~/assets/site-images/site-logo.png" alt="Digital Arena Logo" width="30" height="30" class="me-2" />
         <span class="fs-4 fw-semibold">Digital Arena</span>
     </a>
+
     <hr />
+
     <ul class="nav nav-pills flex-column mb-auto">
         <li class="nav-item">
-            <a href="@Url.Action("Home", "AdminDashboard")" class="nav-link active">Dashboard</a>
+            <a href="@Url.Action("Index", "AdminDashboard")"
+               class="nav-link @(currentAction == "Index" && currentController == "AdminDashboard" ? "active" : "text-dark")">
+                Dashboard
+            </a>
         </li>
+
         <li>
-            <a href="@Url.Action("ManageBuyers", "AdminDashboard")" class="nav-link text-dark">Buyers</a>
+            <a href="@Url.Action("ManageBuyers", "AdminDashboard")"
+               class="nav-link @(currentAction == "ManageBuyers" && currentController == "AdminDashboard" ? "active" : "text-dark")">
+                Manage Buyers
+            </a>
         </li>
+
         <li>
-            <a href="@Url.Action("ManageSellers", "AdminDashboard")" class="nav-link text-dark">Sellers</a>
+            <a href="@Url.Action("ManageSellers", "AdminDashboard")"
+               class="nav-link @(currentAction == "ManageSellers" && currentController == "AdminDashboard" ? "active" : "text-dark")">
+                Manage Sellers
+            </a>
         </li>
+
         <li>
-            <a href="@Url.Action("ManageReview", "AdminDashboard")" class="nav-link text-dark">Reviews</a>
+            <a href="@Url.Action("ManageProducts", "AdminDashboard")"
+               class="nav-link @(currentAction == "ManageProducts" && currentController == "AdminDashboard" ? "active" : "text-dark")">
+                Manage Products
+            </a>
+        </li>
+        
+        <li>
+            <a href="@Url.Action("ManageReview", "AdminDashboard")"
+               class="nav-link @(currentAction == "ManageReview" && currentController == "AdminDashboard" ? "active" : "text-dark")">
+                Manage Reviews
+            </a>
+        </li>
+
+        <li>
+            <a href="@Url.Action("Profile", "AdminDashboard")"
+               class="nav-link @(currentAction == "Profile" && currentController == "AdminDashboard" ? "active" : "text-dark")">
+                Profile
+            </a>
         </li>
     </ul>
+
+    <div class="mt-auto pt-3">
+        <a href="@Url.Action("Logout", "Auth")"
+           class="btn btn-outline-danger btn-sm w-100"
+           title="Logout"
+           onclick="return confirm('Are you sure you want to logout?');">
+            <i class="bi bi-box-arrow-right me-1"></i> Logout
+        </a>
+    </div>
 </div>

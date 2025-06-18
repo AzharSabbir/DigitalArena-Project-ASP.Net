@@ -1,0 +1,118 @@
+﻿@model DigitalArena.Models.UserModel
+
+@{
+    ViewBag.Title = "Buyer Details";
+
+    Func<DateTime?, string> formatDate = date =>
+        date.HasValue && date.Value != DateTime.MinValue
+            ? date.Value.ToString("dd MMMM, yyyy hh:mm tt")
+            : "N/A";
+
+    Func<string, string> formatPhone = phone =>
+    {
+        if (string.IsNullOrEmpty(phone)) return "N/A";
+        phone = phone.Trim();
+        if (phone.StartsWith("+88")) phone = phone.Substring(3);
+        else if (phone.StartsWith("88")) phone = phone.Substring(2);
+        return phone.Length == 11
+            ? $"{phone.Substring(0, 5)}-{phone.Substring(5)}"
+            : phone;
+    };
+}
+
+<!-- Breadcrumb Navigation -->
+<nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb bg-white px-3 py-2 rounded shadow-sm">
+        <li class="breadcrumb-item">
+            <a href="@Url.Action("Index", "AdminDashboard")" class="text-decoration-none text-dark">Admin</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="@Url.RouteUrl("ManageBuyersRoute")" class="text-decoration-none text-dark">Manage Buyers</a>
+        </li>
+        <li class="breadcrumb-item active text-primary" aria-current="page">
+            Buyer Details
+        </li>
+    </ol>
+</nav>
+
+
+<h2 class="mb-4">Buyer Details</h2>
+
+<div class="card shadow-sm p-4">
+    <div class="row mb-3">
+        <div class="col-md-2 text-center">
+            <img src="@Url.Content(!string.IsNullOrEmpty(Model.ProfileImage)
+                ? $"~/Assets/user_profile_image/user_{Model.UserId}/{Model.ProfileImage}"
+                : "~/Assets/user_profile_image/avatar.jpg")"
+                 class="img-thumbnail rounded-circle"
+                 alt="Profile Image"
+                 width="100"
+                 height="100" />
+        </div>
+        <div class="col-md-10 d-flex flex-column justify-content-center">
+            <h4>@Model.FullName</h4>
+            <p class="text-muted mb-1">Username: <strong>@Model.Username</strong></p>
+            <p class="text-muted mb-0">Role: <span class="badge bg-info text-dark">@Model.Role</span></p>
+        </div>
+    </div>
+
+    <dl class="row">
+        <dt class="col-sm-3">Email</dt>
+        <dd class="col-sm-9">@Model.Email</dd>
+
+        <dt class="col-sm-3">Phone</dt>
+        <dd class="col-sm-9">@formatPhone(Model.Phone)</dd>
+
+        <dt class="col-sm-3">Status</dt>
+        <dd class="col-sm-9">
+            @if (Model.IsActive)
+            {
+                <span class="badge bg-success">Active</span>
+            }
+            else
+            {
+                <span class="badge bg-secondary">Inactive</span>
+            }
+        </dd>
+
+        <dt class="col-sm-3">Created At</dt>
+        <dd class="col-sm-9">@formatDate(Model.CreatedAt)</dd>
+
+        <dt class="col-sm-3">Last Login</dt>
+        <dd class="col-sm-9">@formatDate(Model.LastLoginAt)</dd>
+        <dt class="col-sm-3">Wallet Balance</dt>
+        <dd class="col-sm-9">
+            @(Model.Wallet != null ? $"{Model.Wallet.Balance:0.00} BDT" : "N/A")
+        </dd>
+
+    </dl>
+
+    <hr class="my-4" />
+
+    <h5 class="mb-3">More Information</h5>
+
+    <div class="d-flex flex-wrap gap-2">
+        <a href="@Url.RouteUrl("ViewCouponsRoute", new { userId = Model.UserId })" class="btn btn-outline-primary">
+            <i class="bi bi-ticket-perforated me-1"></i> View Coupons
+        </a>
+
+        <a href="@Url.RouteUrl("ViewOrdersRoute", new { userId = Model.UserId })" class="btn btn-outline-success">
+            <i class="bi bi-bag-check me-1"></i> View Orders
+        </a>
+
+        <a href="@Url.Action("PurchasedProducts", "Order", new { userId = Model.UserId })" class="btn btn-outline-dark">
+            <i class="bi bi-cart-check me-1"></i> Purchased Products
+        </a>
+
+        <a href="@Url.Action("ReviewsByUser", "Review", new { userId = Model.UserId })" class="btn btn-outline-info">
+            <i class="bi bi-chat-left-dots me-1"></i> View Reviews
+        </a>
+
+        <a href="@Url.Action("TransactionsByUser", "Transaction", new { userId = Model.UserId })" class="btn btn-outline-warning">
+            <i class="bi bi-currency-exchange me-1"></i> View Transactions
+        </a>
+    </div>
+
+
+    <a href="@Url.RouteUrl("ManageBuyersRoute")" class="btn btn-secondary mt-3">Back to Buyer List</a>
+</div>

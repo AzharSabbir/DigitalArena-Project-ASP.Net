@@ -1,0 +1,76 @@
+﻿@model List<DigitalArena.Models.OrderModel>
+
+@{
+    ViewBag.Title = "Orders for " + ViewBag.UserName;
+}
+
+<!-- Breadcrumb Navigation -->
+<nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb bg-white px-3 py-2 rounded shadow-sm">
+        <li class="breadcrumb-item">
+            <a href="@Url.Action("Index", "AdminDashboard")" class="text-decoration-none text-dark">Admin</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="@Url.RouteUrl("ManageBuyersRoute")" class="text-decoration-none text-dark">Manage Buyers</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="@Url.RouteUrl("BuyerDetailsRoute", new { id = ViewBag.UserId })" class="text-decoration-none text-dark">@ViewBag.UserName</a>
+        </li>
+        <li class="breadcrumb-item active text-primary" aria-current="page">
+            Orders
+        </li>
+    </ol>
+</nav>
+
+<h2>Orders for @ViewBag.UserName</h2>
+
+@if (Model == null || !Model.Any())
+{
+    <div class="alert alert-info">No orders found for this user.</div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+            <thead class="table-light text-center">
+                <tr>
+                    <th>Order ID</th>
+                    <th>Amount</th>
+                    <th>Billing Address</th>
+                    <th>Status</th>
+                    <th>Payment Status</th>
+                    <th>Order Date</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model)
+                {
+                    <tr class="text-center">
+                        <td>@order.OrderId</td>
+                        <td>@String.Format("{0:C}", order.Amount)</td>
+                        <td>@order.BillingAddress</td>
+                        <td>
+                            <span class="badge @(order.Status == "Completed" ? "bg-success" : "bg-warning")">
+                                @order.Status
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge @(order.PaymentStatus == "Paid" ? "bg-success" : "bg-danger")">
+                                @order.PaymentStatus
+                            </span>
+                        </td>
+                        <td>@order.CreatedAt.ToString("dd MMM yyyy")</td>
+                        <td>
+                            <a href="@Url.RouteUrl("ViewOrderDetailsRoute", new { userId = order.UserId, orderId = order.OrderId })" class="btn btn-sm btn-primary">
+                                View
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+<a href="@Url.RouteUrl("BuyerDetailsRoute", new { id = ViewBag.UserId })" class="btn btn-secondary mt-3">Back to Buyer Details</a>
