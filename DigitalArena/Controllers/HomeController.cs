@@ -11,6 +11,9 @@ namespace DigitalArena.Controllers
     {
         public ActionResult Index()
         {
+            if(User.IsInRole("ADMIN")) return RedirectToAction("Index", "AdminDashboard");
+            if(User.IsInRole("SELLER")) return RedirectToAction("Index", "SellerDashboard");
+
             return View();
         }
 

@@ -535,6 +535,7 @@
     <Content Include="Views\SellerDashboard\Index.cshtml" />
     <Content Include="Views\Shared\_AdminHeader.cshtml" />
     <Content Include="Views\Shared\_SellerHeader.cshtml" />
+    <Content Include="Views\Shared\_AdminSidebar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

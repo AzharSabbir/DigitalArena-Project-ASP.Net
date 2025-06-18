@@ -9,7 +9,8 @@ namespace DigitalArena.Controllers
     [Authorize(Roles = "ADMIN")]
     public class AdminDashboardController : Controller
     {
-        // GET: AdminDashboard
+        // GET:
+        [Route("admin/dashboard")]
         public ActionResult Index()
         {
             return View();

@@ -1,0 +1,21 @@
+﻿<div class="d-flex flex-column p-3 bg-light" style="width: 250px; min-height: 100vh;">
+    <a href="@Url.Action("Index", "AdminDashboard")" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+        <img src="~/assets/site-images/site-logo.png" alt="Digital Arena Logo" width="30" height="30" class="me-2" />
+        <span class="fs-4 fw-semibold">Digital Arena</span>
+    </a>
+    <hr />
+    <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+            <a href="@Url.Action("Home", "AdminDashboard")" class="nav-link active">Dashboard</a>
+        </li>
+        <li>
+            <a href="@Url.Action("ManageBuyers", "AdminDashboard")" class="nav-link text-dark">Buyers</a>
+        </li>
+        <li>
+            <a href="@Url.Action("ManageSellers", "AdminDashboard")" class="nav-link text-dark">Sellers</a>
+        </li>
+        <li>
+            <a href="@Url.Action("ManageReview", "AdminDashboard")" class="nav-link text-dark">Reviews</a>
+        </li>
+    </ul>
+</div>
