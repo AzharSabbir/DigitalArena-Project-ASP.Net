@@ -51,23 +51,8 @@ else
                         <td>
                             @if (!string.IsNullOrEmpty(item.Product.Thumbnail))
                             {
-                                if (item.Product.Category.Name == "3D Model")
-                                {
-                                    ViewBag.categoryPath = "3d_model";
-                                }
-                                else if (item.Product.Category.Name == "E-Book")
-                                {
-                                    ViewBag.categoryPath = "ebook";
-                                }
-                                else if (item.Product.Category.Name == "Presentation Slide")
-                                {
-                                    ViewBag.categoryPath = "presentation_slide";
-                                }
-                                else if (item.Product.Category.Name == "Graphics Template")
-                                {
-                                    ViewBag.categoryPath = "graphics_template";
-                                }
-                                <img src="~/Assets/@ViewBag.categoryPath/product_@item.ProductId/thumbnails/@item.Product.Thumbnail"
+                                
+                                <img src="~/Assets/@item.Product.Category.Name/product_@item.ProductId/thumbnails/@item.Product.Thumbnail"
                                      alt="@item.Product.Name"
                                      style="width: 60px; height: 60px; object-fit: cover;"
                                      class="rounded" />
