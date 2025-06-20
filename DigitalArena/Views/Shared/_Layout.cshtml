@@ -17,12 +17,12 @@
         }
         else if (User.IsInRole("BUYER"))
         {
-            @Html.Partial("_Header")
+            //@Html.Partial("_Header")
         }
     }
     else
     {
-        @Html.Partial("_Header")
+        //@Html.Partial("_Header")
     }
 
     @if (User.Identity.IsAuthenticated && User.IsInRole("ADMIN"))
@@ -62,7 +62,7 @@
 
     @if (!(User.Identity.IsAuthenticated && (User.IsInRole("ADMIN") || User.IsInRole("SELLER"))))
     {
-        @Html.Partial("_Footer")
+        //@Html.Partial("_Footer")
     }
 
     @Scripts.Render("~/bundles/jquery")

@@ -1,0 +1,490 @@
+﻿*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Roboto', 'Lexend', 'Inria Sans', 'Poppins', sans-serif;
+    background-color: #ffffff;
+    color: #323232;
+}
+
+.page-wrapper {
+    max-width: 1440px;
+    margin-left: auto;
+    margin-right: auto;
+    overflow-x: hidden; /* Prevents horizontal scroll from negative margins if any */
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+}
+
+/* CSS from section:header */
+.header-section {
+    padding-top: 33px; /* Roughly -475y from root -508y */
+    padding-bottom: 33px; /* Spacing before hero */
+}
+
+.site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 50px; /* (-590 - (-640)) for logo */
+    padding-right: 50px; /* (1440 - (640+750)) for buttons */
+    height: 72px;
+}
+
+.logo-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.logo-icon {
+    width: 72px;
+    height: 72px;
+    margin-right: 10px; /* From figma: -520 (text) - (-590+72) (icon end) = -2px, visual spacing */
+}
+
+.logo-text {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 48px;
+    color: #384d6c;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    background-color: #f5f5f5;
+    border: 0.5px solid rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+    padding: 0 15px;
+    width: 653px;
+    height: 42px;
+    margin-left: 60px; /* Approximate, adjust for balance */
+    margin-right: 60px; /* Approximate */
+}
+
+.search-icon {
+    width: 20px;
+    height: 20px;
+    opacity: 0.3;
+    margin-right: 10px; /* x: -228 vs -198 for text */
+}
+
+.search-input {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-family: 'Inria Sans', sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    color: #000000;
+    opacity: 0.3; /* Style for placeholder text color */
+    width: 100%;
+}
+
+    .search-input::placeholder {
+        color: #000000;
+        opacity: 0.3;
+    }
+
+.header-actions {
+    display: flex;
+    align-items: center;
+}
+
+.cart-icon {
+    width: 41px;
+    height: 42px;
+    margin-right: 25px; /* 511 - (445+41) */
+}
+
+.login-button {
+    background-color: #f5f5f5;
+    border: 1px solid #bebebe;
+    color: #384d6c;
+    font-family: 'Inria Sans', sans-serif;
+    font-size: 20px;
+    width: 107px;
+    height: 42px;
+    margin-right: 25px; /* 643 - (511+107) */
+}
+
+.signup-button {
+    background-color: #384d6c;
+    border: 1px solid #8b8b8b;
+    color: #ffffff;
+    font-family: 'Inria Sans', sans-serif;
+    font-size: 20px;
+    width: 107px;
+    height: 42px;
+}
+
+/* CSS from section:hero */
+.hero-section {
+    background-color: #fffefa; /* style_2 for Rectangle 16 */
+    padding-top: 0; /* Hero bg starts at -359, header ends at -403. This is tricky. Let's assume hero bg is full height of its content. */
+    /* y for hero content starts at -259. Header ends at -475 + 72 = -403.  -259 - (-403) = 144px margin-top for title */
+    /* The hero background 55:67 starts at y:-359 and has height 510. Ends at y:151 */
+    /* The image 55:70 starts at y:-359 and has height 561. Ends at y:202 */
+    /* This section's content is vertically aligned. The overall section might need a specific height or padding. */
+    min-height: 510px; /* From hero background 55:67 */
+    display: flex;
+    align-items: center;
+}
+
+.hero-container {
+    display: flex;
+    align-items: center; /* Align text content and image vertically */
+    justify-content: space-between; /* Create space between text and image */
+    padding-left: 148px; /* (-492 title x - (-640 page x)) */
+    padding-right: (1440 - (640+175+624)); /* (1440 - (815+624)) = 1440 - 1439 = 1px. Let's use visual spacing. */
+    /* Image x:175, width:624. Ends at 175+624 = 799. (640+799) = 1439. So 1px from right edge. */
+    /* This means padding-right should be small or based on image container. */
+    gap: 42px; /* (175 image x) - (-492 title x + 625 title width) = 175 - 133 = 42px */
+}
+
+.hero-content {
+    flex-basis: 625px; /* Width of title 55:68 */
+    display: flex;
+    flex-direction: column;
+    /* Align items based on their own text-align or width */
+}
+
+.hero-title {
+    font-family: 'Lexend', sans-serif;
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 60px;
+    color: #323232;
+    text-align: left; /* Figma shows text-align: center, but bounding box is not full width */
+    margin-top: 0; /* Relative to hero-container alignment */
+    margin-bottom: 25px; /* Approx based on y diff: -64 (subtitle) - (-259 + 180 title height) = -64 - (-79) = 15px. Visual adjustment. */
+}
+
+.hero-subtitle {
+    font-family: 'Lexend', sans-serif;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 18.75px;
+    color: #8b8b8b;
+    text-align: left; /* Figma shows text-align: center */
+    max-width: 845px; /* From node 55:69, but its x is -602, wider than title */
+    margin-bottom: 44px; /* -20 (button y) - (-64 subtitle y + 19 subtitle height) = -20 - (-45) = 25px. Visual adjustment. */
+}
+
+.hero-cta {
+    background-color: #384d6c;
+    border: 1px solid #8b8b8b;
+    border-radius: 50px;
+    color: #ffffff;
+    font-family: 'Inria Sans', sans-serif;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 43.16px; /* Approx */
+    padding: 14px 0; /* (71 height - 43 text height)/2 */
+    width: 291px; /* From node 55:77 */
+    height: 71px;
+    text-align: center;
+}
+
+.hero-image-container {
+    flex-basis: 624px; /* Width of image 55:70 */
+    align-self: flex-start; /* Image starts at y:-359, same as hero bg */
+    margin-top: 0; /* Relative to hero-container alignment */
+}
+
+.hero-image {
+    width: 624px;
+    height: 561px; /* From node 55:70 */
+}
+
+/* CSS from section:categories-nav */
+.categories-nav-section {
+    background-color: #737373; /* style_39 for Rectangle 19 */
+    height: 53px; /* From node 55:87 */
+    display: flex;
+    align-items: center;
+}
+
+.categories-nav {
+    width: 100%;
+    display: flex;
+    justify-content: space-around; /* Visually looks like space-around */
+    align-items: center;
+    padding-left: 50px; /* (-590 - (-640)) */
+    padding-right: 50px; /* (1440 - (640 + 485 + 264_approx_width)) - this is complex, space-around is better */
+}
+
+.category-link {
+    font-family: 'Lexend', sans-serif;
+    font-weight: 700;
+    font-size: 27px;
+    line-height: 33.75px;
+    color: #d9d9d9;
+    text-decoration: none;
+    text-align: center;
+    padding: 0 20px; /* For spacing */
+}
+
+/* CSS from section:trending-products */
+.product-grid-section {
+    padding-top: 50px; /* y:254 (title) - y:204 (cat-nav end) */
+    padding-bottom: 50px; /* Visual guess before next section */
+}
+
+.section-content-wrapper {
+    padding-left: 100px; /* (640 - 540 for product items) */
+    padding-right: 100px; /* Symmetrical */
+}
+
+.section-title {
+    font-family: 'Inria Sans', sans-serif;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 43.16px;
+    color: #000000;
+    text-align: center;
+    margin-bottom: 40px; /* y:342 (items) - (y:254 + h:38 title) = 50px */
+}
+
+.products-carousel {
+    display: flex;
+    align-items: center;
+    gap: 13px; /* Gap between last item and arrow, or general item gap */
+}
+
+.product-list {
+    display: flex;
+    gap: 13px; /* From Figma: -227 - (-540 + 300) = 13px */
+    overflow-x: auto; /* For responsiveness, if items exceed width */
+    flex-grow: 1;
+    padding-bottom: 10px; /* For scrollbar visibility if needed */
+}
+
+.product-item img {
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 30px; /* Common style for these images */
+}
+
+.carousel-arrow {
+    background-color: rgba(33, 57, 59, 0.48);
+    border-radius: 10px;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    width: 34px;
+    height: 80px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin-left: 13px; /* Ensure it's after the list */
+}
+
+.arrow-text {
+    color: #bebebe;
+    font-family: 'Inria Sans', sans-serif;
+    font-size: 48px; /* Approx from visual, style_10 */
+    line-height: 1;
+}
+
+/* CSS from section:new-arrivals */
+.section-divider {
+    border: none;
+    border-top: 1px solid #8b8b8b; /* style_21 */
+    margin-top: 50px; /* y:742 (line) - y: approx 642 (trending items end) */
+    margin-bottom: 50px; /* y:792 (title) - y:742 (line) */
+    width: 100%; /* It spans 1239px, same as content area */
+}
+
+.new-arrivals-title {
+    /* Styles inherited from .section-title, specific margins if needed */
+    margin-bottom: 40px; /* y:880 (items) - (y:792 + h:38 title) = 50px */
+}
+/* .product-grid-section, .products-carousel, .product-list, .product-item, .carousel-arrow, .arrow-text styles are reused */
+
+/* CSS from section:browse-by-category */
+.browse-category-section {
+    padding-top: 50px; /* y:1280 (bg) - y: approx 1180 (new arrivals items end) */
+    padding-bottom: 50px;
+    background-color: rgba(25, 188, 201, 0.06); /* style_16 for Rectangle 33 */
+    /* The background 55:81 has x:-540, width:1239. So it's contained within the padded wrapper. */
+}
+
+.browse-category-wrapper {
+    /* section-content-wrapper provides padding */
+}
+
+.browse-category-title {
+    font-size: 50px; /* style_20 */
+    line-height: 59.95px;
+    margin-bottom: 50px; /* y:1440 (items) - (y:1330 + h:60 title) = 50px */
+}
+
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Two columns */
+    gap: 25px; /* Horizontal and vertical gap */
+}
+
+.category-grid-item {
+    position: relative; /* For positioning title over image */
+    border: 1px solid #000000; /* Common for these items */
+    border-radius: 30px; /* Common for these items */
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25); /* Common */
+    overflow: hidden; /* To respect border-radius with image */
+}
+
+.category-item-image {
+    width: 100%;
+    height: 300px; /* All images are 300px height */
+    object-fit: cover;
+}
+
+.category-item-title {
+    position: absolute;
+    top: 22px; /* y:1462 (text) - y:1440 (image) */
+    left: 25px; /* x:-465 (text) - x:-490 (image) */
+    font-family: 'Inria Sans', sans-serif;
+    font-weight: 700;
+    font-size: 32px; /* style_41 */
+    line-height: 38.36px;
+    color: #000000;
+    margin: 0;
+    /* Adjust width if necessary, e.g., for 55:108 width 489 */
+}
+/* Specific title positioning if needed, but this general approach should work for most */
+.category-grid-item:nth-child(2) .category-item-title { /* 3D Models text 55:110 */
+    left: auto; /* Default left is fine, or adjust if x:460 is far right */
+    right: 25px; /* Example if it's aligned to the right of its image */
+    /* x:460 for text, image x:-15, w:664. Text is far from image left. */
+    /* Text x:460. Image x:-15. Relative text x = 460 - (-15) = 475px from image left. */
+    left: 475px;
+}
+
+.category-grid-item:nth-child(4) .category-item-title { /* Presentation Slides text 55:109 */
+    /* Text x:308. Image x:199. Relative text x = 308 - 199 = 109px from image left. */
+    left: 109px;
+}
+
+/* CSS from section:footer */
+.footer-section {
+    background-color: #737373; /* style_39 for Rectangle 67 */
+    color: #ffffff;
+    padding-top: 50px; /* y:2171 (footer bg) - y: approx 2065 (browse end) */
+    padding-bottom: 30px; /* Visual spacing */
+}
+
+.footer-container {
+    /* page-wrapper provides max-width and centering */
+    padding-left: 0; /* Footer logo is at x:-640 */
+    padding-right: 0; /* Footer content spans full width of 1440px */
+}
+
+.footer-main-content {
+    display: flex;
+    justify-content: space-between;
+    padding-left: 0px; /* Logo starts at -640 */
+    padding-right: 100px; /* Approximate based on link columns ending before edge */
+    margin-bottom: 40px; /* Space before divider */
+    align-items: flex-start; /* Align top edges */
+}
+
+.footer-info {
+    flex-basis: calc(255px + 2px + 384px); /* logo width + gap + text width */
+    display: flex;
+    align-items: flex-start; /* Align logo and text block */
+}
+
+.footer-logo {
+    width: 255px; /* From node 63:339 */
+    height: 225px;
+    margin-right: 2px; /* (-383 text x) - (-640 logo x + 255 logo w) */
+    margin-left: 0; /* Aligned to very left of 1440px container */
+}
+
+.footer-description {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-size: 22px; /* style_42 */
+    line-height: 25.78px;
+    width: 384px; /* From node 63:336 */
+    margin: 0;
+    padding-top: 71px; /* y:2242 (text) - y:2171 (logo) */
+}
+
+.footer-links {
+    display: flex;
+    gap: 33px; /* Gap between columns */
+    padding-top: 28px; /* y:2199 (links) - y:2171 (logo/footer top) */
+}
+
+.footer-links-column ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links-column li {
+    margin-bottom: 16px; /* Visual spacing between links */
+}
+
+.footer-links-column a {
+    color: #ffffff;
+    text-decoration: none;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-size: 14px; /* style_45 */
+    line-height: 16.4px;
+}
+
+    .footer-links-column a:hover {
+        text-decoration: underline;
+    }
+
+.footer-links-title {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+    font-size: 18px; /* style_44 */
+    line-height: 21.09px;
+    margin-top: 0;
+    margin-bottom: 21px; /* y:2252 (first link) - (y:2199 + h:21 title) */
+}
+
+.footer-divider {
+    border: none;
+    border-top: 1px solid #ffffff; /* style_47 */
+    margin: 0 32px; /* ( -608 - (-640) = 32px from left/right edges of 1440px container ) */
+    /* width: 1376px; */
+}
+
+.footer-copyright {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    font-size: 15px; /* style_46 */
+    line-height: 17.57px;
+    text-align: center;
+    margin-top: 14px; /* y:2410 (copyright) - y:2396 (line) */
+    margin-bottom: 0;
+}

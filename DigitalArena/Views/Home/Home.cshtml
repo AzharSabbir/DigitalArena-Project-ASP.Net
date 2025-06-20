@@ -1,0 +1,158 @@
+﻿
+@{
+    ViewBag.Title = "Home";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Digital Arena - 3D Models Marketplace</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inria+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/Content/Home.css" />
+</head>
+<body>
+    <section id="section-header" class="header-section">
+        <div class="page-wrapper">
+            @Html.Partial("_Header")
+        </div>
+    </section>
+    <section id="section-hero" class="hero-section">
+        <div class="page-wrapper hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">FIND DIGITAL CONTENT<br>THAT MATCHES YOUR<br>CREATIVE VISION</h1>
+                <p class="hero-subtitle">Explore high-quality digital content—3D models, e-books, graphics, and more—on Digital Arena. Start browsing now!</p>
+                <a href="#" class="button hero-cta">PURCHASE NOW</a>
+            </div>
+            <div class="hero-image-container">
+                <img src="/page/72bfd2cf-7ec5-4041-8e95-477818abeb61/images/a64bed4dab1fa0faf0a0c602f92464cba32db928.png" alt="Creative Vision Showcase" class="hero-image">
+            </div>
+        </div>
+    </section>
+    <section id="section-categories-nav" class="categories-nav-section">
+        <div class="page-wrapper">
+            <nav class="categories-nav">
+                <a href="#mockup" class="category-link">MOCKUP</a>
+                <a href="#templates" class="category-link">TEMPLATES</a>
+                <a href="#lowpoly" class="category-link">LOWPOLY</a>
+                <a href="#graphics" class="category-link">GRAPHICS</a>
+            </nav>
+        </div>
+    </section>
+    <section id="section-trending-products" class="product-grid-section">
+        <div class="page-wrapper section-content-wrapper">
+            <h2 class="section-title trending-title">TRENDING</h2>
+            <div class="products-carousel">
+                <div class="product-list">
+                    <div class="product-item">
+                        <img src="/page/72bfd2cf-7ec5-4041-8e95-477818abeb61/images/b61d80ea66b2626c7046a070463dce9ce1cb0dc4.png" alt="Trending Product 1" style="border-radius: 30px;">
+                    </div>
+                    <div class="product-item">
+                        <img src="/page/72bfd2cf-7ec5-4041-8e95-477818abeb61/images/498bafe970ad907a171f4c7c8d4f5a2a2755dfbd.png" alt="Trending Product 2" style="border-radius: 30px;">
+                    </div>
+                    <div class="product-item">
+                        <img src="/page/72bfd2cf-7ec5-4041-8e95-477818abeb61/images/45bc592c1dc21c00eec0c5f18aa945d524e3fd75.png" alt="Trending Product 3" style="border-radius: 30px;">
+                    </div>
+                    <div class="product-item">
+                        <img src="/page/72bfd2cf-7ec5-4041-8e95-477818abeb61/images/dbb8a1150d08c02021703f0ca1f8a8164b9edff6.png" alt="Trending Product 4" style="border-radius: 30px;">
+                    </div>
+                </div>
+                <button class="carousel-arrow">
+                    <span class="arrow-text">&gt;</span>
+                </button>
+            </div>
+        </div>
+    </section>
+    <section id="section-new-arrivals" class="product-grid-section">
+        <div class="page-wrapper section-content-wrapper">
+            <hr class="section-divider">
+            <h2 class="section-title new-arrivals-title">NEW ARRIVALS</h2>
+            <div class="products-carousel">
+                <div class="product-list">
+                    <div class="product-item">
+                        <img src="/page/72bfd2cf-7ec5-4041-8e95-477818abeb61/images/c7198a15f06dfd5dc4dfc88a9595ffc44eaa8d9b.png" alt="New Arrival 1" style="border-radius: 30px;">
+                    </div>
+                    <div class="product-item">
+                        <img src="/page/72bfd2cf-7ec5-4041-8e95-477818abeb61/images/efe6e9c569f781230d78d08b994c1371d0ca12a8.png" alt="New Arrival 2" style="border-radius: 30px;">
+                    </div>
+                    <div class="product-item">
+                        <img src="/page/72bfd2cf-7ec5-4041-8e95-477818abeb61/images/716accc4cb8ad0e3ee81bbe1e7db92dedb4a7643.png" alt="New Arrival 3" style="border-radius: 30px;">
+                    </div>
+                    <div class="product-item">
+                        <img src="/page/72bfd2cf-7ec5-4041-8e95-477818abeb61/images/2b0ea1430ae0613cec1b68820c99251dc4608fcc.png" alt="New Arrival 4" style="border-radius: 30px;">
+                    </div>
+                </div>
+                <button class="carousel-arrow">
+                    <span class="arrow-text">&gt;</span>
+                </button>
+            </div>
+        </div>
+    </section>
+    <section id="section-browse-by-category" class="browse-category-section">
+        <div class="page-wrapper section-content-wrapper browse-category-wrapper">
+            <h2 class="section-title browse-category-title">BROWSE BY CATEGORY</h2>
+            <div class="category-grid">
+                <div class="category-grid-item">
+                    <img src="/page/72bfd2cf-7ec5-4041-8e95-477818abeb61/images/c90028adf8dbd0200debf04171464bc04066182c.png" alt="Graphics Templates" class="category-item-image">
+                    <h3 class="category-item-title">GRAPHICS TEMPLATES</h3>
+                </div>
+                <div class="category-grid-item">
+                    <img src="/page/72bfd2cf-7ec5-4041-8e95-477818abeb61/images/17fe774808806850a632205113f177ab657128e2.png" alt="3D Models" class="category-item-image">
+                    <h3 class="category-item-title">3D MODELS</h3>
+                </div>
+                <div class="category-grid-item">
+                    <img src="/page/72bfd2cf-7ec5-4041-8e95-477818abeb61/images/e1e4c605373ed9be0977007bc1b7cadb76c90a08.png" alt="E-Books" class="category-item-image">
+                    <h3 class="category-item-title">E-BOOKS</h3>
+                </div>
+                <div class="category-grid-item">
+                    <img src="/page/72bfd2cf-7ec5-4041-8e95-477818abeb61/images/e97d46ba6a3bd4a51496a8ff27e32026dba96be1.png" alt="Presentation Slides" class="category-item-image">
+                    <h3 class="category-item-title">PRESENTATION SLIDES</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="section-footer" class="footer-section">
+        <div class="page-wrapper footer-container">
+            <div class="footer-main-content">
+                <div class="footer-info">
+                    <img src="/page/72bfd2cf-7ec5-4041-8e95-477818abeb61/images/1bb05b51f64c94ea73a3e8a941b2cc940d592efc.png" alt="Digital Arena Logo" class="footer-logo">
+                    <p class="footer-description">From premium digital content to robust tools and resources, it’s your go-to destination for unlocking potential.</p>
+                </div>
+                <nav class="footer-links">
+                    <div class="footer-links-column">
+                        <h4 class="footer-links-title">Product</h4>
+                        <ul>
+                            <li><a href="#">All Products</a></li>
+                            <li><a href="#">Trending Products</a></li>
+                            <li><a href="#">Category</a></li>
+                            <li><a href="#">Tags</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-links-column">
+                        <h4 class="footer-links-title">Category</h4>
+                        <ul>
+                            <li><a href="#">3D Model</a></li>
+                            <li><a href="#">Graphics Template</a></li>
+                            <li><a href="#">E-Book</a></li>
+                            <li><a href="#">Presentation Slide</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-links-column">
+                        <h4 class="footer-links-title">Company</h4>
+                        <ul>
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Terms of Use</a></li>
+                            <li><a href="#">Contact Us</a></li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+            <hr class="footer-divider">
+            <p class="footer-copyright">© 2024 All Rights Reserved</p>
+        </div>
+    </section>
+</body>

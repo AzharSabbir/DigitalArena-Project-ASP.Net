@@ -1,0 +1,197 @@
+﻿@model IEnumerable<DigitalArena.Models.ProductModel>
+
+@{
+    ViewBag.Title = ViewBag.BrowseCategory ?? "Browse Products";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Digital Arena - 3D Models Marketplace</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inria+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/Content/styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.css" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.js"></script>
+    <script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fazharsap6776back.builtwithrocket.new&_v=0.1.2"></script>
+</head>
+
+<body>
+    @Html.Partial("_Header")
+    <div class="container">
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Sidebar Filters -->
+            <aside class="sidebar">
+                <div class="filter-header">
+                    <h2 class="filter-title">FILTERS</h2>
+                    <img src="~/Assets/images/img_slider.png" alt="Filter" class="filter-icon" />
+                </div>
+
+                <div class="divider"></div>
+
+                <section>
+                    <h3 class="section-title">PRICE RANGE</h3>
+                    <div id="price-slider"></div>
+                </section>
+
+                <div class="divider"></div>
+
+                <section>
+                    <h3 class="section-title">SORT BY</h3>
+                    @foreach (var sortOption in new[] { "POPULAR", "LOWEST PRICE", "HIGHEST PRICE", "PRODUCT A - Z", "PRODUCT Z - A" })
+                    {
+                        <div class="checkbox-item" onclick="toggleCheckbox(this)">
+                            <div class="checkbox @(sortOption == "POPULAR" ? "checked" : "")"></div>
+                            <label class="checkbox-label">@sortOption</label>
+                        </div>
+                    }
+                </section>
+
+                <div class="divider"></div>
+
+                <section>
+                    <h3 class="section-title">OTHERS</h3>
+                    @foreach (var otherOption in new[] { "FREE", "PURCHASED", "REVIEWED" })
+                    {
+                        <div class="checkbox-item" onclick="toggleCheckbox(this)">
+                            <div class="checkbox"></div>
+                            <label class="checkbox-label">@otherOption</label>
+                        </div>
+                    }
+                </section>
+
+                <div class="divider"></div>
+
+                <section>
+                    <h3 class="section-title">TAGS</h3>
+                    @foreach (var tagRow in new[] {
+                        new[] { "PRODUCT", "LOWPOLY" },
+                        new[] { "ARCHITECTURE", "4K" },
+                        new[] { "FURNITURE", "VEHICLES" }
+                    })
+                    {
+                        <div class="tag-buttons">
+                            @foreach (var tag in tagRow)
+                            {
+                                <button class="tag-btn @(tag == "PRODUCT" ? "active" : "")" onclick="toggleTag(this)">@tag</button>
+                            }
+                        </div>
+                    }
+                </section>
+            </aside>
+
+            <!-- Products Section -->
+            <section class="products-section">
+                <h2 class="products-title">@ViewBag.BrowseCategory.ToUpper()</h2>
+
+                <div class="products-grid" id="productsGrid">
+                    @if (!Model.Any())
+                    {
+                        <p>No products found in this category.</p>
+                    }
+                    else
+                    {
+                        foreach (var product in Model)
+                        {
+                            var categoryName = ViewBag.BrowseCategory ?? "3D Model";
+                            var folderName = categoryName; // You can sanitize this if needed
+                            var imagePath = Url.Content($"~/Assets/{folderName}/product_{product.ProductId}/thumbnails/{product.Thumbnail}");
+                <div class="product-card" data-product-id="@product.ProductId">
+                    <img src="@imagePath" alt="@product.Name" class="product-image" />
+                    <div class="product-info">
+                        <div class="product-header">
+                            <span class="product-name">@product.Name</span>
+                            <span class="product-price">@product.Price.ToString("N0") TK</span>
+                        </div>
+
+                        <div class="rating-container">
+                            @{
+                                double avgRating = 0;
+                                if (ViewBag.AvgRatings != null && ViewBag.AvgRatings.ContainsKey(product.ProductId))
+                                {
+                                    avgRating = ViewBag.AvgRatings[product.ProductId];
+                                }
+
+                                int fullStars = (int)Math.Floor(avgRating);
+                                bool hasHalfStar = avgRating - fullStars >= 0.5;
+                            }
+
+                            @for (int i = 0; i < fullStars; i++)
+                            {
+                                <img src="~/Assets/images/img_star.png" alt="Star" class="star" />
+                            }
+
+                            @if (hasHalfStar)
+                            {
+                                <img src="~/Assets/images/img_star_half_empty.png" alt="Half Star" class="star" />
+                            }
+                        </div>
+
+                        <div class="product-stats">
+                            <div class="likes">
+                                <img src="~/Assets/images/img_facebook_like.png" alt="Like" class="like-icon" />
+                                <span class="stat-text">@product.LikeCount</span>
+                            </div>
+                            <div class="downloads">
+                                <img src="~/Assets/images/img_download.png" alt="Download" class="download-icon" />
+                                <span class="stat-text">
+                                    @{
+                                        int downloadCount = 0;
+                                        if (ViewBag.DownloadCounts != null && ViewBag.DownloadCounts.ContainsKey(product.ProductId))
+                                        {
+                                            downloadCount = ViewBag.DownloadCounts[product.ProductId];
+                                        }
+                                    }
+                                    @downloadCount
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                        }
+                    }
+                </div>
+
+                @if (ViewBag.TotalPages > 1)
+                {
+                    <div class="pagination">
+                        @if (ViewBag.CurrentPage > 1)
+                        {
+                            <a href="@Url.Action("BrowseCategory", new { name = Model.FirstOrDefault()?.Category?.Name, page = ViewBag.CurrentPage - 1 })">Previous</a>
+                        }
+
+                        @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                        {
+                            if (i == ViewBag.CurrentPage)
+                            {
+                                <span class="current-page">@i</span>
+                            }
+                            else
+                            {
+                                <a href="@Url.Action("BrowseCategory", new { name = Model.FirstOrDefault()?.Category?.Name, page = i })">@i</a>
+                            }
+                        }
+
+                        @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                        {
+                            <a href="@Url.Action("BrowseCategory", new { name = Model.FirstOrDefault()?.Category?.Name, page = ViewBag.CurrentPage + 1 })">Next</a>
+                        }
+                    </div>
+                }
+            </section>
+        </main>
+    </div>
+
+    @section Scripts {
+        <script src="~/Scripts/custom/product-filters.js"></script>
+    }
+    @Html.Partial("_Footer")
+</body>
+
+</html>

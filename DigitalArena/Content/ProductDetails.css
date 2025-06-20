@@ -1,0 +1,676 @@
+﻿body {
+    margin: 0;
+    font-family: 'Inria Sans', sans-serif;
+    background-color: #ffffff;
+    color: #000000;
+    line-height: 1.5;
+    padding-top: 40px;
+}
+
+.page-wrapper {
+    max-width: 1440px;
+    margin: 0 auto;
+    overflow-x: hidden;
+    /* Prevents horizontal scroll from negative margins or wide elements */
+}
+
+.container {
+    width: 100%;
+    padding-left: 32px;
+    /* Approximate based on content start */
+    padding-right: 25px;
+    /* Approximate based on content end */
+    box-sizing: border-box;
+}
+
+
+
+/* CSS for section section:main_content */
+.main-content-section {
+    padding-top: 0;
+    /* y:-396 for image vs y:-403 for header bottom */
+    padding-bottom: 60px;
+    /* Arbitrary */
+}
+
+.main-content-grid.container {
+    display: flex;
+    gap: 25px;
+    /* (3651 - (2577+1049)) where 1049 is image width. Actual content width may vary. */
+    align-items: flex-start;
+}
+
+.product-details-column {
+    flex: 1;
+    /* Takes up available space */
+    min-width: 0;
+    /* Prevents flex item overflow */
+    /* Max width can be based on image width 1049px, or text content width */
+}
+
+.sidebar-suggested-products {
+    width: 309px;
+    /* Width of a product card */
+    flex-shrink: 0;
+}
+
+/* Product Details Column */
+.product-image-container {
+    width: 100%;
+    /* Max width 1049px from figma */
+    height: auto;
+    /* Max height 593px from figma */
+    background-color: #d9d9d9;
+    /* style_2 for Frame 45:59 */
+    margin-bottom: 26px;
+    /* (222 - (-396+593)) title y - image bottom */
+    border: 1px solid #bebebe;
+    /* style_3 for image */
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.1);
+    /* style_3 for image */
+}
+
+.product-main-canvas {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #384d6c; /* subtle pastel green (light olive) */
+    width: 100%;
+    height: 450px;
+    overflow: hidden;
+    border: 2px solid #384d6c; /* muted olive border */
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    position: relative;
+}
+
+    /* Optional: Add a label over the 3D viewer */
+    .product-main-canvas::before {
+        content: "3D Object Viewer";
+        position: absolute;
+        top: 10px;
+        left: 15px;
+        font-size: 14px;
+        color: #384d6c; 
+        background: rgba(255, 255, 255, 0.8);
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-weight: 500;
+    }
+
+.product-main-image {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.product-title {
+    margin: 0 0 2px 0;
+}
+
+/* (248-222-24) for category y - title bottom */
+.product-category {
+    margin: 0 0 21px 0;
+}
+
+/* (290-248-17) for actions y - category bottom */
+
+.product-actions-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    /* (352-290-37) for separator y - actions bottom */
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.product-actions {
+    display: flex;
+    gap: 13px;
+    /* (2718 - (2604+84+24)) (wishlist text + icon - add button) */
+}
+
+    .product-actions button {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 7px 15px;
+        /* approx */
+        border-radius: 20px;
+        border: none;
+        cursor: pointer;
+    }
+
+.wishlist-button {
+    background-color: transparent;
+    /* No bg specified, assume transparent or page default */
+}
+
+    .wishlist-button img {
+        width: 24px;
+        height: 24px;
+    }
+
+.add-button {
+    background-color: #d9d9d9;
+    /* style_13 for 45:102 */
+}
+
+    .add-button img {
+        width: 22px;
+        height: 22px;
+    }
+
+.product-engagement-stats {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    /* Approx between groups */
+    background-color: #d9d9d9;
+    /* style_13 for 45:96 */
+    border-radius: 20px;
+    padding: 6px 10px;
+    /* (37-24)/2 vertically */
+}
+
+    .product-engagement-stats .stat-group {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+        .product-engagement-stats .stat-group:first-child {
+            background-color: #bebebe;
+            /* style_14 for 45:100 */
+            padding: 6px 10px;
+            margin: -6px 0 -6px -10px;
+            /* To make it fill left part */
+            border-radius: 20px 0 0 20px;
+        }
+
+    .product-engagement-stats img {
+        width: 19px;
+        height: 19px;
+        /* For like icon 45:101 */
+    }
+
+    .product-engagement-stats .stat-group:nth-child(2) img {
+        width: 21px;
+        height: 17px;
+        /* For eye icon 45:146 */
+    }
+
+    .product-engagement-stats .stat-group:nth-child(3) img {
+        width: 24px;
+        height: 24px;
+        /* For download icon 45:134 */
+    }
+
+
+.separator-line {
+    border: none;
+    height: 1px;
+}
+
+.style-22 {
+    background-color: #bebebe;
+    margin: 25px 0;
+}
+
+/* (377-352) and (352 - prev_bottom) */
+.style-36 {
+    background-color: #000000;
+    margin: 25px 0;
+}
+
+/* (778-753) and (753 - prev_bottom) */
+
+.product-specs {
+    display: flex;
+    gap: 30px;
+    /* (2801 - (2607+139+25)) */
+    margin-bottom: 25px;
+    /* (426-377-24) */
+    flex-wrap: wrap;
+}
+
+.spec-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+    .spec-item img {
+        width: 25px;
+        height: 25px;
+    }
+
+.product-description {
+    margin: 0 0 25px 0;
+    /* (499-426-48) */
+    line-height: 1.2;
+    /* 48px height for 2 lines of 20px font */
+}
+
+.product-download-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 25px;
+    /* (566-499-42) */
+}
+
+.download-icon-composite {
+    position: relative;
+    width: 26px;
+    /* From 45:138 */
+    height: 30.67px;
+    /* From 45:138 */
+}
+
+    .download-icon-composite img,
+    .download-icon-composite .line-element {
+        transform-origin: center center;
+    }
+
+/* SVG specific rotations if needed by their original styles */
+img[src*="45_139.svg"],
+img[src*="45_140.svg"] {
+    transform: rotate(90deg);
+}
+
+img[src*="45_142.svg"] {
+    /* Arrow 1, style_35 has rotate(90deg) but visually it's down */
+}
+
+
+.download-button-main {
+    background-color: #384d6c;
+    /* style_29 */
+    border-radius: 20px;
+    padding: 9px 20px;
+    /* (42-24)/2 vert, (163-104)/2 horiz approx */
+    border: none;
+    cursor: pointer;
+}
+
+.publish-info {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 30px;
+    /* (630-566-24) */
+}
+
+    .publish-info img {
+        width: 25px;
+        height: 25px;
+    }
+
+.comments-section {
+    margin-top: 30px;
+}
+
+.comments-title {
+    margin: 0 0 20px 0;
+}
+
+.add-comment-area {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+    /* (753- (687+40)) approx */
+}
+
+.user-avatar-placeholder {
+    width: 40px;
+    height: 40px;
+    background-color: #d9d9d9;
+    border-radius: 50%;
+}
+
+.rating-stars {
+    display: flex;
+    gap: 2px;
+}
+
+    /* (2657-2632-25) for first comment, (2655-2632-25) for add comment */
+    .rating-stars img {
+        width: 25px;
+        height: 25px;
+    }
+
+.comment-item {
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;
+    /* (778 - 753) */
+}
+
+.comment-content {
+    flex-grow: 1;
+}
+
+.comment-header {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 5px;
+    /* (834-807-17) */
+}
+
+.comment-author {
+    margin-right: auto;
+}
+
+.comment-text {
+    margin: 10px 0;
+    /* (869 - (834+25)) and (903-869-24) */
+}
+
+.comment-reply-link {
+    text-decoration: none;
+}
+
+/* Sidebar */
+.sidebar-title {
+    text-align: left;
+    margin: 0 0 20px 0;
+    /* ((-347) - (-396)) */
+}
+
+.suggested-products-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    /* Single column */
+    gap: 26px;
+    /* ((-90) - (-347+232)) for second card from first */
+}
+
+.product-card {
+    background-color: #d9d9d9;
+    /* style_2 for Frame 45:60 (info part) */
+    overflow: hidden;
+    /* As per style_2 */
+    border-radius: 8px;
+    /* Common practice for cards */
+}
+
+.product-card__image {
+    display: block;
+    width: 100%;
+    /* 308px */
+    height: 173px;
+    /* Fixed height */
+    object-fit: cover;
+}
+
+    .product-card__image.img-contain {
+        object-fit: contain;
+        background-color: #e0e0e0;
+        /* Lighter bg for contain images */
+    }
+
+.product-card__info {
+    padding: 15px;
+    /* Approx, based on title pos */
+}
+
+.product-card__title {
+    margin: 0 0 10px 0;
+    /* Space to stats */
+    text-align: center;
+    /* Based on visual */
+    /* Original title y: -172, card frame y: -347. Image height 173. So title is at 175-173 = 2px below image in info box */
+    /* This means info box padding-top should be small or title has margin-top */
+}
+
+.product-card__stats {
+    position: relative;
+    display: flex;
+    justify-content: space-around;
+    /* Or space-between with padding */
+    align-items: center;
+    padding: 8px 5px;
+    /* Approx */
+    height: 24px;
+    /* From figma 45:61 */
+    box-sizing: border-box;
+}
+
+.product-card__stats-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #384d6c;
+    /* style_4 */
+    filter: blur(10px);
+    /* Figma blur is 20px, often too strong in CSS */
+    z-index: 1;
+    border-radius: 4px;
+    /* Soften edges of blur */
+}
+
+.product-card__stats .stat {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    position: relative;
+    z-index: 2;
+}
+
+    .product-card__stats .stat img {
+        width: 19px;
+        height: 19px;
+        /* Like icon */
+    }
+
+    .product-card__stats .stat:last-child img {
+        width: 21px;
+        height: 17px;
+        /* Eye icon */
+    }
+
+    .product-card__stats .stat span {
+        color: #ffffff;
+        /* Text on dark blur needs to be light, not #000000 */
+    }
+
+
+.view-more-button {
+    display: block;
+    width: 106px;
+    /* from 45:118 */
+    height: 33px;
+    /* from 45:118 */
+    line-height: 33px;
+    text-align: center;
+    border: 1px solid #384d6c;
+    /* style_23 */
+    border-radius: 25px;
+    /* style_23 */
+    text-decoration: none;
+    margin: 20px auto 0 auto;
+    /* (670 - (418+232)) */
+}
+
+@media (max-width: 1024px) {
+    .main-content-grid.container {
+        flex-direction: column;
+    }
+
+    .sidebar-suggested-products {
+        width: 100%;
+        margin-top: 40px;
+    }
+
+    .suggested-products-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+
+    .product-actions-bar,
+    .product-engagement-stats {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .product-actions button {
+        justify-content: center;
+    }
+
+    .product-engagement-stats .stat-group:first-child {
+        border-radius: 20px;
+        margin: 0;
+        padding: 6px 10px;
+    }
+
+    .product-specs {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .add-comment-area {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+/* CSS for section section:footer */
+.site-footer-section {
+    background-color: #737373;
+    /* style_38 */
+    padding-top: 50px;
+    /* (1048 - 903 - 24 - reply_height) approx */
+    padding-bottom: 20px;
+}
+
+.site-footer.container {
+    padding-left: 0;
+    /* Footer content seems to span wider or manage its own padding */
+    padding-right: 0;
+}
+
+.footer-main-content {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    /* Approx */
+    padding-left: 32px;
+    /* Match main content padding */
+    padding-right: 32px;
+    margin-bottom: 30px;
+    /* To separator */
+}
+
+.footer-info {
+    flex-basis: 255px;
+    /* Logo width */
+    flex-shrink: 0;
+    margin-right: 27px;
+    /* (2802 - (2545+255)) */
+}
+
+.footer-logo {
+    width: 255px;
+    height: 225px;
+    display: block;
+    margin-bottom: 20px;
+    /* Visual spacing */
+}
+
+.footer-description {
+    margin: 0;
+    max-width: 384px;
+    /* From figma */
+}
+
+.footer-links {
+    display: flex;
+    gap: 30px;
+    /* Approx between columns */
+    flex-grow: 1;
+    justify-content: space-around;
+    /* Distribute link columns */
+}
+
+.footer-column-title {
+    margin: 0 0 20px 0;
+    /* (1129-1076-21) */
+}
+
+.footer-links-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+    .footer-links-list li {
+        margin-bottom: 16px;
+        /* (1161-1129-16) */
+    }
+
+    .footer-links-list a {
+        text-decoration: none;
+    }
+
+.footer-separator {
+    border: none;
+    height: 1px;
+    background-color: #ffffff;
+    /* style_44 */
+    margin: 30px 32px;
+    /* (1273 - (1076 + 197)) and consistent padding */
+}
+
+.footer-copyright {
+    text-align: center;
+    margin: 0;
+    padding: 0 32px;
+}
+
+@media (max-width: 1024px) {
+    .footer-main-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .footer-info {
+        margin-right: 0;
+        margin-bottom: 30px;
+    }
+
+    .footer-links {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        width: 100%;
+    }
+
+    .footer-column {
+        text-align: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .footer-links {
+        flex-direction: column;
+        align-items: stretch;
+        /* Full width columns */
+    }
+
+    .footer-column {
+        margin-bottom: 20px;
+    }
+
+    .footer-links-list li {
+        text-align: center;
+    }
+}

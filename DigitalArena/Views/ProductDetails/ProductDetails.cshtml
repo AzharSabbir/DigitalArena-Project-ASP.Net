@@ -1,0 +1,160 @@
+﻿
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generated Page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:wght@400;700&family=Poppins:wght@600&family=Roboto:wght@300;400;700&display=swap"
+          rel="stylesheet">
+    <title>Product Details</title>
+    <link rel="stylesheet" href="~/Content/ProductDetails.css" />
+    <link rel="stylesheet" href="~/Content/styles.css" />
+</head>
+
+<body>
+    <section id="section-main-content" class="main-content-section">
+        <div class="page-wrapper">
+            <div class="main-content-grid container">
+                <div class="product-details-column">
+
+                    <!-- ✅ Importmap for Three.js -->
+                    <script type="importmap">
+                        {
+                          "imports": {
+                            "three": "https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.module.js",
+                            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.149.0/examples/jsm/"
+                          }
+                        }
+                    </script>
+
+                    <!-- ✅ Canvas Container for 3D model -->
+                    <div class="product-main-canvas">
+                        <canvas id="viewer" data-model-path="@ViewBag.ModelPath"></canvas>
+                    </div>
+
+                    <!-- ✅ 3D Loader Script -->
+                    <script type="module" src="~/Scripts/custom/Load3DModel.js"></script>
+
+                    <!-- ✅ Product Info -->
+                    <h3 class="product-title font-inria-sans-400-20 color-text-primary">@Model.Name</h3>
+                    <p class="product-category font-inria-sans-400-14 color-text-secondary">@Model.Category.Name</p>
+
+                    <!-- ✅ Buttons and Stats -->
+                    <div class="product-actions-bar">
+                        <div class="product-actions">
+                            <button class="wishlist-button">
+                                <img src="~/Assets/images/104de51bea09520a50b6f4c8c1615b7d79174041.png" alt="Wishlist">
+                                <span class="font-inria-sans-400-20 color-text-primary">WISHLIST</span>
+                            </button>
+                            <button class="add-button">
+                                <img src="~/Assets/images/40c3ce2ac3f3dfd1e5a8118ef7f7ce20a60d6e95.png" alt="Add">
+                                <span class="font-inria-sans-400-20 color-text-primary">ADD</span>
+                            </button>
+                        </div>
+                        <div class="product-engagement-stats">
+                            <div class="stat-group">
+                                <img src="~/Assets/images/388aad34e695fa51ceaefe99aa6aca483a1f231b.png" alt="Likes">
+                                <span class="font-inria-sans-400-20 color-text-primary">@Model.LikeCount</span>
+                            </div>
+                            <div class="stat-group">
+                                <img src="~/Assets/images/fb40bebcb2ed9b930570573bc8bb9c628dd8d085.png" alt="Views" style="opacity: 0.4;">
+                                <span class="font-inria-sans-400-20 color-text-primary">32</span>
+                            </div>
+                            <div class="stat-group">
+                                <img src="~/Assets/images/9054f403eeab6912265c577d2a7ac1f6bb86acb1.png" alt="Downloads">
+                                <span class="font-inria-sans-400-20 color-text-primary">@ViewBag.DownloadCount</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ✅ Styled Divider -->
+                    <hr class="separator-line style-22" />
+
+                    <p class="product-description font-inria-sans-400-20 color-text-primary"> @Model.Description</p>
+
+                    <div class="product-download-area">
+                        <button class="download-button-main font-inria-sans-700-20 color-text-white">PURCHASE</button>
+                    </div>
+
+                    <div class="publish-info">
+                        <img src="~/Assets/images/00c3e69f4493bc2076a5cff445385528b3eb87c1.png" alt="Clock" style="opacity: 0.5;">
+                        <span class="font-inria-sans-700-20 color-text-light-muted">Published @ViewBag.PublishedAgo</span>
+                    </div>
+
+
+                    <div class="comments-section">
+                        <h3 class="comments-title font-inria-sans-700-20 color-text-muted">2 Comments</h3>
+                        <div class="add-comment-area">
+                            <img src="~/Assets/images/placeholder_avatar.png" alt="Your avatar" class="user-avatar-placeholder">
+                            <!-- Placeholder for 45:121 -->
+                            <div class="rating-stars">
+                                <img src="~/Assets/images/0e3127d4055fb987a535f49264e5edf1f63afdde.png" alt="Star">
+                                <img src="~/Assets/images/0e3127d4055fb987a535f49264e5edf1f63afdde.png" alt="Star">
+                                <img src="~/Assets/images/0e3127d4055fb987a535f49264e5edf1f63afdde.png" alt="Star">
+                                <img src="~/Assets/images/0e3127d4055fb987a535f49264e5edf1f63afdde.png" alt="Star">
+                                <img src="~/Assets/images/0e3127d4055fb987a535f49264e5edf1f63afdde.png" alt="Star">
+                            </div>
+                            <span class="add-comment-text font-inria-sans-700-20 color-text-light-muted">Add a comment</span>
+                        </div>
+                        <hr class="separator-line style-36">
+
+                        <div class="comment-item">
+                            <img src="~/Assets/images/placeholder_avatar.png" alt="Marcus Ashley's avatar" class="user-avatar-placeholder">
+                            <!-- Placeholder for 45:125 -->
+                            <div class="comment-content">
+                                <div class="comment-header">
+                                    <span class="comment-author font-inria-sans-400-20 color-text-accent">Marcus Ashley</span>
+                                    <span class="comment-date font-inria-sans-400-14 color-text-muted">2 years ago</span>
+                                </div>
+                                <div class="rating-stars">
+                                    <img src="~/Assets/images/0fbca9bac704083a285a044f21724bc6b971e811.png" alt="Star">
+                                    <img src="~/Assets/images/0fbca9bac704083a285a044f21724bc6b971e811.png" alt="Star">
+                                    <img src="~/Assets/images/0fbca9bac704083a285a044f21724bc6b971e811.png" alt="Star">
+                                    <img src="~/Assets/images/0fbca9bac704083a285a044f21724bc6b971e811.png" alt="Star">
+                                </div>
+                                <p class="comment-text font-inria-sans-400-20 color-text-primary">
+                                    You have done really an excellent job
+                                    with this model, especially considering the complexity of it.
+                                </p>
+                                <a href="#" class="comment-reply-link font-inria-sans-400-20 color-text-secondary">Reply</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <aside class="sidebar-suggested-products">
+                    <h2 class="sidebar-title font-inria-sans-400-20 color-text-accent">SUGGESTED 3D MODELS</h2>
+                    <div class="suggested-products-grid">
+                        <!-- Product Card 1: Leather Couch -->
+                        <div class="product-card">
+                            <img src="~/Assets/images/2cdff1a27affadb389225ecb939439e9b68981b5.png" alt="Leather Couch"
+                                 class="product-card__image">
+                            <div class="product-card__info">
+                                <h3 class="product-card__title font-inria-sans-400-20 color-text-primary">Leather Couch</h3>
+                                <div class="product-card__stats">
+                                    <div class="product-card__stats-bg"></div>
+                                    <div class="stat">
+                                        <img src="~/Assets/images/388aad34e695fa51ceaefe99aa6aca483a1f231b.png" alt="Likes">
+                                        <span class="font-inria-sans-400-20 color-text-primary">1.2k</span>
+                                    </div>
+                                    <div class="stat">
+                                        <img src="~/Assets/images/fb40bebcb2ed9b930570573bc8bb9c628dd8d085.png" alt="Views" style="opacity:0.4;">
+                                        <span class="font-inria-sans-400-20 color-text-primary">5.2k</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
+    @Html.Partial("_Footer")
+</body>
+
+</html>
