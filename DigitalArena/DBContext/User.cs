@@ -19,6 +19,7 @@ namespace DigitalArena.DBContext
         {
             this.Cart = new HashSet<Cart>();
             this.Coupon = new HashSet<Coupon>();
+            this.Coupon1 = new HashSet<Coupon>();
             this.GiftCard = new HashSet<GiftCard>();
             this.Notification = new HashSet<Notification>();
             this.Order = new HashSet<Order>();

@@ -59,7 +59,7 @@ namespace DigitalArena.Controllers.Admin
         
         
         
-        [Route("{userId}/coupons", Name = "ViewCouponsRoute")]
+        [Route("buyer-details/{userId}/coupons", Name = "ViewCouponsRoute")]
         public ActionResult ViewCoupons(int userId)
         {
             // Validate buyer exists
@@ -97,7 +97,7 @@ namespace DigitalArena.Controllers.Admin
         
         
         
-        [Route("{userId}/orders", Name = "ViewOrdersRoute")]
+        [Route("buyer-details/{userId}/orders", Name = "ViewOrdersRoute")]
         public ActionResult ViewOrders(int userId)
         {
             // Validate buyer exists
@@ -132,7 +132,7 @@ namespace DigitalArena.Controllers.Admin
         
         
         
-        [Route("{userId}/orders/{orderId}/details", Name = "ViewOrderDetailsRoute")]
+        [Route("buyer-details/{userId}/orders/{orderId}/order-details", Name = "ViewOrderDetailsRoute")]
         public ActionResult ViewOrderDetails(int userId, int orderId)
         {
             // Validate buyer exists

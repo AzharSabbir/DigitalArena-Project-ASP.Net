@@ -103,8 +103,10 @@
 
 <header class="header">
     <div class="header-left">
-        <img src="~/Assets/images/img_image_1.png" alt="Digital Arena Logo" class="logo" />
-        <h3 class="brand-name">Digital Arena</h3>
+        <a class="navbar-brand d-flex align-items-center" href="@Url.Action("Index", "Home" )">
+            <img src="~/assets/site-images/site-logo.png" alt="Digital Arena Logo" width="30" height="30" class="me-2" />
+            <span class="fs-4 fw-semibold">Digital Arena</span>
+        </a>
     </div>
 
     <div class="header-center">
@@ -115,10 +117,41 @@
     </div>
 
     <div class="header-right">
-        <img src="~/Assets/images/img_shopping_cart.png" alt="Shopping Cart" class="cart-icon" onclick="toggleCart()" />
         <div class="auth-buttons">
-            <button class="login-btn" onclick="showLogin()">LOGIN</button>
-            <button class="signup-btn" onclick="showSignup()">SIGN UP</button>
+            @if (User.Identity.IsAuthenticated)
+            {
+            <!-- Cart Icon with badge -->
+            <a href="@Url.Action("Index", "Cart" )" class="position-relative d-inline-block me-2">
+                <img src="~/Assets/images/img_shopping_cart.png" alt="Cart" width="34" height="36" class="cart-icon" />
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    8
+                    <span class="visually-hidden">cart items</span>
+                </span>
+            </a>
+
+            <!-- Profile Image -->
+            <a href="@Url.Action("Profile", "Account" )"
+               class="rounded-circle d-inline-block"
+               style="width: 40px; height: 40px; overflow: hidden;">
+                <img src="~/Assets/user_profile_image/avatar.jpg"
+                     alt="Profile"
+                     style="width: 100%; height: 100%; object-fit: cover;" />
+            </a>
+
+            <!-- Logout Button -->
+            <a href="@Url.Action("Logout", "Auth" )"
+               class="btn btn-outline-danger btn-sm ms-2"
+               title="Logout"
+               onclick="return confirm('Are you sure you want to logout?');">
+                <i class="bi bi-box-arrow-right"></i>
+            </a>
+            }
+            else
+            {
+            <!-- Login and Signup Buttons (Styled to match existing design) -->
+            <button class="login-btn" onclick="window.location.href='@Url.Action("Login", "Auth" )'">LOGIN</button>
+            <button class="signup-btn" onclick="window.location.href='@Url.Action("Register", "Auth" )'">SIGN UP</button>
+            }
         </div>
     </div>
 </header>
