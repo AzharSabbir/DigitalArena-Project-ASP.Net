@@ -120,6 +120,7 @@
 
                                 int fullStars = (int)Math.Floor(avgRating);
                                 bool hasHalfStar = avgRating - fullStars >= 0.5;
+                                int emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
                             }
 
                             @for (int i = 0; i < fullStars; i++)
@@ -131,7 +132,13 @@
                             {
                                 <img src="~/Assets/images/img_star_half_empty.png" alt="Half Star" class="star" />
                             }
+
+                            @for (int i = 0; i < emptyStars; i++)
+                            {
+                                <img src="~/Assets/images/star_empty.png" alt="Empty Star" class="star" />
+                            }
                         </div>
+
 
                         <div class="product-stats">
                             <div class="likes">

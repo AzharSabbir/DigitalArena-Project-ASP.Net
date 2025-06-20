@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@model DigitalArena.Models.ProductDetailsViewModel
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -32,15 +33,15 @@
 
                     <!-- ✅ Canvas Container for 3D model -->
                     <div class="product-main-canvas">
-                        <canvas id="viewer" data-model-path="@ViewBag.ModelPath"></canvas>
+                        <canvas id="viewer" data-model-path="@Model.ModelPath"></canvas>
                     </div>
 
                     <!-- ✅ 3D Loader Script -->
                     <script type="module" src="~/Scripts/custom/Load3DModel.js"></script>
 
                     <!-- ✅ Product Info -->
-                    <h3 class="product-title font-inria-sans-400-20 color-text-primary">@Model.Name</h3>
-                    <p class="product-category font-inria-sans-400-14 color-text-secondary">@Model.Category.Name</p>
+                    <h3 class="product-title font-inria-sans-400-20 color-text-primary">@Model.Product.Name</h3>
+                    <p class="product-category font-inria-sans-400-14 color-text-secondary">@Model.Product.Category.Name</p>
 
                     <!-- ✅ Buttons and Stats -->
                     <div class="product-actions-bar">
@@ -57,15 +58,15 @@
                         <div class="product-engagement-stats">
                             <div class="stat-group">
                                 <img src="~/Assets/images/388aad34e695fa51ceaefe99aa6aca483a1f231b.png" alt="Likes">
-                                <span class="font-inria-sans-400-20 color-text-primary">@Model.LikeCount</span>
+                                <span class="font-inria-sans-400-20 color-text-primary">@Model.Product.LikeCount</span>
                             </div>
                             <div class="stat-group">
                                 <img src="~/Assets/images/fb40bebcb2ed9b930570573bc8bb9c628dd8d085.png" alt="Views" style="opacity: 0.4;">
-                                <span class="font-inria-sans-400-20 color-text-primary">@Model.ViewCount</span>
+                                <span class="font-inria-sans-400-20 color-text-primary">@Model.Product.ViewCount</span>
                             </div>
                             <div class="stat-group">
                                 <img src="~/Assets/images/9054f403eeab6912265c577d2a7ac1f6bb86acb1.png" alt="Downloads">
-                                <span class="font-inria-sans-400-20 color-text-primary">@ViewBag.DownloadCount</span>
+                                <span class="font-inria-sans-400-20 color-text-primary">@Model.DownloadCount</span>
                             </div>
                         </div>
                     </div>
@@ -73,7 +74,7 @@
                     <!-- ✅ Styled Divider -->
                     <hr class="separator-line style-22" />
 
-                    <p class="product-description font-inria-sans-400-20 color-text-primary"> @Model.Description</p>
+                    <p class="product-description font-inria-sans-400-20 color-text-primary"> @Model.Product.Description</p>
 
                     <div class="product-download-area">
                         <button class="download-button-main font-inria-sans-700-20 color-text-white">PURCHASE</button>
@@ -81,49 +82,90 @@
 
                     <div class="publish-info">
                         <img src="~/Assets/images/00c3e69f4493bc2076a5cff445385528b3eb87c1.png" alt="Clock" style="opacity: 0.5;">
-                        <span class="font-inria-sans-700-20 color-text-light-muted">Published @ViewBag.PublishedAgo</span>
+                        <span class="font-inria-sans-700-20 color-text-light-muted">Published @Model.PublishedAgo</span>
                     </div>
 
+                    <!-- Comment Section -->
+
+                    @Html.AntiForgeryToken()
 
                     <div class="comments-section">
-                        <h3 class="comments-title font-inria-sans-700-20 color-text-muted">2 Comments</h3>
+                        <h3 class="comments-title font-inria-sans-700-20 color-text-muted">
+                            <span id="comment-count">@Model.Reviews.Count</span> @((Model.Reviews.Count == 1) ? "Comment" : "Comments")
+                        </h3>
+
+
                         <div class="add-comment-area">
                             <img src="~/Assets/images/placeholder_avatar.png" alt="Your avatar" class="user-avatar-placeholder">
-                            <!-- Placeholder for 45:121 -->
-                            <div class="rating-stars">
-                                <img src="~/Assets/images/0e3127d4055fb987a535f49264e5edf1f63afdde.png" alt="Star">
-                                <img src="~/Assets/images/0e3127d4055fb987a535f49264e5edf1f63afdde.png" alt="Star">
-                                <img src="~/Assets/images/0e3127d4055fb987a535f49264e5edf1f63afdde.png" alt="Star">
-                                <img src="~/Assets/images/0e3127d4055fb987a535f49264e5edf1f63afdde.png" alt="Star">
-                                <img src="~/Assets/images/0e3127d4055fb987a535f49264e5edf1f63afdde.png" alt="Star">
+                            <div id="comment-form">
+                                <div class="rating-stars" id="star-rating">
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        <img src="~/Assets/images/star_empty.png" alt="Star" class="star" data-value="@i" />
+                                    }
+                                </div>
+                                <textarea id="comment-text" class="comment-textarea" placeholder="Write your comment..."></textarea>
+                                <button id="submit-comment" class="btn btn-primary" data-value="@Model.Product.ProductId">Submit</button>
                             </div>
-                            <span class="add-comment-text font-inria-sans-700-20 color-text-light-muted">Add a comment</span>
+                            <p id="comment-status" class="status-text"></p>
                         </div>
-                        <hr class="separator-line style-36">
 
-                        <div class="comment-item">
-                            <img src="~/Assets/images/placeholder_avatar.png" alt="Marcus Ashley's avatar" class="user-avatar-placeholder">
-                            <!-- Placeholder for 45:125 -->
-                            <div class="comment-content">
-                                <div class="comment-header">
-                                    <span class="comment-author font-inria-sans-400-20 color-text-accent">Marcus Ashley</span>
-                                    <span class="comment-date font-inria-sans-400-14 color-text-muted">2 years ago</span>
+                        <hr class="separator-line style-36" />
+
+                        <!-- Rendered Reviews -->
+                        <div id="user-comment-list" class="comment-list">
+                            @foreach (var review in Model.Reviews)
+                            {
+                                var timeAgo = DigitalArena.Helpers.DateHelper.GetPublishedAgo(review.CreatedAt);
+                                <div class="comment-item" data-reviewid="@review.ReviewId">
+                                    <img src="~/Assets/images/placeholder_avatar.png" alt="@review.User.Username's avatar" class="user-avatar-placeholder">
+                                    <div class="comment-content">
+                                        <div class="comment-header">
+                                            <span class="comment-author font-inria-sans-400-20 color-text-accent">@review.User.Username</span>
+                                            <span class="comment-date font-inria-sans-400-14 color-text-muted">@timeAgo</span>
+                                        </div>
+                                        <div class="rating-stars">
+                                            @{
+                                                double rating = review.Rating;
+                                                int fullStars = (int)Math.Floor(rating);
+                                                bool hasHalfStar = rating - fullStars >= 0.5;
+                                                int emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+                                            }
+
+                                            @for (int i = 0; i < fullStars; i++)
+                                            {
+                                                <img src="~/Assets/images/img_star.png" alt="Star" class="star" />
+                                            }
+
+                                            @if (hasHalfStar)
+                                            {
+                                                <img src="~/Assets/images/img_star_half_empty.png" alt="Half Star" class="star" />
+                                            }
+
+                                            @for (int i = 0; i < emptyStars; i++)
+                                            {
+                                                <img src="~/Assets/images/star_empty.png" alt="Empty Star" class="star" />
+                                            }
+                                        </div>
+
+                                        <p class="comment-text font-inria-sans-400-20 color-text-primary">@review.Comment</p>
+
+                                        <div class="comment-actions">
+                                            <button class="btn-edit btn btn-sm btn-secondary" data-reviewid="@review.ReviewId">Edit</button>
+                                            <button class="btn-delete btn btn-sm btn-danger" data-reviewid="@review.ReviewId">Delete</button>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="rating-stars">
-                                    <img src="~/Assets/images/0fbca9bac704083a285a044f21724bc6b971e811.png" alt="Star">
-                                    <img src="~/Assets/images/0fbca9bac704083a285a044f21724bc6b971e811.png" alt="Star">
-                                    <img src="~/Assets/images/0fbca9bac704083a285a044f21724bc6b971e811.png" alt="Star">
-                                    <img src="~/Assets/images/0fbca9bac704083a285a044f21724bc6b971e811.png" alt="Star">
-                                </div>
-                                <p class="comment-text font-inria-sans-400-20 color-text-primary">
-                                    You have done really an excellent job
-                                    with this model, especially considering the complexity of it.
-                                </p>
-                                <a href="#" class="comment-reply-link font-inria-sans-400-20 color-text-secondary">Reply</a>
-                            </div>
+                            }
                         </div>
                     </div>
+
+                    <!-- JavaScript should be OUTSIDE the loop and at the end -->
+                    <script src="~/Scripts/custom/CommentOperation.js"></script>
+
                 </div>
+                <!-- JS for comment operations -->
+                <script src="~/Scripts/custom/CommentOperation.js"></script>
 
                 <aside class="sidebar-suggested-products">
                     <h2 class="sidebar-title font-inria-sans-400-20 color-text-accent">SUGGESTED 3D MODELS</h2>
@@ -154,5 +196,4 @@
     </section>
     @Html.Partial("_Footer")
 </body>
-
 </html>

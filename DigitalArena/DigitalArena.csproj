@@ -149,6 +149,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductDetailsController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
+    <Compile Include="Controllers\ReviewController.cs" />
     <Compile Include="Controllers\Seller\SellerDashboardController.cs" />
     <Compile Include="DBContext\Carousel.cs">
       <DependentUpon>DigitalArenaDBContext.tt</DependentUpon>
@@ -233,6 +234,7 @@
     <Compile Include="Models\OrderItemModel.cs" />
     <Compile Include="Models\OrderModel.cs" />
     <Compile Include="Models\PermissionModel.cs" />
+    <Compile Include="Models\ProductDetailsViewModel.cs" />
     <Compile Include="Models\ProductFileModel.cs" />
     <Compile Include="Models\ProductModel.cs" />
     <Compile Include="Models\ReviewModel.cs" />
@@ -293,6 +295,7 @@
       <DependentUpon>DigitalArenaDBContext.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
+    <Content Include="Scripts\custom\CommentOperation.js" />
     <Content Include="Scripts\custom\cubeViewer.js" />
     <Content Include="Scripts\custom\Load3DModel.js" />
     <Content Include="Scripts\custom\Password_Visibility_Icon.js" />
@@ -346,6 +349,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Controllers\Api\" />
+    <Folder Include="Views\Review\" />
     <Folder Include="Views\Test\" />
   </ItemGroup>
   <ItemGroup>

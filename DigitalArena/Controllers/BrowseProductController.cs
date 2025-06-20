@@ -59,12 +59,13 @@ namespace DigitalArena.Controllers
             var productIds = products.Select(p => p.ProductId).ToList();
 
             var avgRatings = db.Review
-                .Where(r => productIds.Contains(r.ProductId))
-                .GroupBy(r => r.ProductId)
-                .ToDictionary(
-                    g => g.Key,
-                    g => g.Average(r => r.Rating)
-                );
+    .Where(r => productIds.Contains(r.ProductId) && r.Status == "Approved")
+    .GroupBy(r => r.ProductId)
+    .ToDictionary(
+        g => g.Key,
+        g => g.Average(r => r.Rating)
+    );
+
 
             var downloadCounts = db.Permission
                 .Where(p => p.IsValid && productIds.Contains(p.ProductId))

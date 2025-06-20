@@ -468,6 +468,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_Review_Product">
+    <End Role="Product" Type="Self.Product" Multiplicity="1" />
+    <End Role="Review" Type="Self.Review" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="Review">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <EntityContainer Name="DigitalArenaDBModelStoreContainer">
     <EntitySet Name="Carousel" EntityType="Self.Carousel" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Cart" EntityType="Self.Cart" Schema="dbo" store:Type="Tables" />
@@ -574,6 +586,10 @@
     <AssociationSet Name="FK__Wishlist__UserId__0C85DE4D" Association="Self.FK__Wishlist__UserId__0C85DE4D">
       <End Role="User" EntitySet="User" />
       <End Role="Wishlist" EntitySet="Wishlist" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Review_Product" Association="Self.FK_Review_Product">
+      <End Role="Product" EntitySet="Product" />
+      <End Role="Review" EntitySet="Review" />
     </AssociationSet>
   </EntityContainer>
 </Schema>
