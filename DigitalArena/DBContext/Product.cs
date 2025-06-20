@@ -37,6 +37,7 @@ namespace DigitalArena.DBContext
         public string Status { get; set; }
         public int CategoryId { get; set; }
         public int SellerId { get; set; }
+        public int ViewCount { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CartItem> CartItem { get; set; }

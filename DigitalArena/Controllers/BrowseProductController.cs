@@ -86,6 +86,7 @@ namespace DigitalArena.Controllers
                 Thumbnail = p.Thumbnail,
                 LikeCount = p.LikeCount,
                 UnlikeCount = p.UnlikeCount,
+                ViewCount = p.ViewCount, 
                 CreatedAt = p.CreatedAt,
                 Status = p.Status,
                 CategoryId = p.CategoryId,

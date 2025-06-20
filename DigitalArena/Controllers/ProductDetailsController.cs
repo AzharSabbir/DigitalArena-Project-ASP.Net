@@ -1,4 +1,5 @@
 ﻿using DigitalArena.DBContext;
+using DigitalArena.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Web.Mvc;
 using System.Data.Entity;
 using System.IO;
 using DigitalArena.Models;
+using DigitalArena.Helpers;
 
 
 
@@ -28,48 +30,15 @@ namespace DigitalArena.Controllers
                 return HttpNotFound();
             }
 
+            // <---------- Increase View Count ---------->
+            productEntity.ViewCount++;
+
             // <---------- Purchase Count ---------->
             var downloadCount = db.Permission.Count(p => p.ProductId == id && p.IsValid);
             ViewBag.DownloadCount = downloadCount;
 
             // <---------- Published Ago ---------->
-            var createdAt = productEntity.CreatedAt;
-            var timeSpan = DateTime.Now - createdAt;
-
-            string publishedAgo;
-
-            if (timeSpan.TotalDays >= 365)
-            {
-                int years = (int)(timeSpan.TotalDays / 365);
-                publishedAgo = $"{years} year{(years > 1 ? "s" : "")} ago";
-            }
-            else if (timeSpan.TotalDays >= 30)
-            {
-                int months = (int)(timeSpan.TotalDays / 30);
-                publishedAgo = $"{months} month{(months > 1 ? "s" : "")} ago";
-            }
-            else if (timeSpan.TotalDays >= 1)
-            {
-                int days = (int)timeSpan.TotalDays;
-                publishedAgo = $"{days} day{(days > 1 ? "s" : "")} ago";
-            }
-            else if (timeSpan.TotalHours >= 1)
-            {
-                int hours = (int)timeSpan.TotalHours;
-                publishedAgo = $"{hours} hour{(hours > 1 ? "s" : "")} ago";
-            }
-            else if (timeSpan.TotalMinutes >= 1)
-            {
-                int minutes = (int)timeSpan.TotalMinutes;
-                publishedAgo = $"{minutes} minute{(minutes > 1 ? "s" : "")} ago";
-            }
-            else
-            {
-                int seconds = (int)timeSpan.TotalSeconds;
-                publishedAgo = $"{seconds} second{(seconds > 1 ? "s" : "")} ago";
-            }
-
-            ViewBag.PublishedAgo = publishedAgo;
+            ViewBag.PublishedAgo = DateHelper.GetPublishedAgo(productEntity.CreatedAt);
 
 
             var productModel = new ProductModel
@@ -86,6 +55,7 @@ namespace DigitalArena.Controllers
                 Status = productEntity.Status,
                 CategoryId = productEntity.CategoryId,
                 SellerId = productEntity.SellerId,
+                ViewCount = productEntity.ViewCount,
                 Category = productEntity.Category != null ? new CategoryModel
                 {
                     CategoryId = productEntity.Category.CategoryId,
@@ -97,7 +67,7 @@ namespace DigitalArena.Controllers
             };
 
             ViewBag.ModelFile = Path.GetFileNameWithoutExtension(productModel.Thumbnail) + ".glb";
-            var browseCategory = productModel.Category?.Name?.Replace(" ", "%20"); // optional URL-encoding
+            var browseCategory = productModel.Category?.Name?.Replace(" ", "%20");
             ViewBag.ModelPath = Url.Content($"~/Assets/{browseCategory}/product_{productModel.ProductId}/files/{ViewBag.ModelFile}");
 
             return View(productModel);

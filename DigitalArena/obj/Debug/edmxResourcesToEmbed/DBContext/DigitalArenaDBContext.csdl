@@ -246,6 +246,7 @@
     <NavigationProperty Name="ProductFile" Relationship="DigitalArenaDBModel.FK__ProductFi__Produ__5812160E" FromRole="Product" ToRole="ProductFile" />
     <NavigationProperty Name="Review" Relationship="DigitalArenaDBModel.FK__Review__ProductI__5FB337D6" FromRole="Product" ToRole="Review" />
     <NavigationProperty Name="Wishlist" Relationship="DigitalArenaDBModel.FK__Wishlist__Produc__0D7A0286" FromRole="Product" ToRole="Wishlist" />
+    <Property Name="ViewCount" Type="Int32" Nullable="false" />
   </EntityType>
   <EntityType Name="ProductFile">
     <Key>

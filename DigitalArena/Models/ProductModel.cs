@@ -20,6 +20,7 @@ namespace DigitalArena.Models
         public string Status { get; set; }
         public int CategoryId { get; set; }
         public int SellerId { get; set; }
+        public int ViewCount { get; set; }
 
         public virtual CategoryModel Category { get; set; }
         public virtual UserModel User { get; set; }

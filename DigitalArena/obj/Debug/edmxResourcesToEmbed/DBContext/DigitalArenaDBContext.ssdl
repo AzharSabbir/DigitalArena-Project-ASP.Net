@@ -125,6 +125,7 @@
     <Property Name="Status" Type="nvarchar" MaxLength="20" Nullable="false" />
     <Property Name="CategoryId" Type="int" Nullable="false" />
     <Property Name="SellerId" Type="int" Nullable="false" />
+    <Property Name="ViewCount" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="ProductFile">
     <Key>

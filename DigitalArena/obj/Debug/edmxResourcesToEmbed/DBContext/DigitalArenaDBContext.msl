@@ -112,6 +112,7 @@
     <EntitySetMapping Name="Product">
       <EntityTypeMapping TypeName="DigitalArenaDBModel.Product">
         <MappingFragment StoreEntitySet="Product">
+          <ScalarProperty Name="ViewCount" ColumnName="ViewCount" />
           <ScalarProperty Name="SellerId" ColumnName="SellerId" />
           <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
           <ScalarProperty Name="Status" ColumnName="Status" />
