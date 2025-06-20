@@ -2,7 +2,8 @@
 /packages
 
 DigitalArena/bin/*
-DigitalArena/obj/*
+/DigitalArena/obj/
+
 
 # Ignore everything in 3D Model except selected files
 DigitalArena/Assets/3D Model/*
