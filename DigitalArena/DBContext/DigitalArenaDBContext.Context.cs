@@ -43,5 +43,6 @@ namespace DigitalArena.DBContext
         public virtual DbSet<Wallet> Wallet { get; set; }
         public virtual DbSet<Wishlist> Wishlist { get; set; }
         public virtual DbSet<Carousel> Carousel { get; set; }
+        public virtual DbSet<LandingPage> LandingPage { get; set; }
     }
 }

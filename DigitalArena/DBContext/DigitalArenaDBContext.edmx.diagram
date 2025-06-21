@@ -45,6 +45,9 @@
         <AssociationConnector Association="DigitalArenaDBModel.FK__Wallet__UserId__44FF419A" />
         <AssociationConnector Association="DigitalArenaDBModel.FK__Wishlist__UserId__0C85DE4D" />
         <EntityTypeShape EntityType="DigitalArenaDBModel.Carousel" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="DigitalArenaDBModel.LandingPage" Width="1.5" PointX="5.25" PointY="26.625" />
+        <AssociationConnector Association="DigitalArenaDBModel.FK_Carousel_Product" />
+        <AssociationConnector Association="DigitalArenaDBModel.FK__LandingPa__Produ__1BC821DD" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

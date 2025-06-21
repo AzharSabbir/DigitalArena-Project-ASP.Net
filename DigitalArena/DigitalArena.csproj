@@ -186,6 +186,9 @@
     <Compile Include="DBContext\GiftCard.cs">
       <DependentUpon>DigitalArenaDBContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="DBContext\LandingPage.cs">
+      <DependentUpon>DigitalArenaDBContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="DBContext\Notification.cs">
       <DependentUpon>DigitalArenaDBContext.tt</DependentUpon>
     </Compile>
@@ -231,6 +234,7 @@
     <Compile Include="Models\CategoryModel.cs" />
     <Compile Include="Models\CouponModel.cs" />
     <Compile Include="Models\GiftCardModel.cs" />
+    <Compile Include="Models\LandingPage.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\NotificationModel.cs" />
     <Compile Include="Models\OrderItemModel.cs" />

@@ -1,14 +1,17 @@
-﻿using System;
+﻿using DigitalArena.DBContext;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Data.Entity;
 
 namespace DigitalArena.Controllers
 {
     [AllowAnonymous]
     public class HomeController : Controller
     {
+        private DigitalArenaDBContext db = new DigitalArenaDBContext();
         public ActionResult Index()
         {
             if (User.IsInRole("ADMIN")) return RedirectToAction("Index", "AdminDashboard");
@@ -33,7 +36,20 @@ namespace DigitalArena.Controllers
 
         public ActionResult LandingPage()
         {
-            return View();
+            var landingContent = db.LandingPage
+                .Include(l => l.Product)
+                .FirstOrDefault(); // Or filter as needed
+
+            return View(landingContent);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

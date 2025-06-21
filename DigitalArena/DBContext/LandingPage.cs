@@ -12,14 +12,13 @@ namespace DigitalArena.DBContext
     using System;
     using System.Collections.Generic;
     
-    public partial class Carousel
+    public partial class LandingPage
     {
-        public int CarouselId { get; set; }
-        public string Image { get; set; }
-        public string Page { get; set; }
-        public bool IsActive { get; set; }
-        public System.DateTime CreatedAt { get; set; }
-        public Nullable<int> ProductId { get; set; }
+        public int LandingPageId { get; set; }
+        public int ProductId { get; set; }
+        public string Headline { get; set; }
+        public string SubHeadline { get; set; }
+        public string HeroImage { get; set; }
     
         public virtual Product Product { get; set; }
     }
