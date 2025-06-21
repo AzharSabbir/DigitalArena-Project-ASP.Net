@@ -1,0 +1,66 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Digital Arena - Landing</title>
+    <link rel="stylesheet" href="~/Content/LandingPage.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&family=Poppins:wght@600&family=Inria+Sans:wght@700&display=swap" />
+</head>
+<body>
+
+    <section id="hero">
+        <div class="hero-container">
+            <header class="site-header">
+                <a href="@Url.Content("~/")" class="logo">
+                    <img src="@Url.Content("~/Assets/site-images/site-logo.png")" alt="Digital Arena Logo">
+                    <span class="logo-text">Digital Arena</span>
+                </a>
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="#">SELL YOUR PRODUCT</a></li>
+                        <li><a href="@Url.Action("Trending", "TrendingProducts")">TRENDING</a></li>
+                        <li class="dropdown">
+                            <a href="#">BROWSE CATEGORIES</a>
+                            <div class="dropdown-menu">
+                                <a href="@Url.Action("BrowseCategory", "BrowseProduct", new { name = "3D Model" })">3D Model</a>
+                                <a href="@Url.Action("BrowseCategory", "BrowseProduct", new { name = "E-Book" })">E-Book</a>
+                                <a href="@Url.Action("BrowseCategory", "BrowseProduct", new { name = "Presentation Slide" })">Presentation Slide</a>
+                                <a href="@Url.Action("BrowseCategory", "BrowseProduct", new { name = "Graphics Template" })">Graphics Template</a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="auth-buttons">
+                    <a href="@Url.Action("Login", "Account")" class="btn btn-login">LOGIN</a>
+                    <a href="@Url.Action("Register", "Account")" class="btn btn-signup">SIGN UP</a>
+                </div>
+            </header>
+
+            <main class="hero-content">
+                <div class="hero-text">
+                    <h1>FIND DIGITAL CONTENT<br />THAT MATCHES YOUR<br />CREATIVE VISION</h1>
+                    <p class="subtitle">Explore high-quality digital content—3D models, e-books, graphics, and more—on Digital Arena. Start browsing now!</p>
+                    <a href="@Url.Action("Trending", "TrendingProducts")" class="btn btn-purchase">PURCHASE NOW</a>
+                </div>
+                <div class="hero-image">
+                    <img src="@Url.Content("~/Assets/site-images/hero-image.png")" alt="Creative splash of a product" />
+                </div>
+            </main>
+        </div>
+    </section>
+
+    <section id="features" class="features-bar">
+        <div class="features-container">
+            <a href="#" class="feature-link">MOCKUP</a>
+            <a href="#" class="feature-link">TEMPLATES</a>
+            <a href="#" class="feature-link">LOWPOLY</a>
+            <a href="#" class="feature-link">GRAPHICS</a>
+        </div>
+    </section>
+
+</body>
+</html>

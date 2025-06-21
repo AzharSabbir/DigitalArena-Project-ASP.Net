@@ -561,7 +561,7 @@ img[src*="45_142.svg"] {
 
 
 /* Sidebar */
-.suggested-heading {
+.suggested-heading, .trending-products {
     text-align: center;
     font-size: clamp(18px, 2.2vw, 24px);
     font-weight: 600;

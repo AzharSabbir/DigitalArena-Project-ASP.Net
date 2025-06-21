@@ -65,13 +65,13 @@
         const productCards = Array.from(productsGrid.querySelectorAll('.product-card'));
 
         switch (sortType) {
-            case 'POPULAR':
-                productCards.sort((a, b) => {
-                    const likesA = parseInt(a.querySelector('.likes .stat-text').textContent);
-                    const likesB = parseInt(b.querySelector('.likes .stat-text').textContent);
-                    return likesB - likesA;
-                });
-                break;
+            //case 'POPULAR':
+            //    productCards.sort((a, b) => {
+            //        const likesA = parseInt(a.querySelector('.likes .stat-text').textContent);
+            //        const likesB = parseInt(b.querySelector('.likes .stat-text').textContent);
+            //        return likesB - likesA;
+            //    });
+            //    break;
             case 'LOWEST PRICE':
                 productCards.sort((a, b) => {
                     const priceA = parseInt(a.querySelector('.product-price').textContent.replace(/[^\d]/g, ''));
