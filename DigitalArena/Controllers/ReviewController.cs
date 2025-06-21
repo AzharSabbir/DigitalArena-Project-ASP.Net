@@ -12,7 +12,6 @@ namespace DigitalArena.Controllers
         private DigitalArenaDBContext db = new DigitalArenaDBContext();
 
         [HttpPost]
-        //[ValidateAntiForgeryToken]
         public JsonResult AddReview(int productId, int rating, string comment)
         {
             try
@@ -31,13 +30,14 @@ namespace DigitalArena.Controllers
                 // Add the Review entity to the database context
                 db.Review.Add(review);
                 db.SaveChanges();
+                var timeAgo = DigitalArena.Helpers.DateHelper.GetPublishedAgo(review.CreatedAt);
 
                 return Json(new
                 {
                     success = true,
                     reviewId = review.ReviewId,
                     username = "You",
-                    createdAt = review.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss")
+                    createdAt = timeAgo
                 });
             }
             catch (Exception ex)
@@ -64,22 +64,25 @@ namespace DigitalArena.Controllers
         [HttpPost]
         public JsonResult UpdateReview(int reviewId, string comment, int rating)
         {
-            var review = db.Review.FirstOrDefault(r => r.ReviewId == reviewId);
-            if (review == null)
+            try
             {
-                return Json(new { success = false, message = "Review not found." });
+                var review = db.Review.FirstOrDefault(r => r.ReviewId == reviewId);
+                if (review == null)
+                {
+                    return Json(new { success = false, message = "Review not found." });
+                }
+
+                review.Comment = comment;
+                review.Rating = rating;
+                review.Status = "Approved"; 
+                db.SaveChanges();
+
+                return Json(new { success = true });
             }
-
-            review.Comment = comment;
-            review.Rating = rating;
-            review.Status = "Pending"; // Re-moderate after edit
-            review.CreatedAt = DateTime.Now;
-
-            db.SaveChanges();
-
-            return Json(new { success = true, updatedAt = review.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss") });
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
         }
-
-
     }
 }

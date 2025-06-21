@@ -316,6 +316,95 @@ body {
     color: #fff;
 }
 
+/* Modal Overlay */
+/* Reusable Modal Wrapper */
+.custom-modal {
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    /* Hide by default */
+    .custom-modal.hidden {
+        display: none;
+    }
+
+/* Modal Box */
+.custom-modal-content {
+    background-color: #ffffff;
+    padding: 32px 24px;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    font-family: 'Inria Sans', sans-serif;
+}
+
+/* Modal Message Text */
+#confirm-message,
+#info-message {
+    font-size: 18px;
+    color: #000000;
+    margin-bottom: 24px;
+    font-family: 'Inria Sans', sans-serif;
+    text-align: center;
+    line-height: 1.6;
+}
+
+/* Modal Button Container */
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+/* Common Button Styles */
+.modal-btn {
+    padding: 10px 24px;
+    font-size: 16px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-family: 'Inria Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    border: none;
+    min-width: 100px;
+}
+
+    /* YES / OK Button */
+    .modal-btn.yes-btn {
+        background-color: #384d6c;
+        color: #ffffff;
+        border: 2px solid #384d6c;
+    }
+
+        .modal-btn.yes-btn:hover {
+            background-color: #2d3d55;
+            border-color: #2d3d55;
+        }
+
+    /* NO / Cancel Button */
+    .modal-btn.no-btn {
+        background-color: transparent;
+        color: #384d6c;
+        border: 2px solid #384d6c;
+    }
+
+        .modal-btn.no-btn:hover {
+            background-color: #f2f2f2;
+        }
+
+
+
+
 /* Pagination */
 .pagination {
     display: flex;

@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="~/Content/styles.css" />
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
@@ -64,6 +65,31 @@
     {
         //@Html.Partial("_Footer")
     }
+
+    @*Modal*@
+    <!-- Confirm Dialog Modal -->
+    <div id="confirm-dialog" class="custom-modal hidden">
+        <div class="custom-modal-content">
+            <p id="confirm-message">Are you sure?</p>
+            <div class="modal-buttons">
+                <button id="confirm-yes" class="modal-btn yes-btn">Yes</button>
+                <button id="confirm-no" class="modal-btn no-btn">No</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Info Dialog Modal -->
+    <div id="info-dialog" class="custom-modal hidden">
+        <div class="custom-modal-content">
+            <p id="info-message">This is an informational message.</p>
+            <div class="modal-buttons">
+                <button id="info-ok" class="modal-btn yes-btn">OK</button>
+            </div>
+        </div>
+    </div>
+
+
+
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")

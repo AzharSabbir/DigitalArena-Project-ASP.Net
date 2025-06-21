@@ -46,6 +46,43 @@ namespace DigitalArena.Controllers
             string browseCategory = productEntity.Category?.Name?.Replace(" ", "%20");
             string modelPath = Url.Content($"~/Assets/{browseCategory}/product_{productEntity.ProductId}/files/{modelFile}");
 
+
+            // 🎯 Suggested Products (Same category, excluding current product)
+            var suggestedEntities = db.Product
+                                      .Where(p => p.IsActive &&
+                                                  p.ProductId != id &&
+                                                  p.CategoryId == productEntity.CategoryId)
+                                      .OrderByDescending(p => p.ViewCount)
+                                      .Take(4)
+                                      .ToList();
+
+            var allSuggested = db.Product
+    .Where(p => p.IsActive &&
+                p.Status == "Approved" && // ✅ Only approved products
+                p.ProductId != id &&
+                p.CategoryId == productEntity.CategoryId)
+    .ToList();
+
+            var random = new Random();
+            var shuffledSuggested = allSuggested
+                .OrderBy(p => random.Next())
+                .Take(12)
+                .ToList();
+
+            var suggestedProducts = shuffledSuggested.Select(p => new ProductModel
+            {
+                ProductId = p.ProductId,
+                Name = p.Name,
+                Price = p.Price,
+                Thumbnail = p.Thumbnail,
+                CategoryId = p.CategoryId,
+                LikeCount = p.LikeCount,
+                ViewCount = p.ViewCount
+            }).ToList();
+
+
+
+            // Fix for CS0029: Update the type of SuggestedProducts in the ProductDetailsViewModel initialization
             var viewModel = new ProductDetailsViewModel
             {
                 Product = new ProductModel
@@ -89,11 +126,13 @@ namespace DigitalArena.Controllers
                 }).ToList(),
                 PublishedAgo = publishedAgo,
                 DownloadCount = downloadCount,
-                ModelPath = modelPath
+                ModelPath = modelPath,
+                SuggestedProducts = suggestedProducts // Change this to use the original list of Product entities
             };
 
             return View(viewModel);
         }
+
     }
 
 }

@@ -1,6 +1,5 @@
 ﻿body {
     margin: 0;
-    font-family: 'Inria Sans', sans-serif;
     background-color: #ffffff;
     color: #000000;
     line-height: 1.5;
@@ -91,7 +90,7 @@
         top: 10px;
         left: 15px;
         font-size: 14px;
-        color: #384d6c; 
+        color: #384d6c;
         background: rgba(255, 255, 255, 0.8);
         padding: 4px 8px;
         border-radius: 6px;
@@ -308,135 +307,340 @@ img[src*="45_142.svg"] {
         height: 25px;
     }
 
-.comments-section {
-    margin-top: 30px;
+/* Comments Section */
+
+/* Base font */
+.comment-section * {
+    box-sizing: border-box;
 }
 
+/* Title */
 .comments-title {
-    margin: 0 0 20px 0;
+    margin-bottom: 1rem;
+    font-size: 20px;
+    font-weight: 700;
+    color: #6c757d;
 }
 
+/* Add comment area */
 .add-comment-area {
     display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 25px;
-    /* (753- (687+40)) approx */
+    gap: 16px;
+    margin-bottom: 30px;
+    padding: 16px;
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
 .user-avatar-placeholder {
-    width: 40px;
-    height: 40px;
-    background-color: #d9d9d9;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #dee2e6;
+}
+
+/* Comment form */
+#comment-form {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .rating-stars {
     display: flex;
-    gap: 2px;
+    gap: 6px;
+    margin-bottom: 8px;
 }
 
-    /* (2657-2632-25) for first comment, (2655-2632-25) for add comment */
     .rating-stars img {
-        width: 25px;
-        height: 25px;
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+        transition: transform 0.2s;
     }
+
+        .rating-stars img:hover {
+            transform: scale(1.1);
+        }
+
+.comment-textarea {
+    flex: 1;
+    border: none;
+    border-radius: 0;
+    outline: none;
+    font-size: 16px;
+    background-color: transparent;
+    resize: none;
+    overflow: hidden; /* prevent scrollbars */
+    color: #2c3e50;
+    max-width: 100%;
+    height: auto;
+    white-space: nowrap;
+}
+    .comment-textarea::placeholder {
+        color: #999;
+    }
+
+/* Submit icon button */
+.submit-icon-btn {
+    width: 30px;
+    height: 30px;
+    padding: 10px;
+    border-radius: 50%;
+    background-color: #007bff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+    .submit-icon-btn img {
+        width: 30px;
+        height: 30px;
+        transition: transform 0.3s ease;
+    }
+
+    /* Hover animation */
+    .submit-icon-btn:hover {
+        transform: scale(1.08);
+        background-color: #0056b3;
+        box-shadow: 0 6px 14px rgba(56, 77, 108, 0.4);
+    }
+
+        .submit-icon-btn:hover img {
+            transform: rotate(15deg) scale(1.1);
+        }
+
+/* Individual comment item */
+.comment-input-container {
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid #ccc;
+    gap: 12px;
+    margin-top: 12px;
+}
+.comment-input-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
 
 .comment-item {
     display: flex;
-    gap: 15px;
-    margin-top: 25px;
-    /* (778 - 753) */
+    gap: 16px;
+    margin-bottom: 24px;
+    padding: 16px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    position: relative;
 }
 
 .comment-content {
-    flex-grow: 1;
+    flex: 1;
 }
 
 .comment-header {
     display: flex;
-    align-items: baseline;
     gap: 10px;
-    margin-bottom: 5px;
-    /* (834-807-17) */
+    align-items: center;
+    margin-bottom: 8px;
 }
 
 .comment-author {
-    margin-right: auto;
+    font-weight: 600;
+    color: #007bff;
+    font-size: 18px;
+}
+
+.comment-date {
+    font-size: 14px;
+    color: #6c757d;
+}
+
+.comment-status {
+    font-size: 14px;
+    color: #adb5bd;
 }
 
 .comment-text {
-    margin: 10px 0;
-    /* (869 - (834+25)) and (903-869-24) */
+    font-size: 16px;
+    margin-top: 6px;
+    color: #343a40;
+    line-height: 1.5;
 }
 
-.comment-reply-link {
-    text-decoration: none;
+/* Edit/Delete actions as text */
+.comment-actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 12px;
 }
+
+    .comment-actions .btn-edit,
+    .comment-actions .btn-delete {
+        background: none;
+        border: none;
+        color: #007bff;
+        cursor: pointer;
+        font-size: 14px;
+        padding: 0;
+        font-family: 'Inria Sans', sans-serif;
+        transition: color 0.2s ease;
+    }
+
+        .comment-actions .btn-edit:hover,
+        .comment-actions .btn-delete:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+
+.comment-edit-textarea {
+    width: 100%;
+    padding: 4px 8px;
+    font-size: 16px;
+    font-family: 'Inria Sans', sans-serif;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    background: transparent;
+    outline: none;
+    resize: none;
+    overflow: hidden;
+    height: 28px;
+    max-height: 28px;
+    line-height: 1.5;
+    transition: border-color 0.3s;
+    color: #343a40;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+    .comment-edit-textarea:focus {
+        border-bottom: 1px solid #384d6c;
+    }
+
+.edit-icon {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    vertical-align: middle;
+    transition: transform 0.2s ease;
+}
+
+    .edit-icon:hover {
+        transform: scale(1.1);
+    }
+
+.text-action {
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 14px;
+    color: #384d6c;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+    .text-action:hover {
+        color: #1d2c44;
+    }
+
+    .text-action img {
+        width: 18px;
+        height: 18px;
+        vertical-align: middle;
+        cursor: pointer;
+    }
+
 
 /* Sidebar */
+.suggested-heading {
+    text-align: center;
+    font-size: clamp(18px, 2.2vw, 24px);
+    font-weight: 600;
+    color: #2c3e50;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin: 0 0 24px 0;
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+    /* Optional: add a decorative underline */
+    .suggested-heading::after {
+        content: "";
+        display: block;
+        width: 60px;
+        height: 3px;
+        margin: 8px auto 0 auto;
+        background-color: #384d6c; /* Match your accent */
+        border-radius: 2px;
+    }
+
 .sidebar-title {
     text-align: left;
     margin: 0 0 20px 0;
-    /* ((-347) - (-396)) */
+    font-size: clamp(16px, 2vw, 18px); /* Shrinks if needed */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .suggested-products-grid {
     display: grid;
     grid-template-columns: 1fr;
-    /* Single column */
-    gap: 26px;
-    /* ((-90) - (-347+232)) for second card from first */
+    gap: 20px; /* reduced gap for smaller cards */
 }
 
 .product-card {
     background-color: #d9d9d9;
-    /* style_2 for Frame 45:60 (info part) */
+    border-radius: 10px;
     overflow: hidden;
-    /* As per style_2 */
-    border-radius: 8px;
-    /* Common practice for cards */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05); /* subtle elevation */
+    transition: transform 0.2s ease;
 }
+
+    .product-card:hover {
+        transform: translateY(-4px);
+    }
 
 .product-card__image {
     display: block;
     width: 100%;
-    /* 308px */
-    height: 173px;
-    /* Fixed height */
-    object-fit: cover;
+    height: 140px; /* smaller height */
+    object-fit: contain; /* image fits inside, no stretching */
+    background-color: #e0e0e0;
 }
 
-    .product-card__image.img-contain {
-        object-fit: contain;
-        background-color: #e0e0e0;
-        /* Lighter bg for contain images */
-    }
-
 .product-card__info {
-    padding: 15px;
-    /* Approx, based on title pos */
+    padding: 10px 12px;
 }
 
 .product-card__title {
-    margin: 0 0 10px 0;
-    /* Space to stats */
+    margin: 0 0 8px 0;
     text-align: center;
-    /* Based on visual */
-    /* Original title y: -172, card frame y: -347. Image height 173. So title is at 175-173 = 2px below image in info box */
-    /* This means info box padding-top should be small or title has margin-top */
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .product-card__stats {
     position: relative;
     display: flex;
     justify-content: space-around;
-    /* Or space-between with padding */
     align-items: center;
-    padding: 8px 5px;
-    /* Approx */
+    padding: 6px 5px;
     height: 24px;
-    /* From figma 45:61 */
     box-sizing: border-box;
 }
 
@@ -447,12 +651,9 @@ img[src*="45_142.svg"] {
     right: 0;
     bottom: 0;
     background-color: #384d6c;
-    /* style_4 */
     filter: blur(10px);
-    /* Figma blur is 20px, often too strong in CSS */
     z-index: 1;
     border-radius: 4px;
-    /* Soften edges of blur */
 }
 
 .product-card__stats .stat {
@@ -464,39 +665,20 @@ img[src*="45_142.svg"] {
 }
 
     .product-card__stats .stat img {
-        width: 19px;
-        height: 19px;
-        /* Like icon */
+        width: 18px;
+        height: 18px;
+        filter: brightness(1.1);
     }
 
     .product-card__stats .stat:last-child img {
-        width: 21px;
-        height: 17px;
-        /* Eye icon */
+        width: 20px;
+        height: 16px;
     }
 
     .product-card__stats .stat span {
         color: #ffffff;
-        /* Text on dark blur needs to be light, not #000000 */
+        font-size: 13px;
     }
-
-
-.view-more-button {
-    display: block;
-    width: 106px;
-    /* from 45:118 */
-    height: 33px;
-    /* from 45:118 */
-    line-height: 33px;
-    text-align: center;
-    border: 1px solid #384d6c;
-    /* style_23 */
-    border-radius: 25px;
-    /* style_23 */
-    text-decoration: none;
-    margin: 20px auto 0 auto;
-    /* (670 - (418+232)) */
-}
 
 @media (max-width: 1024px) {
     .main-content-grid.container {
