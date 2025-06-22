@@ -1,0 +1,75 @@
+﻿@model List<DigitalArena.Models.CartItemModel>
+
+@{
+    ViewBag.Title = "Your Cart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+    <link rel="stylesheet" href="~/Content/Wishlist.css" />
+    <link rel="stylesheet" href="~/Content/css/Cart.css" />
+</head>
+
+<body>
+    @Html.Partial("_Header2")
+
+    <h2 class="cart-title">Your Cart</h2>
+
+    @if (Model.Any())
+    {
+        <div class="cart-controls">
+            <label class="select-all-label">
+                <input type="checkbox" id="select-all" class="styled-checkbox" />
+                <span class="label-text">Select All</span>
+            </label>
+        </div>
+
+
+        <ul class="cart-list">
+            @foreach (var item in Model)
+            {
+                <li class="cart-item">
+                    <input type="checkbox" class="select-item cart-checkbox" value="@item.CartItemId" />
+
+                    <div class="cart-image">
+                        <img src="@Url.Content("~/Assets/" + item.Product.Category.Name + "/product_" + item.Product.ProductId + "/Thumbnails/" + item.Product.Thumbnail)"
+                             alt="@item.Product.Name" />
+                    </div>
+
+                    <div class="cart-info">
+                        <h3 class="product-name">@item.Product.Name</h3>
+                        <p class="product-description">@item.Product.Description</p>
+
+                        <div class="product-meta">
+                            <span class="product-price">৳@item.Product.Price.ToString("0.00")</span>
+                        </div>
+
+                        <div class="cart-actions">
+                            <a href="@Url.Action("ProductDetails", "ProductDetails", new { id = item.Product.ProductId })" class="btn-view">
+                                View Details
+                            </a>
+                        </div>
+                    </div>
+
+                    <form method="post" action="@Url.Action("Remove", "Cart")" class="wishlist-remove-form">
+                        <input type="hidden" name="cartItemId" value="@item.CartItemId" />
+                        <button type="submit" class="btn-remove" title="Remove item">✕</button>
+                    </form>
+                </li>
+            }
+        </ul>
+
+        <div class="cart-summary">
+            <div class="subtotal">Subtotal: ৳@Model.Sum(i => i.Product.Price).ToString("0.00")</div>
+
+            <form id="checkout-form" method="get" action="@Url.Action("Checkout", "Cart")">
+                <button type="submit" class="btn-checkout">Proceed to Checkout</button>
+            </form>
+        </div>
+    }
+    else
+    {
+        <p class="empty-cart">Your cart is empty.</p>
+    }
+    <script src="~/Scripts/custom/Cart.js"></script>
+</body>
