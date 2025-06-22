@@ -153,6 +153,7 @@
     <Compile Include="Controllers\ReviewController.cs" />
     <Compile Include="Controllers\Seller\SellerDashboardController.cs" />
     <Compile Include="Controllers\TrendingProductsController.cs" />
+    <Compile Include="Controllers\WishlistController.cs" />
     <Compile Include="DBContext\Carousel.cs">
       <DependentUpon>DigitalArenaDBContext.tt</DependentUpon>
     </Compile>
@@ -272,10 +273,12 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\css\Modals.css" />
     <Content Include="Content\Home.css" />
     <Content Include="Content\LandingPage.css" />
     <Content Include="Content\ProductDetails.css" />
     <Content Include="Content\styles.css" />
+    <Content Include="Content\Wishlist.css" />
     <Content Include="DBContext\DigitalArenaDBContext.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>DigitalArenaDBContext.edmx</DependentUpon>
@@ -306,6 +309,7 @@
     <Content Include="Scripts\custom\CommentOperation.js" />
     <Content Include="Scripts\custom\cubeViewer.js" />
     <Content Include="Scripts\custom\Load3DModel.js" />
+    <Content Include="Scripts\custom\modals.js" />
     <Content Include="Scripts\custom\Password_Visibility_Icon.js" />
     <Content Include="Scripts\custom\product-filters.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
@@ -355,6 +359,8 @@
     <Content Include="Views\BrowseProduct\BrowseCategory.cshtml" />
     <Content Include="Views\TrendingProducts\Trending.cshtml" />
     <Content Include="Views\Home\LandingPage.cshtml" />
+    <Content Include="Views\Wishlist\Index.cshtml" />
+    <Content Include="Views\Shared\_Header2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -141,16 +141,6 @@
         cursor: pointer;
     }
 
-.wishlist-button {
-    background-color: transparent;
-    /* No bg specified, assume transparent or page default */
-}
-
-    .wishlist-button img {
-        width: 24px;
-        height: 24px;
-    }
-
 .add-button {
     background-color: #d9d9d9;
     /* style_13 for 45:102 */

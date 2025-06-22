@@ -239,6 +239,66 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+    const wishlistForm = document.getElementById('wishlist-form');
+    if (!wishlistForm) return;
+
+    const icon = document.getElementById('wishlist-icon');
+    const productId = wishlistForm.dataset.productid;
+    const url = wishlistForm.dataset.url;
+
+    wishlistForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `productId=${productId}`
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    if (data.added) {
+                        icon.src = '/Assets/images/heart_filled.png'
+                    } else {
+                        icon.src = '/Assets/images/heart_outline.png';
+                    }
+                } else {
+                    showInfoDialog("Failed to process your request.");
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                showInfoDialog("An error occurred while communicating with the server.");
+            });
+    });
+
+    // Optional hover effect
+    const button = wishlistForm.querySelector('.wishlist-button');
+    button.addEventListener('mouseenter', () => button.style.transform = 'scale(1.05)');
+    button.addEventListener('mouseleave', () => button.style.transform = 'scale(1)');
+});
+
+
+
+//        // Hover effect (Optional visual feedback)
+//        const wishlistButton = wishlistForm.querySelector('.wishlist-button');
+//        if (wishlistButton) {
+//            wishlistButton.addEventListener('mouseenter', () => {
+//                wishlistButton.style.opacity = '0.8';
+//                wishlistButton.style.transform = 'scale(1.05)';
+//            });
+//            wishlistButton.addEventListener('mouseleave', () => {
+//                wishlistButton.style.opacity = '1';
+//                wishlistButton.style.transform = 'scale(1)';
+//            });
+//        }
+//    }
+//});
+
+
 
 // Helpers
 function renderStars(count) {
@@ -315,5 +375,6 @@ function showInfoDialog(message) {
         okBtn.addEventListener('click', onOk);
     });
 }
+
 
 

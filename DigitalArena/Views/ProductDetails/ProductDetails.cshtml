@@ -94,15 +94,25 @@
                     <!-- ✅ Buttons and Stats -->
                     <div class="product-actions-bar">
                         <div class="product-actions">
-                            <button class="wishlist-button">
-                                <img src="~/Assets/images/104de51bea09520a50b6f4c8c1615b7d79174041.png" alt="Wishlist">
-                                <span class="font-inria-sans-400-20 color-text-primary">WISHLIST</span>
-                            </button>
+                            <form id="wishlist-form"
+                                  data-url="@Url.Action("Toggle", "Wishlist")"
+                                  data-productid="@Model.Product.ProductId"
+                                  data-added="@Model.IsInWishlist">
+                                <button type="submit" class="wishlist-button">
+                                    <img id="wishlist-icon"
+                                         src="~/Assets/images/@(Model.IsInWishlist ? "heart_filled.png" : "heart_outline.png")"
+                                         alt="Wishlist" />
+                                    <span class="font-inria-sans-400-20 color-text-primary">WISHLIST</span>
+                                </button>
+                            </form>
+
+                            <!-- Add to Cart Button (optional interaction logic later) -->
                             <button class="add-button">
                                 <img src="~/Assets/images/40c3ce2ac3f3dfd1e5a8118ef7f7ce20a60d6e95.png" alt="Add">
                                 <span class="font-inria-sans-400-20 color-text-primary">ADD</span>
                             </button>
                         </div>
+
                         <div class="product-engagement-stats">
                             <div class="stat-group">
                                 <img src="~/Assets/images/388aad34e695fa51ceaefe99aa6aca483a1f231b.png" alt="Likes">

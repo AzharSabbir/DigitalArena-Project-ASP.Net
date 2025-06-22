@@ -80,9 +80,9 @@ namespace DigitalArena.Controllers
                 ViewCount = p.ViewCount
             }).ToList();
 
+            int userId = GetCurrentUserId();
+            var IsInWishlist = db.Wishlist.Any(w => w.UserId == userId && w.ProductId == id);
 
-
-            // Fix for CS0029: Update the type of SuggestedProducts in the ProductDetailsViewModel initialization
             var viewModel = new ProductDetailsViewModel
             {
                 Product = new ProductModel
@@ -129,8 +129,15 @@ namespace DigitalArena.Controllers
                 ModelPath = modelPath,
                 SuggestedProducts = suggestedProducts // Change this to use the original list of Product entities
             };
-
+            
             return View(viewModel);
+        }
+
+        private int GetCurrentUserId()
+        {
+            // Replace this with your actual user authentication/session logic
+            //return Convert.ToInt32(Session["UserId"]);
+            return 5; // Example user ID for testing
         }
 
     }

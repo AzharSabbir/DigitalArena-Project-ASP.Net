@@ -1,0 +1,57 @@
+﻿@model List<DigitalArena.Models.WishlistModel>
+
+@{
+    ViewBag.Title = "Your Wishlist";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+    <link rel="stylesheet" href="~/Content/Wishlist.css" />
+</head>
+<body>
+    @Html.Partial("_Header2")
+    <h2 class="wishlist-title">Your Wishlist</h2>
+    @if (Model.Any())
+    {
+        <ul class="wishlist-list">
+            @foreach (var item in Model)
+            {
+                <li class="wishlist-item">
+                    <div class="wishlist-image">
+                        <img src="@Url.Content("~/Assets/" + item.Product.Category.Name + "/product_" + item.Product.ProductId + "/Thumbnails/" + item.Product.Thumbnail)"
+                             alt="@item.Product.Name" />
+                    </div>
+
+                    <div class="wishlist-info">
+                        <h3 class="product-name">@item.Product.Name</h3>
+                        <p class="product-description">@item.Product.Description</p>
+
+                        <div class="product-meta">
+                            <span class="product-price">৳@item.Product.Price</span>
+                        </div>
+
+                        <div class="wishlist-actions">
+                            <a href="@Url.Action("ProductDetails", "ProductDetails", new { id = item.Product.ProductId })" class="btn-view">
+                                View Details
+                            </a>
+
+                            <form method="post" action="@Url.Action("AddToCart", "Cart")" class="form-inline d-inline">
+                                <input type="hidden" name="productId" value="@item.Product.ProductId" />
+                                <button type="submit" class="btn-cart">Add to Cart</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <form method="post" action="@Url.Action("Remove", "Wishlist")" class="wishlist-remove-form">
+                        <input type="hidden" name="wishlistId" value="@item.WishlistId" />
+                        <button type="submit" class="btn-remove">✕</button>
+                    </form>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p class="empty-wishlist">You have no items in your wishlist.</p>
+    }
+</body>
