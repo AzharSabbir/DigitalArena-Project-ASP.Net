@@ -1,21 +1,24 @@
-﻿using DigitalArena.DBContext;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
+using DigitalArena.DBContext;
+using DigitalArena.Models; 
 
 namespace DigitalArena.Controllers
 {
-    [AllowAnonymous]
     public class HomeController : Controller
     {
-        private DigitalArenaDBContext db = new DigitalArenaDBContext();
+        private readonly DigitalArenaDBContext db = new DigitalArenaDBContext();
+
+        // Redirects based on user role
         public ActionResult Index()
         {
-            if (User.IsInRole("ADMIN")) return RedirectToAction("Index", "AdminDashboard");
-            if (User.IsInRole("SELLER")) return RedirectToAction("Index", "SellerDashboard");
+            if (User.IsInRole("ADMIN"))
+                return RedirectToAction("Index", "AdminDashboard");
+
+            if (User.IsInRole("SELLER"))
+                return RedirectToAction("Index", "SellerDashboard");
 
             return View();
         }
@@ -23,25 +26,32 @@ namespace DigitalArena.Controllers
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
-
             return View();
         }
 
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
-
             return View();
         }
 
+        // Loads landing page with hero section content
         public ActionResult LandingPage()
         {
-            var landingContent = db.LandingPage
-                .Include(l => l.Product)
-                .FirstOrDefault(); // Or filter as needed
+            var landing = db.LandingPage.Include(lp => lp.Product).FirstOrDefault();
 
-            return View(landingContent);
+            if (landing == null) return HttpNotFound();
+
+            var model = new LandingPageViewModel
+            {
+                ProductId = landing.ProductId,
+                Headline = landing.Headline,
+                SubHeadline = landing.SubHeadline,
+                HeroImageUrl = Url.Content($"~/Assets/landing_page/{landing.Product.Thumbnail}")
+            };
+            return View(model);
         }
+
 
         protected override void Dispose(bool disposing)
         {
@@ -49,6 +59,7 @@ namespace DigitalArena.Controllers
             {
                 db.Dispose();
             }
+
             base.Dispose(disposing);
         }
     }

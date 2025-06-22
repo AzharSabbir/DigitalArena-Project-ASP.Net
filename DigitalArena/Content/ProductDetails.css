@@ -558,6 +558,13 @@ img[src*="45_142.svg"] {
         vertical-align: middle;
         cursor: pointer;
     }
+#pdf-viewer-container canvas {
+    margin-bottom: 16px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    display: block;
+    max-width: 100%;
+}
 
 
 /* Sidebar */

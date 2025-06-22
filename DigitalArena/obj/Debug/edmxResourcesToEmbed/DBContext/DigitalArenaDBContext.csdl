@@ -107,6 +107,15 @@
       <End Role="Wishlist" EntitySet="Wishlist" />
     </AssociationSet>
     <EntitySet Name="Carousel" EntityType="DigitalArenaDBModel.Carousel" />
+    <EntitySet Name="LandingPage" EntityType="DigitalArenaDBModel.LandingPage" />
+    <AssociationSet Name="FK_Carousel_Product" Association="DigitalArenaDBModel.FK_Carousel_Product">
+      <End Role="Product" EntitySet="Product" />
+      <End Role="Carousel" EntitySet="Carousel" />
+    </AssociationSet>
+    <AssociationSet Name="FK__LandingPa__Produ__1BC821DD" Association="DigitalArenaDBModel.FK__LandingPa__Produ__1BC821DD">
+      <End Role="Product" EntitySet="Product" />
+      <End Role="LandingPage" EntitySet="LandingPage" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Cart">
     <Key>
@@ -247,6 +256,8 @@
     <NavigationProperty Name="Review" Relationship="DigitalArenaDBModel.FK__Review__ProductI__5FB337D6" FromRole="Product" ToRole="Review" />
     <NavigationProperty Name="Wishlist" Relationship="DigitalArenaDBModel.FK__Wishlist__Produc__0D7A0286" FromRole="Product" ToRole="Wishlist" />
     <Property Name="ViewCount" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Carousel" Relationship="DigitalArenaDBModel.FK_Carousel_Product" FromRole="Product" ToRole="Carousel" />
+    <NavigationProperty Name="LandingPage" Relationship="DigitalArenaDBModel.FK__LandingPa__Produ__1BC821DD" FromRole="Product" ToRole="LandingPage" />
   </EntityType>
   <EntityType Name="ProductFile">
     <Key>
@@ -619,5 +630,44 @@
     <Property Name="Page" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="IsActive" Type="Boolean" Nullable="false" />
     <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="ProductId" Type="Int32" />
+    <NavigationProperty Name="Product" Relationship="DigitalArenaDBModel.FK_Carousel_Product" FromRole="Carousel" ToRole="Product" />
   </EntityType>
+  <EntityType Name="LandingPage">
+    <Key>
+      <PropertyRef Name="LandingPageId" />
+    </Key>
+    <Property Name="LandingPageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="Headline" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="SubHeadline" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="HeroImage" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Product" Relationship="DigitalArenaDBModel.FK__LandingPa__Produ__1BC821DD" FromRole="LandingPage" ToRole="Product" />
+  </EntityType>
+  <Association Name="FK_Carousel_Product">
+    <End Type="DigitalArenaDBModel.Product" Role="Product" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="DigitalArenaDBModel.Carousel" Role="Carousel" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="Carousel">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__LandingPa__Produ__1BC821DD">
+    <End Type="DigitalArenaDBModel.Product" Role="Product" Multiplicity="1" />
+    <End Type="DigitalArenaDBModel.LandingPage" Role="LandingPage" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="LandingPage">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

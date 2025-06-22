@@ -215,11 +215,23 @@
     <EntitySetMapping Name="Carousel">
       <EntityTypeMapping TypeName="DigitalArenaDBModel.Carousel">
         <MappingFragment StoreEntitySet="Carousel">
+          <ScalarProperty Name="ProductId" ColumnName="ProductId" />
           <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
           <ScalarProperty Name="IsActive" ColumnName="IsActive" />
           <ScalarProperty Name="Page" ColumnName="Page" />
           <ScalarProperty Name="Image" ColumnName="Image" />
           <ScalarProperty Name="CarouselId" ColumnName="CarouselId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LandingPage">
+      <EntityTypeMapping TypeName="DigitalArenaDBModel.LandingPage">
+        <MappingFragment StoreEntitySet="LandingPage">
+          <ScalarProperty Name="HeroImage" ColumnName="HeroImage" />
+          <ScalarProperty Name="SubHeadline" ColumnName="SubHeadline" />
+          <ScalarProperty Name="Headline" ColumnName="Headline" />
+          <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+          <ScalarProperty Name="LandingPageId" ColumnName="LandingPageId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

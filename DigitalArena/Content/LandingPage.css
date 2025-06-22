@@ -1,7 +1,7 @@
 ﻿/* Reset and Base Styles */
 body {
     margin: 0;
-    font-family: 'Lexend', sans-serif;
+    font-family: 'Inria Sans', sans-serif;
     background-color: #fffefa;
     color: #323232;
     max-height: 100vh;
@@ -54,7 +54,7 @@ ul {
     }
 
 .logo-text {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Inria Sans', sans-serif;
     font-weight: 600;
     font-size: 32px;
     color: #384d6c;

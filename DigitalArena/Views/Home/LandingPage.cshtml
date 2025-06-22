@@ -42,13 +42,9 @@
 
             <main class="hero-content">
                 <div class="hero-text">
-                    <h1>
-                        FIND DIGITAL CONTENT
-                        THAT MATCHES YOUR
-                        CREATIVE VISION
-                    </h1>
-                    <p class="subtitle">Explore high-quality digital content—3D models, e-books, graphics, and more—on Digital Arena. Start browsing now!</p>
-                    <a href="@Url.Action("Trending", "TrendingProducts")" class="btn btn-purchase">PURCHASE NOW</a>
+                    <h1>@Model.Headline</h1>
+                    <p class="subtitle">@Model.SubHeadline</p>
+                    <a href="@Url.Action("ProductDetails", "ProductDetails", new { id = (int)Model.ProductId })" class="btn btn-purchase">PURCHASE NOW</a>
                 </div>
                 <div class="hero-image">
                     <img src="@Url.Content("~/Assets/site-images/hero-image.png")" alt="Creative splash of a product" />

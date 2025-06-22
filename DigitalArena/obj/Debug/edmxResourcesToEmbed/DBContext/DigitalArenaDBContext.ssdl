@@ -9,6 +9,7 @@
     <Property Name="Page" Type="nvarchar" MaxLength="100" Nullable="false" />
     <Property Name="IsActive" Type="bit" Nullable="false" />
     <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+    <Property Name="ProductId" Type="int" />
   </EntityType>
   <EntityType Name="Cart">
     <Key>
@@ -63,6 +64,16 @@
     <Property Name="ExpiryDate" Type="datetime" Nullable="false" />
     <Property Name="UsedAt" Type="datetime" />
     <Property Name="UserId" Type="int" />
+  </EntityType>
+  <EntityType Name="LandingPage">
+    <Key>
+      <PropertyRef Name="LandingPageId" />
+    </Key>
+    <Property Name="LandingPageId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="Headline" Type="nvarchar" MaxLength="200" />
+    <Property Name="SubHeadline" Type="nvarchar" MaxLength="500" />
+    <Property Name="HeroImage" Type="nvarchar" MaxLength="255" />
   </EntityType>
   <EntityType Name="Notification">
     <Key>
@@ -261,6 +272,18 @@
       </Principal>
       <Dependent Role="GiftCard">
         <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__LandingPa__Produ__1BC821DD">
+    <End Role="Product" Type="Self.Product" Multiplicity="1" />
+    <End Role="LandingPage" Type="Self.LandingPage" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="LandingPage">
+        <PropertyRef Name="ProductId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -468,6 +491,20 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_Carousel_Product">
+    <End Role="Product" Type="Self.Product" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Carousel" Type="Self.Carousel" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="Carousel">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Review_Product">
     <End Role="Product" Type="Self.Product" Multiplicity="1" />
     <End Role="Review" Type="Self.Review" Multiplicity="*" />
@@ -487,6 +524,7 @@
     <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Coupon" EntityType="Self.Coupon" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="GiftCard" EntityType="Self.GiftCard" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="LandingPage" EntityType="Self.LandingPage" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Notification" EntityType="Self.Notification" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="OrderItem" EntityType="Self.OrderItem" Schema="dbo" store:Type="Tables" />
@@ -518,6 +556,10 @@
     <AssociationSet Name="FK__GiftCard__UserId__72C60C4A" Association="Self.FK__GiftCard__UserId__72C60C4A">
       <End Role="User" EntitySet="User" />
       <End Role="GiftCard" EntitySet="GiftCard" />
+    </AssociationSet>
+    <AssociationSet Name="FK__LandingPa__Produ__1BC821DD" Association="Self.FK__LandingPa__Produ__1BC821DD">
+      <End Role="Product" EntitySet="Product" />
+      <End Role="LandingPage" EntitySet="LandingPage" />
     </AssociationSet>
     <AssociationSet Name="FK__Notificat__UserI__6D0D32F4" Association="Self.FK__Notificat__UserI__6D0D32F4">
       <End Role="User" EntitySet="User" />
@@ -586,6 +628,10 @@
     <AssociationSet Name="FK__Wishlist__UserId__0C85DE4D" Association="Self.FK__Wishlist__UserId__0C85DE4D">
       <End Role="User" EntitySet="User" />
       <End Role="Wishlist" EntitySet="Wishlist" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Carousel_Product" Association="Self.FK_Carousel_Product">
+      <End Role="Product" EntitySet="Product" />
+      <End Role="Carousel" EntitySet="Carousel" />
     </AssociationSet>
     <AssociationSet Name="FK_Review_Product" Association="Self.FK_Review_Product">
       <End Role="Product" EntitySet="Product" />

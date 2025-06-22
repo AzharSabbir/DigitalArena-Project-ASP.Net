@@ -13,6 +13,8 @@
     <title>Product Details</title>
     <link rel="stylesheet" href="~/Content/ProductDetails.css" />
     <link rel="stylesheet" href="~/Content/styles.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
 </head>
 
 <body>
@@ -31,13 +33,59 @@
                         }
                     </script>
 
-                    <!-- ✅ Canvas Container for 3D model -->
+                    @{
+                        bool isEbook = Model.Product.Category?.Name == "E-Book";
+                        string pdfFileName = System.IO.Path.GetFileNameWithoutExtension(Model.Product.Thumbnail) + ".pdf";
+                        string pdfUrl = Url.Content($"~/Assets/E-Book/product_{Model.Product.ProductId}/files/{pdfFileName}");
+                    }
+
                     <div class="product-main-canvas">
-                        <canvas id="viewer" data-model-path="@Model.ModelPath"></canvas>
+                        @if (isEbook)
+                        {
+                            <div id="pdf-viewer-container" style="width: 100%; height: auto;"></div>
+                            <script>
+            const url = '@pdfUrl';
+
+            const container = document.getElementById("pdf-viewer-container");
+
+            const renderPDF = async () => {
+                const loadingTask = pdfjsLib.getDocument(url);
+                const pdf = await loadingTask.promise;
+                const maxPages = Math.min(pdf.numPages, 10);
+
+                for (let pageNumber = 1; pageNumber <= maxPages; pageNumber++) {
+                    const page = await pdf.getPage(pageNumber);
+                    const scale = 1.5;
+                    const viewport = page.getViewport({ scale });
+
+                    const canvas = document.createElement("canvas");
+                    const context = canvas.getContext("2d");
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+
+                    const renderContext = {
+                        canvasContext: context,
+                        viewport: viewport
+                    };
+
+                    await page.render(renderContext).promise;
+                    container.appendChild(canvas);
+                }
+            };
+
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+            renderPDF();
+                            </script>
+                        }
+                        else
+                        {
+                            <canvas id="viewer" data-model-path="@Model.ModelPath"></canvas>
+                            <script type="module" src="~/Scripts/custom/Load3DModel.js"></script>
+                        }
                     </div>
 
-                    <!-- ✅ 3D Loader Script -->
-                    <script type="module" src="~/Scripts/custom/Load3DModel.js"></script>
+
+
 
                     <!-- ✅ Product Info -->
                     <h3 class="product-title font-inria-sans-400-20 color-text-primary">@Model.Product.Name</h3>
