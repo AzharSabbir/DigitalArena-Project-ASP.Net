@@ -25,6 +25,7 @@ namespace DigitalArena.DBContext
             this.Wishlist = new HashSet<Wishlist>();
             this.Carousel = new HashSet<Carousel>();
             this.LandingPage = new HashSet<LandingPage>();
+            this.Engagement = new HashSet<Engagement>();
         }
     
         public int ProductId { get; set; }
@@ -59,5 +60,7 @@ namespace DigitalArena.DBContext
         public virtual ICollection<Carousel> Carousel { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LandingPage> LandingPage { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Engagement> Engagement { get; set; }
     }
 }

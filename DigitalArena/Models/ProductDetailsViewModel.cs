@@ -12,7 +12,9 @@ namespace DigitalArena.Models
         public List<ReviewModel> Reviews { get; set; }
         public List<ProductModel> SuggestedProducts { get; set; }
 
-        public bool IsInWishlist { get; set; }
+        public bool IsInCart { get; set; }
+        public bool IsLiked { get; set; }
+        public bool IsDisliked { get; set; }
         public string PublishedAgo { get; set; }
         public int DownloadCount { get; set; }
         public string ModelPath { get; set; }

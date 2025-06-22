@@ -48,6 +48,9 @@
         <EntityTypeShape EntityType="DigitalArenaDBModel.LandingPage" Width="1.5" PointX="5.25" PointY="26.625" />
         <AssociationConnector Association="DigitalArenaDBModel.FK_Carousel_Product" />
         <AssociationConnector Association="DigitalArenaDBModel.FK__LandingPa__Produ__1BC821DD" />
+        <EntityTypeShape EntityType="DigitalArenaDBModel.Engagement" Width="1.5" PointX="8.25" PointY="14.375" />
+        <AssociationConnector Association="DigitalArenaDBModel.FK__Engagemen__Produ__2BFE89A6" />
+        <AssociationConnector Association="DigitalArenaDBModel.FK__Engagemen__UserI__2B0A656D" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

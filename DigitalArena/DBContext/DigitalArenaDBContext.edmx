@@ -57,6 +57,16 @@
           <Property Name="UserSpecific" Type="bit" Nullable="false" />
           <Property Name="UserId" Type="int" />
         </EntityType>
+        <EntityType Name="Engagement">
+          <Key>
+            <PropertyRef Name="EngagementId" />
+          </Key>
+          <Property Name="EngagementId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="ProductId" Type="int" Nullable="false" />
+          <Property Name="Liked" Type="bit" Nullable="false" />
+          <Property Name="Disliked" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="GiftCard">
           <Key>
             <PropertyRef Name="GiftCardId" />
@@ -264,6 +274,34 @@
               <PropertyRef Name="UserId" />
             </Principal>
             <Dependent Role="Coupon">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Engagemen__Produ__2BFE89A6">
+          <End Role="Product" Type="Self.Product" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Engagement" Type="Self.Engagement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="Engagement">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Engagemen__UserI__2B0A656D">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Engagement" Type="Self.Engagement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Engagement">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
@@ -528,6 +566,7 @@
           <EntitySet Name="CartItem" EntityType="Self.CartItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Coupon" EntityType="Self.Coupon" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Engagement" EntityType="Self.Engagement" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GiftCard" EntityType="Self.GiftCard" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LandingPage" EntityType="Self.LandingPage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Notification" EntityType="Self.Notification" Schema="dbo" store:Type="Tables" />
@@ -557,6 +596,14 @@
           <AssociationSet Name="FK__Coupon__UserId__00200768" Association="Self.FK__Coupon__UserId__00200768">
             <End Role="User" EntitySet="User" />
             <End Role="Coupon" EntitySet="Coupon" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Engagemen__Produ__2BFE89A6" Association="Self.FK__Engagemen__Produ__2BFE89A6">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="Engagement" EntitySet="Engagement" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Engagemen__UserI__2B0A656D" Association="Self.FK__Engagemen__UserI__2B0A656D">
+            <End Role="User" EntitySet="User" />
+            <End Role="Engagement" EntitySet="Engagement" />
           </AssociationSet>
           <AssociationSet Name="FK__GiftCard__UserId__72C60C4A" Association="Self.FK__GiftCard__UserId__72C60C4A">
             <End Role="User" EntitySet="User" />
@@ -763,6 +810,15 @@
             <End Role="Product" EntitySet="Product" />
             <End Role="LandingPage" EntitySet="LandingPage" />
           </AssociationSet>
+          <EntitySet Name="Engagement" EntityType="DigitalArenaDBModel.Engagement" />
+          <AssociationSet Name="FK__Engagemen__Produ__2BFE89A6" Association="DigitalArenaDBModel.FK__Engagemen__Produ__2BFE89A6">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="Engagement" EntitySet="Engagement" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Engagemen__UserI__2B0A656D" Association="DigitalArenaDBModel.FK__Engagemen__UserI__2B0A656D">
+            <End Role="User" EntitySet="User" />
+            <End Role="Engagement" EntitySet="Engagement" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Cart">
           <Key>
@@ -905,6 +961,7 @@
           <Property Name="ViewCount" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Carousel" Relationship="DigitalArenaDBModel.FK_Carousel_Product" FromRole="Product" ToRole="Carousel" />
           <NavigationProperty Name="LandingPage" Relationship="DigitalArenaDBModel.FK__LandingPa__Produ__1BC821DD" FromRole="Product" ToRole="LandingPage" />
+          <NavigationProperty Name="Engagement" Relationship="DigitalArenaDBModel.FK__Engagemen__Produ__2BFE89A6" FromRole="Product" ToRole="Engagement" />
         </EntityType>
         <EntityType Name="ProductFile">
           <Key>
@@ -969,6 +1026,7 @@
           <NavigationProperty Name="Verification" Relationship="DigitalArenaDBModel.FK__Verificat__UserI__403A8C7D" FromRole="User" ToRole="Verification" />
           <NavigationProperty Name="Wallet" Relationship="DigitalArenaDBModel.FK__Wallet__UserId__44FF419A" FromRole="User" ToRole="Wallet" />
           <NavigationProperty Name="Wishlist" Relationship="DigitalArenaDBModel.FK__Wishlist__UserId__0C85DE4D" FromRole="User" ToRole="Wishlist" />
+          <NavigationProperty Name="Engagement" Relationship="DigitalArenaDBModel.FK__Engagemen__UserI__2B0A656D" FromRole="User" ToRole="Engagement" />
         </EntityType>
         <EntityType Name="Verification">
           <Key>
@@ -1317,6 +1375,46 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Engagement">
+          <Key>
+            <PropertyRef Name="EngagementId" />
+          </Key>
+          <Property Name="EngagementId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <Property Name="Liked" Type="Boolean" Nullable="false" />
+          <Property Name="Disliked" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Product" Relationship="DigitalArenaDBModel.FK__Engagemen__Produ__2BFE89A6" FromRole="Engagement" ToRole="Product" />
+          <NavigationProperty Name="User" Relationship="DigitalArenaDBModel.FK__Engagemen__UserI__2B0A656D" FromRole="Engagement" ToRole="User" />
+        </EntityType>
+        <Association Name="FK__Engagemen__Produ__2BFE89A6">
+          <End Type="DigitalArenaDBModel.Product" Role="Product" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DigitalArenaDBModel.Engagement" Role="Engagement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="Engagement">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Engagemen__UserI__2B0A656D">
+          <End Type="DigitalArenaDBModel.User" Role="User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DigitalArenaDBModel.Engagement" Role="Engagement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Engagement">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1554,6 +1652,17 @@
                 <ScalarProperty Name="Headline" ColumnName="Headline" />
                 <ScalarProperty Name="ProductId" ColumnName="ProductId" />
                 <ScalarProperty Name="LandingPageId" ColumnName="LandingPageId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Engagement">
+            <EntityTypeMapping TypeName="DigitalArenaDBModel.Engagement">
+              <MappingFragment StoreEntitySet="Engagement">
+                <ScalarProperty Name="Disliked" ColumnName="Disliked" />
+                <ScalarProperty Name="Liked" ColumnName="Liked" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="EngagementId" ColumnName="EngagementId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

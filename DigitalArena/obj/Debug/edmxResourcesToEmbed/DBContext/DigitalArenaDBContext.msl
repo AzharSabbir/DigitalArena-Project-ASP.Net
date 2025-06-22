@@ -235,5 +235,16 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="Engagement">
+      <EntityTypeMapping TypeName="DigitalArenaDBModel.Engagement">
+        <MappingFragment StoreEntitySet="Engagement">
+          <ScalarProperty Name="Disliked" ColumnName="Disliked" />
+          <ScalarProperty Name="Liked" ColumnName="Liked" />
+          <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="EngagementId" ColumnName="EngagementId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

@@ -28,6 +28,7 @@ namespace DigitalArena.DBContext
             this.Verification = new HashSet<Verification>();
             this.Wallet = new HashSet<Wallet>();
             this.Wishlist = new HashSet<Wishlist>();
+            this.Engagement = new HashSet<Engagement>();
         }
     
         public int UserId { get; set; }
@@ -64,5 +65,7 @@ namespace DigitalArena.DBContext
         public virtual ICollection<Wallet> Wallet { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Wishlist> Wishlist { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Engagement> Engagement { get; set; }
     }
 }
