@@ -1,0 +1,104 @@
+﻿@model DigitalArena.Models.UserProfileViewModel
+
+@{
+    ViewData["Title"] = "User Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/css/user-profile.css" rel="stylesheet" />
+
+<div class="profile-wrapper">
+    <div class="profile-card">
+        <div class="profile-top">
+            <img src="@Url.Content(Model.User.ProfileImage ?? "~/Assets/default-user.png")" class="profile-img" alt="Profile Image" />
+            <div class="user-basic-info">
+                <h2 class="full-name">@Model.User.FullName</h2>
+                <p class="user-role">@Model.User.Role</p>
+            </div>
+        </div>
+
+        <div class="mode-toggle">
+            <label class="mode-label">Switch Role:</label>
+            <label class="switch">
+                <input type="checkbox" id="mode-toggle" @(Model.IsSellerMode ? "checked" : "") />
+                <span class="slider"></span>
+            </label>
+            <span id="mode-label">@((Model.IsSellerMode) ? "Seller Mode" : "Buyer Mode")</span>
+        </div>
+
+        <div class="info-section">
+            <h3>Account Information</h3>
+            <ul>
+                <li><strong>Username:</strong> @Model.User.Username</li>
+                <li><strong>Email:</strong> @Model.User.Email</li>
+                <li><strong>Phone:</strong> @Model.User.Phone</li>
+                <li><strong>Account Created:</strong> @Model.User.CreatedAt.ToString("dd MMM yyyy")</li>
+                <li><strong>Last Login:</strong> @Model.User.LastLoginAt.ToString("dd MMM yyyy")</li>
+                <li><strong>Account Status:</strong> @(Model.User.IsActive ? "Active" : "Inactive")</li>
+            </ul>
+        </div>
+
+        <div class="info-section">
+            <h3>Activity Summary</h3>
+            <ul>
+                <li><strong>Total Purchases:</strong> @Model.TotalPurchases</li>
+            </ul>
+        </div>
+
+        <div class="info-section">
+            <h3>Purchased Products</h3>
+
+            @if (Model.PurchasedProducts != null && Model.PurchasedProducts.Any())
+            {
+                <div class="purchased-products-grid">
+                    @foreach (var product in Model.PurchasedProducts)
+                    {
+                        var categoryName = product.Category?.Name ?? "3D Model";
+                        var folderName = categoryName.Replace(" ", "%20");
+                        var imagePath = Url.Content($"~/Assets/{folderName}/product_{product.ProductId}/thumbnails/{product.Thumbnail}");
+
+                        <div class="enhanced-product-card" onclick="location.href='@Url.Action("ProductDetails", "ProductDetails", new { id = product.ProductId })'">
+                            <div class="enhanced-product-image-wrapper">
+                                <img src="@imagePath" alt="@product.Name" class="enhanced-product-image" />
+                                <div class="overlay">
+                                    <span class="view-button">View Product</span>
+                                </div>
+                            </div>
+                            <div class="enhanced-product-info">
+                                <h4 class="enhanced-product-title">@product.Name</h4>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p>No purchased products found.</p>
+            }
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('mode-toggle').addEventListener('change', function () {
+            const isSeller = this.checked;
+
+            fetch('@Url.Action("ToggleMode", "UserProfile")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                },
+                body: JSON.stringify({ isSeller: isSeller })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('mode-label').innerText = isSeller ? "Seller Mode" : "Buyer Mode";
+                }
+            });
+        });
+    </script>
+}

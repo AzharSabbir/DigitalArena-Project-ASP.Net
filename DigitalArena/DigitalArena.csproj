@@ -154,6 +154,7 @@
     <Compile Include="Controllers\ReviewController.cs" />
     <Compile Include="Controllers\Seller\SellerDashboardController.cs" />
     <Compile Include="Controllers\TrendingProductsController.cs" />
+    <Compile Include="Controllers\UserProfileController.cs" />
     <Compile Include="DBContext\Carousel.cs">
       <DependentUpon>DigitalArenaDBContext.tt</DependentUpon>
     </Compile>
@@ -252,6 +253,7 @@
     <Compile Include="Models\ReviewModel.cs" />
     <Compile Include="Models\TransactionModel.cs" />
     <Compile Include="Models\UserModel.cs" />
+    <Compile Include="Models\UserProfileViewModel.cs" />
     <Compile Include="Models\VerificationModel.cs" />
     <Compile Include="Models\WalletModel.cs" />
     <Compile Include="Models\WishlistModel.cs" />
@@ -279,6 +281,7 @@
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\css\Cart.css" />
     <Content Include="Content\css\Modals.css" />
+    <Content Include="Content\css\user-profile.css" />
     <Content Include="Content\Home.css" />
     <Content Include="Content\LandingPage.css" />
     <Content Include="Content\ProductDetails.css" />
@@ -366,6 +369,7 @@
     <Content Include="Views\Home\LandingPage.cshtml" />
     <Content Include="Views\Shared\_Header2.cshtml" />
     <Content Include="Views\Cart\Cart.cshtml" />
+    <Content Include="Views\UserProfile\UserProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
