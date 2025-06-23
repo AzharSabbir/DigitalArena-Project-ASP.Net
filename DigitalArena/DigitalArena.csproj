@@ -250,6 +250,7 @@
     <Compile Include="Models\ProductDetailsViewModel.cs" />
     <Compile Include="Models\ProductFileModel.cs" />
     <Compile Include="Models\ProductModel.cs" />
+    <Compile Include="Models\ProductUploadViewModel.cs" />
     <Compile Include="Models\ReviewModel.cs" />
     <Compile Include="Models\TransactionModel.cs" />
     <Compile Include="Models\UserModel.cs" />

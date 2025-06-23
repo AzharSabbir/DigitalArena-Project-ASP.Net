@@ -1,4 +1,5 @@
 ﻿@model DigitalArena.Models.UserProfileViewModel
+@using DigitalArena.Models;
 
 @{
     ViewData["Title"] = "User Profile";
@@ -7,23 +8,25 @@
 
 <link href="~/Content/css/user-profile.css" rel="stylesheet" />
 
+<!-- Hidden CSRF Token -->
+<form style="display:none">@Html.AntiForgeryToken()</form>
+
 <div class="profile-wrapper">
     <div class="profile-card">
         <div class="profile-top">
             <img src="@Url.Content(Model.User.ProfileImage ?? "~/Assets/default-user.png")" class="profile-img" alt="Profile Image" />
             <div class="user-basic-info">
                 <h2 class="full-name">@Model.User.FullName</h2>
-                <p class="user-role">@Model.User.Role</p>
             </div>
         </div>
 
         <div class="mode-toggle">
             <label class="mode-label">Switch Role:</label>
             <label class="switch">
-                <input type="checkbox" id="mode-toggle" @(Model.IsSellerMode ? "checked" : "") />
+                <input type="checkbox" id="mode-toggle" @(Model.User.Role == "SELLER" ? "checked" : "") />
                 <span class="slider"></span>
             </label>
-            <span id="mode-label">@((Model.IsSellerMode) ? "Seller Mode" : "Buyer Mode")</span>
+            <span id="mode-label">@Model.User.Role</span>
         </div>
 
         <div class="info-section">
@@ -39,66 +42,208 @@
         </div>
 
         <div class="info-section">
-            <h3>Activity Summary</h3>
-            <ul>
-                <li><strong>Total Purchases:</strong> @Model.TotalPurchases</li>
-            </ul>
-        </div>
-
-        <div class="info-section">
-            <h3>Purchased Products</h3>
-
-            @if (Model.PurchasedProducts != null && Model.PurchasedProducts.Any())
+            @if (Model.User.Role == "SELLER")
             {
-                <div class="purchased-products-grid">
-                    @foreach (var product in Model.PurchasedProducts)
-                    {
-                        var categoryName = product.Category?.Name ?? "3D Model";
-                        var folderName = categoryName.Replace(" ", "%20");
-                        var imagePath = Url.Content($"~/Assets/{folderName}/product_{product.ProductId}/thumbnails/{product.Thumbnail}");
+                <h3>Uploaded Products</h3>
 
-                        <div class="enhanced-product-card" onclick="location.href='@Url.Action("ProductDetails", "ProductDetails", new { id = product.ProductId })'">
-                            <div class="enhanced-product-image-wrapper">
-                                <img src="@imagePath" alt="@product.Name" class="enhanced-product-image" />
-                                <div class="overlay">
-                                    <span class="view-button">View Product</span>
+                if (Model.IsSellerMode && Model.UploadedProducts.Any())
+                {
+                    <div class="purchased-products-grid">
+                        @foreach (var product in Model.UploadedProducts)
+                        {
+                            var categoryName = product.Category?.Name ?? "3D Model";
+                            var folderName = categoryName.Replace(" ", "%20");
+                            var imagePath = Url.Content($"~/Assets/{folderName}/product_{product.ProductId}/thumbnails/{product.Thumbnail}");
+
+                            <div class="enhanced-product-card">
+                                <div class="enhanced-product-image-wrapper" onclick="location.href='@Url.Action("ProductDetails", "ProductDetails", new { id = product.ProductId })'">
+                                    <img src="@imagePath" alt="@product.Name" class="enhanced-product-image" />
+                                    <div class="overlay">
+                                        <span class="view-button">View Product</span>
+                                    </div>
+                                </div>
+                                <div class="enhanced-product-info">
+                                    <h4 class="enhanced-product-title">@product.Name</h4>
+                                    <span class="status-badge @(product.Status == "Approved" ? "approved" : "pending")">
+                                        @product.Status
+                                    </span>
+                                    <!-- ✕ Delete Button -->
+                                    <button type="button"
+                                            class="btn-remove"
+                                            data-product-id="@product.ProductId"
+                                            title="Delete product"
+                                            onclick="confirmDelete(this)">
+                                        ✕
+                                    </button>
                                 </div>
                             </div>
-                            <div class="enhanced-product-info">
-                                <h4 class="enhanced-product-title">@product.Name</h4>
+                        }
+
+                        <!-- Upload New Product Trigger Card -->
+                        <div class="enhanced-product-card upload-card" onclick="openModal()">
+                            <div class="upload-card-inner">
+                                <div class="upload-icon">＋</div>
+                                <div class="upload-text">Upload New Product</div>
                             </div>
                         </div>
-                    }
-                </div>
+                    </div>
+                }
+                else
+                {
+                    <p>No uploaded products found.</p>
+                }
             }
             else
             {
-                <p>No purchased products found.</p>
-            }
+                <h3>Purchased Products</h3>
+                if (Model.PurchasedProducts != null && Model.PurchasedProducts.Any())
+                {
+                    <div class="purchased-products-grid">
+                        @foreach (var product in Model.PurchasedProducts)
+                        {
+                            var categoryName = product.Category?.Name ?? "3D Model";
+                            var folderName = categoryName.Replace(" ", "%20");
+                            var imagePath = Url.Content($"~/Assets/{folderName}/product_{product.ProductId}/thumbnails/{product.Thumbnail}");
 
+                            <div class="enhanced-product-card" onclick="location.href='@Url.Action("ProductDetails", "ProductDetails", new { id = product.ProductId })'">
+                                <div class="enhanced-product-image-wrapper">
+                                    <img src="@imagePath" alt="@product.Name" class="enhanced-product-image" />
+                                    <div class="overlay">
+                                        <span class="view-button">View Product</span>
+                                    </div>
+                                </div>
+                                <div class="enhanced-product-info">
+                                    <h4 class="enhanced-product-title">@product.Name</h4>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p>No purchased products found.</p>
+                }
+            }
         </div>
+    </div>
+</div>
+
+<!-- Upload Modal -->
+<div class="modal-overlay" id="uploadProductModal">
+    <div class="modal-box">
+        <span class="modal-close" onclick="closeModal()">&times;</span>
+        <h2>Upload New Product</h2>
+        <form action="@Url.Action("UploadProduct", "UserProfile")" method="post" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+            @Html.Hidden("SellerId", Model.User.UserId)
+
+            <!-- Product Info Section -->
+            <div class="form-section">
+                <label for="Name">Product Name</label>
+                <input type="text" name="Name" id="Name" placeholder="Enter product name" required />
+
+                <label for="Description">Description</label>
+                <textarea name="Description" id="Description" rows="4" placeholder="Enter a detailed description" required></textarea>
+
+                <label for="Price">Price ($)</label>
+                <input type="number" name="Price" id="Price" step="0.01" placeholder="Enter price" required />
+
+                <label for="CategoryId">Category</label>
+                <select name="CategoryId" id="CategoryId" required>
+                    <option value="">-- Select Category --</option>
+                    @foreach (var category in ViewBag.Categories as List<CategoryModel>)
+                    {
+                        <option value="@category.CategoryId">@category.Name</option>
+                    }
+                </select>
+            </div>
+
+            <!-- File Upload Section -->
+            <div class="form-section">
+                <label for="Thumbnail">Thumbnail Image</label>
+                <input type="file" name="Thumbnail" id="Thumbnail" accept=".png,.jpg,.jpeg" required />
+
+                <label for="Files">Product Files (You can select multiple files)</label>
+                <input type="file" name="Files" id="Files" multiple />
+            </div>
+
+            <button type="submit" class="upload-btn">Upload Product</button>
+        </form>
     </div>
 </div>
 
 @section Scripts {
     <script>
-        document.getElementById('mode-toggle').addEventListener('change', function () {
-            const isSeller = this.checked;
+    document.addEventListener('DOMContentLoaded', function () {
+        const modeToggle = document.getElementById('mode-toggle');
+        if (modeToggle) {
+            modeToggle.addEventListener('change', function () {
+                const isSeller = this.checked;
+                const newRole = isSeller ? "SELLER" : "BUYER";
 
-            fetch('@Url.Action("ToggleMode", "UserProfile")', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
-                },
-                body: JSON.stringify({ isSeller: isSeller })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    document.getElementById('mode-label').innerText = isSeller ? "Seller Mode" : "Buyer Mode";
-                }
+                fetch('@Url.Action("ToggleMode", "UserProfile")', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                    },
+                    body: JSON.stringify({ Role: newRole })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert('Failed to toggle role.');
+                    }
+                });
             });
+        }
+
+        window.openModal = function () {
+            document.getElementById("uploadProductModal").style.display = "flex";
+        };
+
+        window.closeModal = function () {
+            document.getElementById("uploadProductModal").style.display = "none";
+        };
+
+        window.onclick = function (event) {
+            const modal = document.getElementById("uploadProductModal");
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        };
+    });
+
+    async function confirmDelete(button) {
+        const confirmed = await showConfirmDialog("Are you sure you want to delete this product?");
+        if (!confirmed) return;
+
+        const productId = button.getAttribute('data-product-id');
+
+        fetch('@Url.Action("DeleteProduct", "UserProfile")', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+            },
+            body: JSON.stringify({ productId: parseInt(productId) })
+        })
+        .then(response => {
+            if (response.ok) {
+                const productCard = button.closest('.enhanced-product-card');
+                productCard.style.transition = 'opacity 0.3s';
+                productCard.style.opacity = 0;
+                setTimeout(() => productCard.remove(), 300);
+            } else {
+                alert("Failed to delete the product.");
+            }
+        })
+        .catch(error => {
+            console.error("Delete failed:", error);
+            alert("Something went wrong.");
         });
+    }
     </script>
 }

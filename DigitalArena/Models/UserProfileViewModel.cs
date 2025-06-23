@@ -9,8 +9,10 @@ namespace DigitalArena.Models
     {
         public UserModel User { get; set; }
         public int TotalPurchases { get; set; }
-        public bool IsSellerMode => User.Role == "Seller";
+        public bool IsSellerMode { get; set; }
         public List<ProductModel> PurchasedProducts { get; set; }
+        public List<ProductModel> UploadedProducts { get; set; }
+
     }
 
 }
