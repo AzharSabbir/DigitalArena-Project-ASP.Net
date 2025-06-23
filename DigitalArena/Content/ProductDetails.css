@@ -69,43 +69,119 @@
     /* style_3 for image */
 }
 
+/* Container for either 3D model or eBook viewer */
 .product-main-canvas {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #384d6c; /* subtle pastel green (light olive) */
+    background-color: #d9d9d9;
     width: 100%;
     height: 450px;
     overflow: hidden;
-    border: 2px solid #384d6c; /* muted olive border */
+    border: 2px solid #384d6c;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     position: relative;
 }
 
-    /* Optional: Add a label over the 3D viewer */
-    .product-main-canvas::before {
-        content: "3D Object Viewer";
-        position: absolute;
-        top: 10px;
-        left: 15px;
-        font-size: 14px;
-        color: #384d6c;
-        background: rgba(255, 255, 255, 0.8);
-        padding: 4px 8px;
-        border-radius: 6px;
-        font-weight: 500;
+/* Top-left viewer label (E-Book Viewer / 3D Object Viewer) */
+.viewer-label {
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    font-size: 14px;
+    color: #384d6c;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-weight: 500;
+    z-index: 10;
+}
+
+/* Placeholder with blurred canvas background and preview button */
+.ebook-preview-placeholder {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Canvas with blurred PDF page background */
+#pdf-blur-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: scale(0.9); /* Change to 0.9, 1.2, etc. to control zoom */
+    transform-origin: center center;
+    filter: blur(12px) brightness(0.8);
+    object-fit: cover;
+    z-index: 0;
+}
+
+/* Text + Button area on top of blur */
+.preview-message {
+    z-index: 1;
+    text-align: center;
+    color: #ffffff;
+    padding: 0;
+}
+
+    /* Message text */
+    .preview-message p {
+        font-size: 18px;
+        margin-bottom: 12px;
     }
 
-.product-main-image {
-    display: block;
-    width: 100%;
-    height: auto;
+/* Preview button */
+.preview-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #384d6c;
+    background-color: #ffffff;
+    border: 2px solid #384d6c;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-.product-title {
-    margin: 0 0 2px 0;
+    /* Invert on hover */
+    .preview-btn:hover {
+        background-color: #384d6c;
+        color: #ffffff;
+        border: 2px solid #384d6c;
+    }
+
+/* Container for rendered PDF pages */
+.ebook-preview-container {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    background-color: #ffffff;
 }
+
+/* Individual rendered PDF pages */
+.ebook-canvas-page {
+    transform: scale(0.7);
+    transform-origin: top center;
+    max-width: 100%;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border-radius: 4px;
+}
+
+
+
 
 /* (248-222-24) for category y - title bottom */
 .product-category {
@@ -548,13 +624,6 @@ img[src*="45_142.svg"] {
         vertical-align: middle;
         cursor: pointer;
     }
-#pdf-viewer-container canvas {
-    margin-bottom: 16px;
-    border: 1px solid #ddd;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    display: block;
-    max-width: 100%;
-}
 
 
 /* Sidebar */
