@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+    typesense:
+        image: typesense/typesense:0.25.1
+        ports:
+            - "8200:8108"
+        volumes:
+            - typesense-data:/data
+        environment:
+            - TYPESENSE_API_KEY=xyz123
+            - TYPESENSE_DATA_DIR=/data
+        restart: always
+
+volumes:
+    typesense-data:
