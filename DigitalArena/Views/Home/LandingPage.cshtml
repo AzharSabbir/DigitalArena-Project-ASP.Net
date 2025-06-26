@@ -9,8 +9,6 @@
     <title>Digital Arena - Landing</title>
     <link rel="stylesheet" href="~/Content/css/LandingPage.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&family=Poppins:wght@600&family=Inria+Sans:wght@700&display=swap" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
 <body>
 
@@ -58,20 +56,8 @@
                                     <img src="@Url.Content("~/Assets/images/cart.png")" alt="Notifications" class="icon-image" />
                                 </a>
 
-
                                 <!-- Notification Icon -->
-                                <div class="notification-wrapper">
-                                    <a href="javascript:void(0);" class="icon-btn" onclick="toggleNotificationDropdown()" title="Notifications">
-                                        <i class="bi bi-bell"></i>
-                                    </a>
-
-                                    <div class="notification-dropdown" id="notificationDropdown" style="display: none;">
-                                        <div class="dropdown-header">Notifications</div>
-                                        <div id="notificationList" class="notification-list">
-                                            <!-- Will be populated dynamically -->
-                                        </div>
-                                    </div>
-                                </div>
+                                @Html.Partial("_Notification")
 
 
                                 <!-- Profile Image -->
@@ -79,7 +65,6 @@
                                     <img src="@imagePath" alt="Profile" class="profile-image-rounded" />
                                 </a>
                             </div>
-
                         }
                         else
                         {

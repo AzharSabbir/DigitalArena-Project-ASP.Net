@@ -283,6 +283,7 @@
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\css\Cart.css" />
     <Content Include="Content\css\Modals.css" />
+    <Content Include="Content\css\Notification.css" />
     <Content Include="Content\css\_Header.css" />
     <Content Include="Content\css\user-profile.css" />
     <Content Include="Content\Home.css" />
@@ -317,6 +318,7 @@
     </Content>
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\custom\Cart.js" />
+    <Content Include="Scripts\custom\Notification.js" />
     <Content Include="Scripts\custom\ProductDetailsOperation.js" />
     <Content Include="Scripts\custom\cubeViewer.js" />
     <Content Include="Scripts\custom\Load3DModel.js" />
@@ -374,6 +376,7 @@
     <Content Include="Views\Shared\_Header2.cshtml" />
     <Content Include="Views\Cart\Cart.cshtml" />
     <Content Include="Views\UserProfile\UserProfile.cshtml" />
+    <Content Include="Views\Shared\_Notification.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
