@@ -7,8 +7,10 @@
 <head>
     <meta charset="utf-8" />
     <title>Digital Arena - Landing</title>
-    <link rel="stylesheet" href="~/Content/LandingPage.css" />
+    <link rel="stylesheet" href="~/Content/css/LandingPage.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&family=Poppins:wght@600&family=Inria+Sans:wght@700&display=swap" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
 <body>
 
@@ -21,7 +23,7 @@
                 </a>
                 <nav class="main-nav">
                     <ul>
-                        <li><a href="#">SELL YOUR PRODUCT</a></li>
+                        <li><a href="@Url.Action("UserProfile", "UserProfile")">SELL YOUR PRODUCT</a></li>
                         <li><a href="@Url.Action("Trending", "TrendingProducts")">TRENDING</a></li>
                         <li class="dropdown">
                             <a href="#">BROWSE CATEGORIES</a>
@@ -34,12 +36,59 @@
                         </li>
                     </ul>
                 </nav>
-                <div class="auth-buttons">
-                    <a href="@Url.Action("Login", "Account")" class="btn btn-login">LOGIN</a>
-                    <a href="@Url.Action("Register", "Account")" class="btn btn-signup">SIGN UP</a>
+                <div class="auth-buttons-container">
+                    <div class="auth-buttons">
+                        @{
+                            var userId = Session["UserId"]?.ToString();
+                        }
+                        @if (User.Identity.IsAuthenticated && !string.IsNullOrEmpty(userId))
+                        {
+                            var profileImage = Session["ProfileImage"] as string;
+
+                            string imagePath = Url.Content("~/Assets/user_profile_image/user_" + userId + "/" + profileImage);
+
+                            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(profileImage))
+                            {
+                                imagePath = Url.Content("~/Assets/user_profile_image/avatar.jpg");
+                            }
+
+                            <div class="auth-user-logged-in">
+                                <!-- Cart Icon -->
+                                <a href="@Url.Action("Cart", "Cart")" title="Notifications" class="icon-btn">
+                                    <img src="@Url.Content("~/Assets/images/cart.png")" alt="Notifications" class="icon-image" />
+                                </a>
+
+
+                                <!-- Notification Icon -->
+                                <div class="notification-wrapper">
+                                    <a href="javascript:void(0);" class="icon-btn" onclick="toggleNotificationDropdown()" title="Notifications">
+                                        <i class="bi bi-bell"></i>
+                                    </a>
+
+                                    <div class="notification-dropdown" id="notificationDropdown" style="display: none;">
+                                        <div class="dropdown-header">Notifications</div>
+                                        <div id="notificationList" class="notification-list">
+                                            <!-- Will be populated dynamically -->
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <!-- Profile Image -->
+                                <a href="@Url.Action("UserProfile", "UserProfile")" class="profile-link" title="View Profile">
+                                    <img src="@imagePath" alt="Profile" class="profile-image-rounded" />
+                                </a>
+                            </div>
+
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Login", "Auth")" class="btn btn-login">LOGIN</a>
+                            <a href="@Url.Action("Register", "Auth")" class="btn btn-signup">SIGN UP</a>
+                        }
+                    </div>
                 </div>
             </header>
-
             <main class="hero-content">
                 <div class="hero-text">
                     <h1>@Model.Headline</h1>
@@ -47,7 +96,7 @@
                     <a href="@Url.Action("ProductDetails", "ProductDetails", new { id = (int)Model.ProductId })" class="btn btn-purchase">PURCHASE NOW</a>
                 </div>
                 <div class="hero-image">
-                    <img src="@Url.Content("~/Assets/site-images/hero-image.png")" alt="Creative splash of a product" />
+                    <img src="@Model.HeroImageUrl" alt="Hero Product" />
                 </div>
             </main>
         </div>
@@ -61,6 +110,82 @@
             <a href="" class="feature-link">GRAPHICS</a>
         </div>
     </section>
+    <script>
+        function toggleNotificationDropdown() {
+            const dropdown = document.getElementById('notificationDropdown');
+            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+
+            if (dropdown.style.display === 'block') {
+                fetchNotifications();
+            }
+        }
+
+        function fetchNotifications() {
+            fetch('/UserProfile/GetNotifications')
+                .then(res => res.json())
+                .then(data => {
+                    const list = document.getElementById('notificationList');
+                    list.innerHTML = '';
+
+                    if (!data.success || !data.notifications || data.notifications.length === 0) {
+                        list.innerHTML = '<div class="notification-item">No notifications found.</div>';
+                        return;
+                    }
+
+                    data.notifications.forEach(n => {
+                        let badgeHtml = '';
+                        if (n.Status !== 'Sent') {
+                            const badgeClass =
+                                n.Status === 'Approved' ? 'badge-approved' :
+                                    n.Status === 'Rejected' ? 'badge-rejected' :
+                                        'badge-pending';
+
+                            badgeHtml = `<span class="badge ${badgeClass}">${n.Status}</span>`;
+                        }
+
+                        const item = document.createElement('div');
+                        item.className = 'notification-item';
+                        item.innerHTML = `
+                            <div class="info">
+                                <div class="subject">${n.Subject}</div>
+                                <div class="message">${n.Message}</div>
+                                ${badgeHtml}
+                            </div>
+                            <div class="delete-btn" onclick="deleteNotification(${n.NotificationId})">&times;</div>
+                        `;
+                        list.appendChild(item);
+                    });
+                })
+                .catch(err => {
+                    console.error("Failed to fetch notifications", err);
+                });
+        }
+
+        function deleteNotification(id) {
+            const tokenEl = document.querySelector('input[name="__RequestVerificationToken"]');
+            const token = tokenEl ? tokenEl.value : '';
+
+            fetch('/UserProfile/DeleteNotification', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': token
+                },
+                body: JSON.stringify({ id })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        fetchNotifications();
+                    } else {
+                        alert('Failed to delete notification.');
+                    }
+                })
+                .catch(err => {
+                    console.error("Failed to delete notification", err);
+                });
+        }
+    </script>
 
 </body>
 </html>

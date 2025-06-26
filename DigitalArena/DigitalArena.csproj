@@ -259,6 +259,7 @@
     <Compile Include="Models\WalletModel.cs" />
     <Compile Include="Models\WishlistModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\TypesenseService.cs" />
     <Compile Include="Utils\DateHelper.cs" />
     <Compile Include="Utils\SmsService.cs" />
     <Compile Include="Utils\WebRoleProvider.cs" />
@@ -282,9 +283,10 @@
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\css\Cart.css" />
     <Content Include="Content\css\Modals.css" />
+    <Content Include="Content\css\_Header.css" />
     <Content Include="Content\css\user-profile.css" />
     <Content Include="Content\Home.css" />
-    <Content Include="Content\LandingPage.css" />
+    <Content Include="Content\css\LandingPage.css" />
     <Content Include="Content\ProductDetails.css" />
     <Content Include="Content\styles.css" />
     <Content Include="DBContext\DigitalArenaDBContext.Context.tt">
@@ -321,6 +323,7 @@
     <Content Include="Scripts\custom\modals.js" />
     <Content Include="Scripts\custom\Password_Visibility_Icon.js" />
     <Content Include="Scripts\custom\product-filters.js" />
+    <Content Include="Scripts\custom\UserProfile.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />
     <Content Include="Scripts\jquery-3.7.0.slim.js" />

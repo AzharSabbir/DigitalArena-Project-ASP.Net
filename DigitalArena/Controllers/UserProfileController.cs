@@ -232,6 +232,73 @@ public class UserProfileController : Controller
         return Json(new { success = false });
     }
 
+    public JsonResult GetNotifications()
+    {
+        var userId = (int?)Session["UserId"];
+        if (userId == null)
+        {
+            return Json(new { success = false, message = "Not logged in." }, JsonRequestBehavior.AllowGet);
+        }
+
+        var notificationsQuery = db.Notification
+            .Where(n => n.UserId == userId && n.Status == "Sent")
+            .OrderByDescending(n => n.CreatedAt)
+            .Take(20)
+            .ToList();
+
+        var notifications = notificationsQuery.Select(n => new NotificationModel
+        {
+            NotificationId = n.NotificationId,
+            Subject = n.Subject,
+            Message = n.Message,
+            Status = n.Status,
+            Type = n.Type,
+            CreatedAt = n.CreatedAt,
+            UserId = n.UserId,
+        }).ToList();
+
+        var formattedNotifications = notifications.Select(n => new
+        {
+            n.NotificationId,
+            n.Subject,
+            n.Message,
+            n.Status,
+            n.Type,
+            CreatedAt = n.CreatedAt.ToString("dd MMM yyyy")
+        });
+
+        return Json(new { success = true, notifications = formattedNotifications }, JsonRequestBehavior.AllowGet);
+    }
+
+    [HttpPost]
+    public JsonResult DeleteNotification(int id)
+    {
+        if (!User.Identity.IsAuthenticated)
+        {
+            return Json(new { success = false, message = "Unauthorized" });
+        }
+
+        var userId = (int?)Session["UserId"];
+        if (userId == null)
+        {
+            return Json(new { success = false, message = "User session not found." });
+        }
+
+        var notification = db.Notification.FirstOrDefault(n => n.NotificationId == id && n.UserId == userId);
+
+        if (notification == null)
+        {
+            return Json(new { success = false, message = "Notification not found or unauthorized." });
+        }
+
+        db.Notification.Remove(notification);
+        db.SaveChanges();
+
+        return Json(new { success = true });
+    }
+
+
+
 
 
 }

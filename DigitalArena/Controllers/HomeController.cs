@@ -35,7 +35,7 @@ namespace DigitalArena.Controllers
             return View();
         }
 
-        // Loads landing page with hero section content
+        [AllowAnonymous]
         public ActionResult LandingPage()
         {
             var landing = db.LandingPage.Include(lp => lp.Product).FirstOrDefault();
@@ -51,8 +51,6 @@ namespace DigitalArena.Controllers
             };
             return View(model);
         }
-
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)

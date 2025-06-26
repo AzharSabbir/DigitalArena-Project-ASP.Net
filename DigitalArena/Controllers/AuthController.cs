@@ -15,7 +15,7 @@ namespace DigitalArena.Controllers
 
         public ActionResult Login()
         {
-            if (Request.IsAuthenticated) return RedirectToAction("Index", "Home");
+            if (Request.IsAuthenticated && !string.IsNullOrEmpty(Session["UserId"]?.ToString())) return RedirectToAction("Index", "Home");
             
             return View();
         }
@@ -35,17 +35,19 @@ namespace DigitalArena.Controllers
             if (user != null && user.IsActive)
             {
                 Session["UserId"] = user.UserId;
+                Session["ProfileImage"] = user.ProfileImage;
                 user.LastLoginAt = DateTime.Now;
                 _dbContext.SaveChanges();
 
                 FormsAuthentication.SetAuthCookie(model.Username, true);
 
-                if(user.Role == "SELLER"){
-                    return RedirectToAction("Index", "SellerDashboard");
-                }else if(user.Role == "ADMIN"){
+                if(user.Role == "SELLER" || user.Role == "BUYER")
+                {
+                    return RedirectToAction("LandingPage", "Home");
+                }
+                else 
+                {
                     return RedirectToAction("Index", "AdminDashboard");
-                }else{
-                    return RedirectToAction("Index", "Home");
                 }
             }
 
@@ -295,10 +297,26 @@ namespace DigitalArena.Controllers
 
         public ActionResult Logout()
         {
-            if (!Request.IsAuthenticated) return RedirectToAction("Login", "Auth");
+            if (!Request.IsAuthenticated)
+                return RedirectToAction("Login", "Auth");
 
+            // Sign out the authentication ticket
             FormsAuthentication.SignOut();
-            return RedirectToAction("Index", "Home");
+
+            // Clear all session variables
+            Session.Clear();
+            Session.Abandon();
+
+            // Get the previous URL
+            string returnUrl = Request.UrlReferrer?.ToString();
+
+            // Fallback: if referrer is null, redirect to home
+            if (string.IsNullOrEmpty(returnUrl))
+                return RedirectToAction("Index", "Home");
+
+            return Redirect(returnUrl);
         }
+
+
     }
 }
