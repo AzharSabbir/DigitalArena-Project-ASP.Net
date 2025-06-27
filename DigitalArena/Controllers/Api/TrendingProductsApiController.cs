@@ -88,7 +88,7 @@ namespace DigitalArena.Controllers.API
                     (Normalize(ratingCount, minRatingCount, maxRatingCount) * 0.05) +
                     (Normalize(product.LikeCount, minLikes, maxLikes) * 0.05) -
                     (Normalize(product.UnlikeCount, minUnlikes, maxUnlikes) * 0.05) +
-                    (timeDecay * 0.1);
+                    (timeDecay * 0.2);
 
                 trending.Add(new
                 {

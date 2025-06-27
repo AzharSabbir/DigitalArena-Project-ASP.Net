@@ -44,7 +44,9 @@
                                 <div class="product-info">
                                     <div class="product-header">
                                         <span class="product-name">@product.Name</span>
-                                        <span class="product-price">@product.Price TK</span> <!-- You may replace this -->
+                                        <span class="product-price">
+                                            @(product.Price == 0 ? "FREE" : product.Price.ToString("N2") + " TK")
+                                        </span>
                                     </div>
 
                                     <div class="rating-container">
