@@ -1,10 +1,5 @@
 ﻿@model List<DigitalArena.Models.CartItemModel>
 
-@{
-    ViewBag.Title = "Your Cart";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-
 <head>
     <link rel="stylesheet" href="~/Content/Wishlist.css" />
     <link rel="stylesheet" href="~/Content/css/Cart.css" />
@@ -60,7 +55,7 @@
         </ul>
 
         <div class="cart-summary">
-            <div class="subtotal">Subtotal: ৳@Model.Sum(i => i.Product.Price).ToString("0.00")</div>
+            <div class="subtotal">Subtotal: ৳ 0.00</div>
 
             <form id="checkout-form" method="get" action="@Url.Action("Checkout", "Cart")">
                 <button type="submit" class="btn-checkout">Proceed to Checkout</button>

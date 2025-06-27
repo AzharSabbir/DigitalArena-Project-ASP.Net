@@ -40,7 +40,7 @@
                 total += parseFloat(priceText);
             }
         });
-        subtotalDisplay.textContent = `Subtotal: ৳${total.toFixed(2)}`;
+        subtotalDisplay.textContent = `Subtotal: ৳ ${total.toFixed(2)}`;
     }
 
     // Handle checkout submission
