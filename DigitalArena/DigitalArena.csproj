@@ -318,6 +318,7 @@
     </Content>
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\custom\Cart.js" />
+    <Content Include="Scripts\custom\LandingPage.js" />
     <Content Include="Scripts\custom\Notification.js" />
     <Content Include="Scripts\custom\ProductDetailsOperation.js" />
     <Content Include="Scripts\custom\cubeViewer.js" />

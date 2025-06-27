@@ -13,22 +13,6 @@
 <script src="~/Scripts/custom/modals.js"></script>
 
 <body>
-    @if (User.Identity.IsAuthenticated)
-    {
-        if (User.IsInRole("SELLER"))
-        {
-            @Html.Partial("_SellerHeader")
-        }
-        else if (User.IsInRole("BUYER"))
-        {
-            //@Html.Partial("_Header")
-        }
-    }
-    else
-    {
-        //@Html.Partial("_Header")
-    }
-
     @if (User.Identity.IsAuthenticated && User.IsInRole("ADMIN"))
     {
         <!-- Admin layout with sidebar and header -->

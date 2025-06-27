@@ -14,13 +14,12 @@ public class UserProfileController : Controller
 
     public ActionResult UserProfile()
     {
-        int userId = 5; // Replace with actual session/auth logic
+        int userId = GetUserId();
 
         var user = db.User.FirstOrDefault(u => u.UserId == userId);
         if (user == null)
             return HttpNotFound();
 
-        // Purchased products
         var purchasedProducts = db.Permission
             .Where(p => p.UserId == userId && p.IsValid)
             .Include(p => p.Product.Category)
@@ -40,8 +39,6 @@ public class UserProfileController : Controller
                 CategoryId = p.Product.CategoryId,
                 SellerId = p.Product.SellerId,
                 ViewCount = p.Product.ViewCount,
-
-                // Fix circular reference: project only essential Category/User data
                 Category = new CategoryModel
                 {
                     CategoryId = p.Product.Category.CategoryId,
@@ -57,7 +54,6 @@ public class UserProfileController : Controller
             })
             .ToList();
 
-        // Uploaded products (i.e., products uploaded by the user as a seller)
         var uploadedProducts = db.Product
             .Where(p => p.SellerId == userId)
             .Include(p => p.Category)
@@ -108,7 +104,7 @@ public class UserProfileController : Controller
                 LastLoginAt = user.LastLoginAt ?? DateTime.Now
             },
             TotalPurchases = purchasedProducts.Count,
-            IsSellerMode = true, // For testing; replace with actual toggle
+            IsSellerMode = true,
             PurchasedProducts = purchasedProducts,
             UploadedProducts = uploadedProducts
         };
@@ -117,19 +113,15 @@ public class UserProfileController : Controller
         {
             CategoryId = c.CategoryId,
             Name = c.Name
-            // Include other properties if needed
         })
     .ToList();
-
-
         return View(model);
     }
-
 
     [HttpPost]
     public JsonResult ToggleMode([FromBody] RoleChangeRequest model)
     {
-        var userId = 5;
+        var userId = GetUserId();
         var user = db.User.FirstOrDefault(u => u.UserId == userId);
 
         if (user == null)
@@ -141,20 +133,57 @@ public class UserProfileController : Controller
         return Json(new { success = true });
     }
 
-    public class RoleChangeRequest
-    {
-        public string Role { get; set; }
-    }
-
     [HttpPost]
     public ActionResult UploadProduct(ProductUploadViewModel model)
     {
         if (!ModelState.IsValid)
-            return RedirectToAction("UserProfile");
+            return Json(new { success = false, message = "Invalid form submission." });
 
         var category = db.Category.FirstOrDefault(c => c.CategoryId == model.CategoryId);
         if (category == null)
-            return RedirectToAction("UserProfile");
+            return Json(new { success = false, message = "Invalid category selected." });
+
+        string categoryName = category.Name.ToLower();
+        bool isValid = true;
+        string errorMessage = "";
+
+        if (categoryName == "3d model")
+        {
+            if (model.Files == null || model.Files.Count() != 1 || !model.Files.First().FileName.EndsWith(".glb", StringComparison.OrdinalIgnoreCase))
+            {
+                isValid = false;
+                errorMessage = "3D Model requires exactly one .glb file.";
+            }
+        }
+        else if (categoryName == "e-book" || categoryName == "ebook")
+        {
+            if (model.Files == null || model.Files.Count() != 1 || !model.Files.First().FileName.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
+            {
+                isValid = false;
+                errorMessage = "E-Book requires exactly one .pdf file.";
+            }
+        }
+        else if (categoryName == "presentation slide")
+        {
+            if (model.Files == null || model.Files.Count() != 1 || !model.Files.First().FileName.EndsWith(".pptx", StringComparison.OrdinalIgnoreCase))
+            {
+                isValid = false;
+                errorMessage = "Presentation Slide requires exactly one .pptx file.";
+            }
+        }
+        else if (categoryName == "graphics template")
+        {
+            if (model.Files == null || !model.Files.Any(f => f.FileName.EndsWith(".ai", StringComparison.OrdinalIgnoreCase)))
+            {
+                isValid = false;
+                errorMessage = "Graphics Template must include at least one .ai file.";
+            }
+        }
+
+        if (!isValid)
+        {
+            return Json(new { success = false, message = errorMessage });
+        }
 
         var product = new Product
         {
@@ -165,14 +194,14 @@ public class UserProfileController : Controller
             SellerId = model.SellerId,
             CreatedAt = DateTime.Now,
             IsActive = true,
-            Status = "Approved",
+            Status = "Pending",
             LikeCount = 0,
             UnlikeCount = 0,
             ViewCount = 0
         };
 
         db.Product.Add(product);
-        db.SaveChanges(); // Save first to get ProductId
+        db.SaveChanges();
 
         string folderName = category.Name;
         string basePath = Server.MapPath($"~/Assets/{folderName}/product_{product.ProductId}");
@@ -200,13 +229,14 @@ public class UserProfileController : Controller
             {
                 if (file != null && file.ContentLength > 0)
                 {
-                    var filePath = Path.Combine(fileFolder, Path.GetFileName(product.Name));
+                    var safeFileName = Path.GetFileName(file.FileName);
+                    var filePath = Path.Combine(fileFolder, safeFileName);
                     file.SaveAs(filePath);
                 }
             }
         }
 
-        return RedirectToAction("UserProfile");
+        return Json(new { success = true });
     }
 
     [HttpPost]
@@ -215,10 +245,9 @@ public class UserProfileController : Controller
         var product = db.Product.Find(productId);
         if (product != null)
         {
-            int currentUserId = 5; // Replace with your actual logic
+            var currentUserId = GetUserId();
             if (product.SellerId == currentUserId)
             {
-                // Delete files
                 var categoryFolder = product.Category.Name ?? "3D Model";
                 var folderPath = Server.MapPath($"~/Assets/{categoryFolder}/product_{product.ProductId}");
                 if (Directory.Exists(folderPath))
@@ -234,8 +263,9 @@ public class UserProfileController : Controller
 
     public JsonResult GetNotifications()
     {
-        var userId = (int?)Session["UserId"];
-        if (userId == null)
+        var userId = GetUserId();
+
+        if (userId == 0)
         {
             return Json(new { success = false, message = "Not logged in." }, JsonRequestBehavior.AllowGet);
         }
@@ -273,13 +303,8 @@ public class UserProfileController : Controller
     [HttpPost]
     public JsonResult DeleteNotification(int id)
     {
-        if (!User.Identity.IsAuthenticated)
-        {
-            return Json(new { success = false, message = "Unauthorized" });
-        }
-
-        var userId = (int?)Session["UserId"];
-        if (userId == null)
+        var userId = GetUserId();
+        if (userId == 0)
         {
             return Json(new { success = false, message = "User session not found." });
         }
@@ -297,8 +322,16 @@ public class UserProfileController : Controller
         return Json(new { success = true });
     }
 
-
-
-
-
+    int GetUserId()
+    {
+        if (Session["UserId"] != null)
+        {
+            return (int)Session["UserId"];
+        }
+        return 0; 
+    }
+    public class RoleChangeRequest
+    {
+        public string Role { get; set; }
+    }
 }
