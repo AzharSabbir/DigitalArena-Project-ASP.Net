@@ -35,91 +35,87 @@ namespace DigitalArena.Controllers.API
                 .Where(p => p.IsValid && productIds.Contains(p.ProductId))
                 .ToList();
 
-            // Build dictionaries for fast lookup
-            var avgRatings = reviews
+            var ratingsList = reviews
                 .GroupBy(r => r.ProductId)
-                .ToDictionary(
-                    g => g.Key,
-                    g => g.Average(r => r.Rating)
-                );
+                .Select(g => new
+                {
+                    ProductId = g.Key,
+                    AvgRating = g.Average(r => r.Rating),
+                    RatingCount = g.Count()
+                }).ToList();
 
-            var ratingCounts = reviews
-                .GroupBy(r => r.ProductId)
-                .ToDictionary(
-                    g => g.Key,
-                    g => g.Count()
-                );
-
-            var downloadCounts = permissions
+            var downloadList = permissions
                 .GroupBy(p => p.ProductId)
-                .ToDictionary(
-                    g => g.Key,
-                    g => g.Count()
-                );
+                .Select(g => new
+                {
+                    ProductId = g.Key,
+                    DownloadCount = g.Count()
+                }).ToList();
 
-            // Get min and max values for normalization
-            double minViews = products.Min(p => p.ViewCount);
-            double maxViews = products.Max(p => p.ViewCount);
-            double minDownloads = downloadCounts.Values.DefaultIfEmpty(0).Min();
-            double maxDownloads = downloadCounts.Values.DefaultIfEmpty(0).Max();
-            double minLikes = products.Min(p => p.LikeCount);
-            double maxLikes = products.Max(p => p.LikeCount);
-            double minUnlikes = products.Min(p => p.UnlikeCount);
-            double maxUnlikes = products.Max(p => p.UnlikeCount);
-            double minRating = avgRatings.Values.DefaultIfEmpty(0).Min();
-            double maxRating = avgRatings.Values.DefaultIfEmpty(0).Max();
-            double minRatingCount = ratingCounts.Values.DefaultIfEmpty(0).Min();
-            double maxRatingCount = ratingCounts.Values.DefaultIfEmpty(0).Max();
+            double minViews = products.Min(p => (double)p.ViewCount);
+            double maxViews = products.Max(p => (double)p.ViewCount);
+            double minLikes = products.Min(p => (double)p.LikeCount);
+            double maxLikes = products.Max(p => (double)p.LikeCount);
+            double minUnlikes = products.Min(p => (double)p.UnlikeCount);
+            double maxUnlikes = products.Max(p => (double)p.UnlikeCount);
+            double minDownloads = downloadList.Any() ? downloadList.Min(d => (double)d.DownloadCount) : 0;
+            double maxDownloads = downloadList.Any() ? downloadList.Max(d => (double)d.DownloadCount) : 1;
+            double minRating = ratingsList.Any() ? ratingsList.Min(r => r.AvgRating) : 0;
+            double maxRating = ratingsList.Any() ? ratingsList.Max(r => r.AvgRating) : 1;
+            double minRatingCount = ratingsList.Any() ? ratingsList.Min(r => (double)r.RatingCount) : 0;
+            double maxRatingCount = ratingsList.Any() ? ratingsList.Max(r => (double)r.RatingCount) : 1;
 
             var now = DateTime.UtcNow;
 
-            var trendingList = products.Select(p =>
+            var trending = new List<object>();
+
+            foreach (var product in products)
             {
-                int downloads = downloadCounts.ContainsKey(p.ProductId) ? downloadCounts[p.ProductId] : 0;
-                double avgRating = avgRatings.ContainsKey(p.ProductId) ? avgRatings[p.ProductId] : 0;
-                int ratingCount = ratingCounts.ContainsKey(p.ProductId) ? ratingCounts[p.ProductId] : 0;
+                var ratingInfo = ratingsList.FirstOrDefault(r => r.ProductId == product.ProductId);
+                var downloadInfo = downloadList.FirstOrDefault(d => d.ProductId == product.ProductId);
 
-                double age = (now - p.CreatedAt).TotalDays;
-                double timeDecay = Math.Exp(-0.1 * age);
+                double avgRating = ratingInfo?.AvgRating ?? 0;
+                int ratingCount = ratingInfo?.RatingCount ?? 0;
+                int downloadCount = downloadInfo?.DownloadCount ?? 0;
 
-                double normViews = Normalize(p.ViewCount, minViews, maxViews);
-                double normDownloads = Normalize(downloads, minDownloads, maxDownloads);
-                double normLikes = Normalize(p.LikeCount, minLikes, maxLikes);
-                double normUnlikes = Normalize(p.UnlikeCount, minUnlikes, maxUnlikes);
-                double normRating = Normalize(avgRating, minRating, maxRating);
-                double normRatingCount = Normalize(ratingCount, minRatingCount, maxRatingCount);
+                double ageInDays = (now - product.CreatedAt).TotalDays;
+                double timeDecay = Math.Exp(-0.1 * ageInDays);
 
                 double trendScore =
-                    (normViews * 0.3) +
-                    (normDownloads * 0.4) +
-                    (normRating * 0.1) +
-                    (normRatingCount * 0.05) +
-                    (normLikes * 0.05) -
-                    (normUnlikes * 0.05) +
+                    (Normalize(product.ViewCount, minViews, maxViews) * 0.3) +
+                    (Normalize(downloadCount, minDownloads, maxDownloads) * 0.4) +
+                    (Normalize(avgRating, minRating, maxRating) * 0.1) +
+                    (Normalize(ratingCount, minRatingCount, maxRatingCount) * 0.05) +
+                    (Normalize(product.LikeCount, minLikes, maxLikes) * 0.05) -
+                    (Normalize(product.UnlikeCount, minUnlikes, maxUnlikes) * 0.05) +
                     (timeDecay * 0.1);
 
-                return new
+                trending.Add(new
                 {
-                    p.ProductId,
-                    p.Name,
-                    p.Thumbnail,
-                    p.CreatedAt,
-                    p.LikeCount,
-                    p.UnlikeCount,
-                    DownloadCount = downloads,
-                    ViewCount = p.ViewCount,
+                    product.ProductId,
+                    product.Name,
+                    product.Thumbnail,
+                    product.CreatedAt,
+                    product.LikeCount,
+                    product.UnlikeCount,
+                    ViewCount = product.ViewCount,
+                    Price = product.Price,
+                    CategoryName = product.Category.Name,
+                    DownloadCount = downloadCount,
                     Ratings = new
                     {
                         Average = Math.Round(avgRating, 2),
                         Count = ratingCount
                     },
                     TrendScore = Math.Round(trendScore, 4)
-                };
-            })
-            .OrderByDescending(p => p.TrendScore)
-            .ToList();
+                });
+            }
 
-            return Ok(trendingList);
+            var sortedTrending = trending
+                .OrderByDescending(t => ((dynamic)t).TrendScore)
+                .ToList();
+
+            return Ok(sortedTrending);
         }
 
         private double Normalize(double value, double min, double max)
@@ -132,9 +128,7 @@ namespace DigitalArena.Controllers.API
         protected override void Dispose(bool disposing)
         {
             if (disposing)
-            {
                 db.Dispose();
-            }
             base.Dispose(disposing);
         }
     }

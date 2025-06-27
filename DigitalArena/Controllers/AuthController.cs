@@ -15,10 +15,18 @@ namespace DigitalArena.Controllers
 
         public ActionResult Login()
         {
-            if (Request.IsAuthenticated && !string.IsNullOrEmpty(Session["UserId"]?.ToString())) return RedirectToAction("Index", "Home");
-            
+            if (Request.IsAuthenticated && !string.IsNullOrEmpty(Session["UserId"]?.ToString()))
+                return RedirectToAction("Index", "Home");
+
+            var referrer = Request.UrlReferrer?.ToString();
+            if (!string.IsNullOrEmpty(referrer) && !referrer.Contains("/Auth/Login"))
+            {
+                TempData["ReturnUrl"] = referrer;
+            }
+
             return View();
         }
+
         [HttpPost]
         public ActionResult Login(LoginModel model)
         {
@@ -31,7 +39,6 @@ namespace DigitalArena.Controllers
 
             var user = _dbContext.User.FirstOrDefault(u => u.Username == model.Username && u.Password == model.Password);
 
-            // User Authenticated
             if (user != null && user.IsActive)
             {
                 Session["UserId"] = user.UserId;
@@ -41,11 +48,16 @@ namespace DigitalArena.Controllers
 
                 FormsAuthentication.SetAuthCookie(model.Username, true);
 
-                if(user.Role == "SELLER" || user.Role == "BUYER")
+                if (TempData["ReturnUrl"] != null)
+                {
+                    return Redirect(TempData["ReturnUrl"].ToString());
+                }
+
+                if (user.Role == "SELLER" || user.Role == "BUYER")
                 {
                     return RedirectToAction("LandingPage", "Home");
                 }
-                else 
+                else
                 {
                     return RedirectToAction("Index", "AdminDashboard");
                 }
@@ -55,10 +67,11 @@ namespace DigitalArena.Controllers
             ViewBag.IsSuccess = false;
             return View(model);
         }
-        
-        
-        
-        
+
+
+
+
+
         public ActionResult Register()
         {
             if (Request.IsAuthenticated) return RedirectToAction("Index", "Home");

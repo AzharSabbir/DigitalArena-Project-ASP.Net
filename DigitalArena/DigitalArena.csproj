@@ -253,6 +253,7 @@
     <Compile Include="Models\ProductUploadViewModel.cs" />
     <Compile Include="Models\ReviewModel.cs" />
     <Compile Include="Models\TransactionModel.cs" />
+    <Compile Include="Models\TrendingProductViewModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Models\UserProfileViewModel.cs" />
     <Compile Include="Models\VerificationModel.cs" />
@@ -378,6 +379,7 @@
     <Content Include="Views\Cart\Cart.cshtml" />
     <Content Include="Views\UserProfile\UserProfile.cshtml" />
     <Content Include="Views\Shared\_Notification.cshtml" />
+    <Content Include="Views\Shared\_Header3.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
