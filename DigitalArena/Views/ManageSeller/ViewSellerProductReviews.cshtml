@@ -1,0 +1,116 @@
+﻿@model List<DigitalArena.DBContext.Review>
+
+@{
+    ViewBag.Title = "Seller Product Reviews";
+    int sellerId = (int)ViewBag.SellerId;
+}
+
+<!-- Breadcrumb etc... (keep as you have) -->
+
+<h1 class="mb-1 fw-bold text-primary">Product Reviews</h1>
+<p class="text-muted mb-4">
+    Approved reviews submitted for products of
+    <strong class="text-dark">@ViewBag.SellerName</strong>
+</p>
+
+<!-- Filters UI -->
+<div class="row g-3 mb-4">
+    <div class="col-md-2">
+        <label for="filterRating" class="form-label">Rating</label>
+        <select id="filterRating" class="form-select">
+            <option value="">All</option>
+            @for (int i = 1; i <= 5; i++)
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
+    </div>
+
+    <div class="col-md-2">
+        <label for="filterStatus" class="form-label">Status</label>
+        <select id="filterStatus" class="form-select">
+            <option value="">All</option>
+            <option value="Approved">Approved</option>
+            <option value="Pending">Pending</option>
+            <option value="Rejected">Rejected</option>
+        </select>
+    </div>
+
+    <div class="col-md-2">
+        <label for="filterProductId" class="form-label">Product ID</label>
+        <input type="number" id="filterProductId" class="form-control" placeholder="Product ID" min="1" />
+    </div>
+
+    <div class="col-md-3">
+        <label for="filterProductName" class="form-label">Product Name</label>
+        <input type="text" id="filterProductName" class="form-control" placeholder="Product Name" />
+    </div>
+
+    <div class="col-md-3">
+        <label for="filterFromDate" class="form-label">From Date</label>
+        <input type="date" id="filterFromDate" class="form-control" />
+    </div>
+
+    <div class="col-md-3 mt-3">
+        <label for="filterToDate" class="form-label">To Date</label>
+        <input type="date" id="filterToDate" class="form-control" />
+    </div>
+
+    <div class="col-md-3 d-flex align-items-end mt-3">
+        <button id="clearFilters" class="btn btn-outline-secondary w-100">Clear Filters</button>
+    </div>
+</div>
+
+<!-- Container for reviews -->
+<div id="reviewsContainer">
+    @Html.Partial("_SellerReviewsTable", Model)
+</div>
+
+<a href="@Url.RouteUrl("SellerDetailsRoute", new { id = sellerId })" class="btn btn-secondary mt-4">Back to Seller Details</a>
+
+@section scripts {
+    <script>
+    $(document).ready(function () {
+        let timer;
+
+        function fetchReviews() {
+            clearTimeout(timer);
+            timer = setTimeout(function () {
+                const params = {
+                    rating: $('#filterRating').val(),
+                    status: $('#filterStatus').val(),
+                    productId: $('#filterProductId').val(),
+                    productName: $('#filterProductName').val(),
+                    fromDate: $('#filterFromDate').val(),
+                    toDate: $('#filterToDate').val()
+                };
+
+                $.ajax({
+                    url: '@Url.RouteUrl("ViewSellerProductReviewsRoute", new { userId = sellerId })',
+                    data: params,
+                    type: 'GET',
+                    success: function (result) {
+                        $('#reviewsContainer').html(result);
+                    },
+                    error: function () {
+                        alert('Failed to load reviews. Please try again.');
+                    }
+                });
+            }, 400); // debounce 400ms
+        }
+
+        $('#filterRating, #filterStatus, #filterProductId, #filterProductName, #filterFromDate, #filterToDate').on('change keyup', fetchReviews);
+
+        $('#clearFilters').click(function (e) {
+            e.preventDefault();
+            $('#filterRating').val('');
+            $('#filterStatus').val('');
+            $('#filterProductId').val('');
+            $('#filterProductName').val('');
+            $('#filterFromDate').val('');
+            $('#filterToDate').val('');
+            fetchReviews();
+        });
+    });
+    </script>
+}

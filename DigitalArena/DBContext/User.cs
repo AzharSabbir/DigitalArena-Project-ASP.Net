@@ -19,16 +19,14 @@ namespace DigitalArena.DBContext
         {
             this.Cart = new HashSet<Cart>();
             this.Coupon = new HashSet<Coupon>();
-            this.GiftCard = new HashSet<GiftCard>();
             this.Notification = new HashSet<Notification>();
             this.Order = new HashSet<Order>();
             this.Permission = new HashSet<Permission>();
             this.Product = new HashSet<Product>();
             this.Review = new HashSet<Review>();
-            this.Verification = new HashSet<Verification>();
             this.Wallet = new HashSet<Wallet>();
-            this.Wishlist = new HashSet<Wishlist>();
             this.Engagement = new HashSet<Engagement>();
+            this.Coupon1 = new HashSet<Coupon>();
         }
     
         public int UserId { get; set; }
@@ -48,8 +46,6 @@ namespace DigitalArena.DBContext
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Coupon> Coupon { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<GiftCard> GiftCard { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Notification> Notification { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Order> Order { get; set; }
@@ -60,12 +56,10 @@ namespace DigitalArena.DBContext
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Review> Review { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Verification> Verification { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Wallet> Wallet { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Wishlist> Wishlist { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Engagement> Engagement { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Coupon> Coupon1 { get; set; }
     }
 }

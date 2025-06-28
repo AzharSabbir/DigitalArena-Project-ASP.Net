@@ -1,0 +1,59 @@
+﻿@model List<DigitalArena.DBContext.Product>
+
+@{
+    Func<DateTime, string> formatDate = d => d.ToString("dd MMM yyyy hh:mm tt");
+}
+
+<div class="table-responsive shadow-sm rounded bg-white p-3">
+    <table class="table table-bordered align-middle table-hover">
+        <thead class="table-light">
+            <tr>
+                <th>Thumbnail</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th>Active</th>
+                <th>Created</th>
+                <th class="text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model)
+            {
+                <tr>
+                    <td class="text-center">
+                        @if (!string.IsNullOrEmpty(product.Thumbnail))
+                        {
+                            var imgPath = $"~/Assets/{product.Category.Name}/product_{product.ProductId}/thumbnails/{product.Thumbnail}";
+                            <img src="@Url.Content(imgPath)" alt="Thumbnail" class="rounded shadow-sm" style="width: 50px; height: 50px;" />
+                        }
+                        else
+                        {
+                            <img src="~/Assets/ebook/default-thumb.jpg" alt="No Thumbnail" style="width: 50px; height: 50px;" class="rounded" />
+                        }
+                    </td>
+                    <td>@product.Name</td>
+                    <td>@product.Price</td>
+                    <td>@(product.Category?.Name ?? "N/A")</td>
+                    <td>
+                        <span class="badge @(product.Status == "Approved" ? "bg-success" : product.Status == "Pending" ? "bg-warning text-dark" : "bg-danger")">
+                            @product.Status
+                        </span>
+                    </td>
+                    <td>
+                        <span class="badge @(product.IsActive ? "bg-success" : "bg-secondary")">
+                            @(product.IsActive ? "Active" : "Inactive")
+                        </span>
+                    </td>
+                    <td>@formatDate(product.CreatedAt)</td>
+                    <td class="text-center">
+                        <a href="@Url.RouteUrl("ViewProductDetailsRoute", new { id = product.ProductId })" class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-eye"></i> View
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

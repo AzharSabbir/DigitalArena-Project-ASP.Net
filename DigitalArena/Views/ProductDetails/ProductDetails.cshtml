@@ -200,9 +200,21 @@
 
                     <p class="product-description font-inria-sans-400-20 color-text-primary"> @Model.Product.Description</p>
 
+                    @{
+                        var userId = Session["UserId"]?.ToString();
+                     }
+
                     <div class="product-download-area">
-                        <button class="download-button-main">PURCHASE</button>
+                       @if (User.Identity.IsAuthenticated && !string.IsNullOrEmpty(userId))
+                       {
+                            <button class="download-button-main">PURCHASE</button>
+                       }
+                       else
+                       {
+                           <button class="download-button-main" onclick="('Please log in to make a purchase.')">PURCHASE</button>
+                       }
                     </div>
+                    
 
                     <div class="publish-info">
                         <img src="~/Assets/images/00c3e69f4493bc2076a5cff445385528b3eb87c1.png" alt="Clock" style="opacity: 0.5;">
@@ -334,21 +346,31 @@
         </div>
     </section>
     <!-- 🔶 Fake Stripe Payment Modal -->
-    <div id="PaymentModal" class="payment-modal" style="display:none;">
-        <div class="payment-modal-content">
-            <h3>Fake Stripe Payment</h3>
-            <form id="paymentForm">
-                <label>Card Number</label>
-                <input type="text" name="cardNumber" placeholder="4242 4242 4242 4242" required />
-                <label>Expiry</label>
-                <input type="text" name="expiry" placeholder="MM/YY" required />
-                <label>CVC</label>
-                <input type="text" name="cvc" placeholder="123" required />
-                <button type="submit">Pay</button>
-                <button type="button" id="cancelPayment">Cancel</button>
-            </form>
+<div id="PaymentModal" class="payment-modal">
+    <div class="payment-modal-content">
+        <h2 class="payment-title">Complete Your Purchase</h2>
+        <p class="payment-subtitle">Pay securely with card</p>
+
+        <div class="payment-price">
+            <span>Total:</span>
+            <strong id="paymentAmount">TK @Model.Product.Price</strong> <!-- Set dynamically if needed -->
         </div>
+
+        <form id="paymentForm">
+            <label>Card Number</label>
+            <input type="text" name="cardNumber" placeholder="4242 4242 4242 4242" required />
+
+            <label>Expiry Date</label>
+            <input type="text" name="expiry" placeholder="MM/YY" required />
+
+            <label>CVC</label>
+            <input type="text" name="cvc" placeholder="123" required />
+
+            <button type="submit" class="btn-pay">Pay Now</button>
+            <button type="button" id="cancelPayment" class="btn-cancel">Cancel</button>
+        </form>
     </div>
+</div>
     <input type="hidden" id="hiddenProductId" value="@Model.Product.ProductId" />
     <input type="hidden" id="hiddenProductPrice" value="@Model.Product.Price" />
     <script src="~/Scripts/custom/ProductDetailsOperation.js"></script>

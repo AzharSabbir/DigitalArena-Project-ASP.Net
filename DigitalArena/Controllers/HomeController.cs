@@ -11,16 +11,12 @@ namespace DigitalArena.Controllers
     {
         private readonly DigitalArenaDBContext db = new DigitalArenaDBContext();
 
-        // Redirects based on user role
         public ActionResult Index()
         {
             if (User.IsInRole("ADMIN"))
                 return RedirectToAction("Index", "AdminDashboard");
 
-            if (User.IsInRole("SELLER"))
-                return RedirectToAction("Index", "SellerDashboard");
-
-            return View();
+            return RedirectToAction("LandingPage", "Home");
         }
 
         public ActionResult About()

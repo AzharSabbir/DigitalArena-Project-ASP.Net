@@ -33,6 +33,7 @@
     <EntitySetMapping Name="Coupon">
       <EntityTypeMapping TypeName="DigitalArenaDBModel.Coupon">
         <MappingFragment StoreEntitySet="Coupon">
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
           <ScalarProperty Name="UserId" ColumnName="UserId" />
           <ScalarProperty Name="UserSpecific" ColumnName="UserSpecific" />
           <ScalarProperty Name="UsageCount" ColumnName="UsageCount" />
@@ -43,20 +44,6 @@
           <ScalarProperty Name="DiscountPercentage" ColumnName="DiscountPercentage" />
           <ScalarProperty Name="CouponCode" ColumnName="CouponCode" />
           <ScalarProperty Name="CouponId" ColumnName="CouponId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="GiftCard">
-      <EntityTypeMapping TypeName="DigitalArenaDBModel.GiftCard">
-        <MappingFragment StoreEntitySet="GiftCard">
-          <ScalarProperty Name="UserId" ColumnName="UserId" />
-          <ScalarProperty Name="UsedAt" ColumnName="UsedAt" />
-          <ScalarProperty Name="ExpiryDate" ColumnName="ExpiryDate" />
-          <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
-          <ScalarProperty Name="IsAvailable" ColumnName="IsAvailable" />
-          <ScalarProperty Name="Amount" ColumnName="Amount" />
-          <ScalarProperty Name="GiftCode" ColumnName="GiftCode" />
-          <ScalarProperty Name="GiftCardId" ColumnName="GiftCardId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -180,18 +167,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Verification">
-      <EntityTypeMapping TypeName="DigitalArenaDBModel.Verification">
-        <MappingFragment StoreEntitySet="Verification">
-          <ScalarProperty Name="UserId" ColumnName="UserId" />
-          <ScalarProperty Name="ExpiresAt" ColumnName="ExpiresAt" />
-          <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
-          <ScalarProperty Name="Otp" ColumnName="Otp" />
-          <ScalarProperty Name="Type" ColumnName="Type" />
-          <ScalarProperty Name="VerificationId" ColumnName="VerificationId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Wallet">
       <EntityTypeMapping TypeName="DigitalArenaDBModel.Wallet">
         <MappingFragment StoreEntitySet="Wallet">
@@ -199,28 +174,6 @@
           <ScalarProperty Name="Pin" ColumnName="Pin" />
           <ScalarProperty Name="Balance" ColumnName="Balance" />
           <ScalarProperty Name="WalletId" ColumnName="WalletId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="Wishlist">
-      <EntityTypeMapping TypeName="DigitalArenaDBModel.Wishlist">
-        <MappingFragment StoreEntitySet="Wishlist">
-          <ScalarProperty Name="ProductId" ColumnName="ProductId" />
-          <ScalarProperty Name="UserId" ColumnName="UserId" />
-          <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
-          <ScalarProperty Name="WishlistId" ColumnName="WishlistId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="Carousel">
-      <EntityTypeMapping TypeName="DigitalArenaDBModel.Carousel">
-        <MappingFragment StoreEntitySet="Carousel">
-          <ScalarProperty Name="ProductId" ColumnName="ProductId" />
-          <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
-          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-          <ScalarProperty Name="Page" ColumnName="Page" />
-          <ScalarProperty Name="Image" ColumnName="Image" />
-          <ScalarProperty Name="CarouselId" ColumnName="CarouselId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

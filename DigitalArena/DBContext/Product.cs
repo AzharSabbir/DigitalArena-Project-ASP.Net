@@ -22,8 +22,6 @@ namespace DigitalArena.DBContext
             this.Permission = new HashSet<Permission>();
             this.ProductFile = new HashSet<ProductFile>();
             this.Review = new HashSet<Review>();
-            this.Wishlist = new HashSet<Wishlist>();
-            this.Carousel = new HashSet<Carousel>();
             this.LandingPage = new HashSet<LandingPage>();
             this.Engagement = new HashSet<Engagement>();
         }
@@ -54,10 +52,6 @@ namespace DigitalArena.DBContext
         public virtual ICollection<ProductFile> ProductFile { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Review> Review { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Wishlist> Wishlist { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Carousel> Carousel { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LandingPage> LandingPage { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -1,5 +1,4 @@
 ﻿@model List<DigitalArena.DBContext.OrderItem>
-
 @{
     ViewBag.Title = $"Order Details - Order #{Model.First().OrderId}";
 }
@@ -51,7 +50,7 @@ else
                         <td>
                             @if (!string.IsNullOrEmpty(item.Product.Thumbnail))
                             {
-                                
+
                                 <img src="~/Assets/@item.Product.Category.Name/product_@item.ProductId/thumbnails/@item.Product.Thumbnail"
                                      alt="@item.Product.Name"
                                      style="width: 60px; height: 60px; object-fit: cover;"
@@ -63,7 +62,7 @@ else
                             }
                         </td>
                         <td>@item.Product.Name</td>
-                        <td>@item.Price.ToString("C")</td>
+                        <td>@item.Price</td>
                         <td>@item.Product.Category.Name</td>
                         <td>@item.Product.User.Username</td>
                     </tr>

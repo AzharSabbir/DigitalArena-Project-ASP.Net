@@ -1,16 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="DigitalArenaDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-  <EntityType Name="Carousel">
-    <Key>
-      <PropertyRef Name="CarouselId" />
-    </Key>
-    <Property Name="CarouselId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Image" Type="nvarchar" MaxLength="255" Nullable="false" />
-    <Property Name="Page" Type="nvarchar" MaxLength="100" Nullable="false" />
-    <Property Name="IsActive" Type="bit" Nullable="false" />
-    <Property Name="CreatedAt" Type="datetime" Nullable="false" />
-    <Property Name="ProductId" Type="int" />
-  </EntityType>
   <EntityType Name="Cart">
     <Key>
       <PropertyRef Name="CartId" />
@@ -51,6 +40,7 @@
     <Property Name="UsageCount" Type="int" Nullable="false" />
     <Property Name="UserSpecific" Type="bit" Nullable="false" />
     <Property Name="UserId" Type="int" />
+    <Property Name="CreatedBy" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Engagement">
     <Key>
@@ -61,19 +51,6 @@
     <Property Name="ProductId" Type="int" Nullable="false" />
     <Property Name="Liked" Type="bit" Nullable="false" />
     <Property Name="Disliked" Type="bit" Nullable="false" />
-  </EntityType>
-  <EntityType Name="GiftCard">
-    <Key>
-      <PropertyRef Name="GiftCardId" />
-    </Key>
-    <Property Name="GiftCardId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="GiftCode" Type="nvarchar" MaxLength="50" Nullable="false" />
-    <Property Name="Amount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
-    <Property Name="IsAvailable" Type="bit" Nullable="false" />
-    <Property Name="CreatedAt" Type="datetime" Nullable="false" />
-    <Property Name="ExpiryDate" Type="datetime" Nullable="false" />
-    <Property Name="UsedAt" Type="datetime" />
-    <Property Name="UserId" Type="int" />
   </EntityType>
   <EntityType Name="LandingPage">
     <Key>
@@ -196,17 +173,6 @@
     <Property Name="CreatedAt" Type="datetime" Nullable="false" />
     <Property Name="LastLoginAt" Type="datetime" />
   </EntityType>
-  <EntityType Name="Verification">
-    <Key>
-      <PropertyRef Name="VerificationId" />
-    </Key>
-    <Property Name="VerificationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Type" Type="nvarchar" MaxLength="30" Nullable="false" />
-    <Property Name="Otp" Type="nvarchar" MaxLength="10" Nullable="false" />
-    <Property Name="CreatedAt" Type="datetime" Nullable="false" />
-    <Property Name="ExpiresAt" Type="datetime" Nullable="false" />
-    <Property Name="UserId" Type="int" Nullable="false" />
-  </EntityType>
   <EntityType Name="Wallet">
     <Key>
       <PropertyRef Name="WalletId" />
@@ -215,15 +181,6 @@
     <Property Name="Balance" Type="decimal" Precision="18" Scale="2" Nullable="false" />
     <Property Name="Pin" Type="char" MaxLength="4" Nullable="false" />
     <Property Name="UserId" Type="int" Nullable="false" />
-  </EntityType>
-  <EntityType Name="Wishlist">
-    <Key>
-      <PropertyRef Name="WishlistId" />
-    </Key>
-    <Property Name="WishlistId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="CreatedAt" Type="datetime" Nullable="false" />
-    <Property Name="UserId" Type="int" Nullable="false" />
-    <Property Name="ProductId" Type="int" Nullable="false" />
   </EntityType>
   <Association Name="FK__Cart__UserId__03F0984C">
     <End Role="User" Type="Self.User" Multiplicity="1" />
@@ -297,18 +254,6 @@
         <PropertyRef Name="UserId" />
       </Principal>
       <Dependent Role="Engagement">
-        <PropertyRef Name="UserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__GiftCard__UserId__72C60C4A">
-    <End Role="User" Type="Self.User" Multiplicity="0..1" />
-    <End Role="GiftCard" Type="Self.GiftCard" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="User">
-        <PropertyRef Name="UserId" />
-      </Principal>
-      <Dependent Role="GiftCard">
         <PropertyRef Name="UserId" />
       </Dependent>
     </ReferentialConstraint>
@@ -481,18 +426,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Verificat__UserI__403A8C7D">
-    <End Role="User" Type="Self.User" Multiplicity="1" />
-    <End Role="Verification" Type="Self.Verification" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="User">
-        <PropertyRef Name="UserId" />
-      </Principal>
-      <Dependent Role="Verification">
-        <PropertyRef Name="UserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK__Wallet__UserId__44FF419A">
     <End Role="User" Type="Self.User" Multiplicity="1" />
     <End Role="Wallet" Type="Self.Wallet" Multiplicity="*" />
@@ -505,41 +438,15 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Wishlist__Produc__0D7A0286">
-    <End Role="Product" Type="Self.Product" Multiplicity="1" />
-    <End Role="Wishlist" Type="Self.Wishlist" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Product">
-        <PropertyRef Name="ProductId" />
-      </Principal>
-      <Dependent Role="Wishlist">
-        <PropertyRef Name="ProductId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Wishlist__UserId__0C85DE4D">
+  <Association Name="FK_Coupon_CreatedBy_User">
     <End Role="User" Type="Self.User" Multiplicity="1" />
-    <End Role="Wishlist" Type="Self.Wishlist" Multiplicity="*" />
+    <End Role="Coupon" Type="Self.Coupon" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="User">
         <PropertyRef Name="UserId" />
       </Principal>
-      <Dependent Role="Wishlist">
-        <PropertyRef Name="UserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Carousel_Product">
-    <End Role="Product" Type="Self.Product" Multiplicity="0..1">
-      <OnDelete Action="Cascade" />
-    </End>
-    <End Role="Carousel" Type="Self.Carousel" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Product">
-        <PropertyRef Name="ProductId" />
-      </Principal>
-      <Dependent Role="Carousel">
-        <PropertyRef Name="ProductId" />
+      <Dependent Role="Coupon">
+        <PropertyRef Name="CreatedBy" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -556,13 +463,11 @@
     </ReferentialConstraint>
   </Association>
   <EntityContainer Name="DigitalArenaDBModelStoreContainer">
-    <EntitySet Name="Carousel" EntityType="Self.Carousel" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Cart" EntityType="Self.Cart" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CartItem" EntityType="Self.CartItem" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Coupon" EntityType="Self.Coupon" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Engagement" EntityType="Self.Engagement" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="GiftCard" EntityType="Self.GiftCard" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="LandingPage" EntityType="Self.LandingPage" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Notification" EntityType="Self.Notification" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
@@ -573,9 +478,7 @@
     <EntitySet Name="Review" EntityType="Self.Review" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Transaction" EntityType="Self.Transaction" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Verification" EntityType="Self.Verification" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Wallet" EntityType="Self.Wallet" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Wishlist" EntityType="Self.Wishlist" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK__Cart__UserId__03F0984C" Association="Self.FK__Cart__UserId__03F0984C">
       <End Role="User" EntitySet="User" />
       <End Role="Cart" EntitySet="Cart" />
@@ -599,10 +502,6 @@
     <AssociationSet Name="FK__Engagemen__UserI__2B0A656D" Association="Self.FK__Engagemen__UserI__2B0A656D">
       <End Role="User" EntitySet="User" />
       <End Role="Engagement" EntitySet="Engagement" />
-    </AssociationSet>
-    <AssociationSet Name="FK__GiftCard__UserId__72C60C4A" Association="Self.FK__GiftCard__UserId__72C60C4A">
-      <End Role="User" EntitySet="User" />
-      <End Role="GiftCard" EntitySet="GiftCard" />
     </AssociationSet>
     <AssociationSet Name="FK__LandingPa__Produ__1BC821DD" Association="Self.FK__LandingPa__Produ__1BC821DD">
       <End Role="Product" EntitySet="Product" />
@@ -660,25 +559,13 @@
       <End Role="Wallet" EntitySet="Wallet" />
       <End Role="Transaction" EntitySet="Transaction" />
     </AssociationSet>
-    <AssociationSet Name="FK__Verificat__UserI__403A8C7D" Association="Self.FK__Verificat__UserI__403A8C7D">
-      <End Role="User" EntitySet="User" />
-      <End Role="Verification" EntitySet="Verification" />
-    </AssociationSet>
     <AssociationSet Name="FK__Wallet__UserId__44FF419A" Association="Self.FK__Wallet__UserId__44FF419A">
       <End Role="User" EntitySet="User" />
       <End Role="Wallet" EntitySet="Wallet" />
     </AssociationSet>
-    <AssociationSet Name="FK__Wishlist__Produc__0D7A0286" Association="Self.FK__Wishlist__Produc__0D7A0286">
-      <End Role="Product" EntitySet="Product" />
-      <End Role="Wishlist" EntitySet="Wishlist" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Wishlist__UserId__0C85DE4D" Association="Self.FK__Wishlist__UserId__0C85DE4D">
+    <AssociationSet Name="FK_Coupon_CreatedBy_User" Association="Self.FK_Coupon_CreatedBy_User">
       <End Role="User" EntitySet="User" />
-      <End Role="Wishlist" EntitySet="Wishlist" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Carousel_Product" Association="Self.FK_Carousel_Product">
-      <End Role="Product" EntitySet="Product" />
-      <End Role="Carousel" EntitySet="Carousel" />
+      <End Role="Coupon" EntitySet="Coupon" />
     </AssociationSet>
     <AssociationSet Name="FK_Review_Product" Association="Self.FK_Review_Product">
       <End Role="Product" EntitySet="Product" />

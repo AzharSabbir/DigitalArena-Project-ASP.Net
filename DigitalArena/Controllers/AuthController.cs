@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using System.Web.Security;
+using DigitalArena.Models.Custom; 
 
 namespace DigitalArena.Controllers
 {
@@ -16,7 +17,7 @@ namespace DigitalArena.Controllers
         public ActionResult Login()
         {
             if (Request.IsAuthenticated && !string.IsNullOrEmpty(Session["UserId"]?.ToString()))
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "AdminDashboard");
 
             var referrer = Request.UrlReferrer?.ToString();
             if (!string.IsNullOrEmpty(referrer) && !referrer.Contains("/Auth/Login"))
@@ -26,7 +27,6 @@ namespace DigitalArena.Controllers
 
             return View();
         }
-
         [HttpPost]
         public ActionResult Login(LoginModel model)
         {
@@ -39,6 +39,7 @@ namespace DigitalArena.Controllers
 
             var user = _dbContext.User.FirstOrDefault(u => u.Username == model.Username && u.Password == model.Password);
 
+            // User Authenticated
             if (user != null && user.IsActive)
             {
                 Session["UserId"] = user.UserId;
@@ -46,32 +47,32 @@ namespace DigitalArena.Controllers
                 user.LastLoginAt = DateTime.Now;
                 _dbContext.SaveChanges();
 
-                FormsAuthentication.SetAuthCookie(model.Username, true);
+                FormsAuthentication.SetAuthCookie(user.UserId.ToString(), true);
 
-                if (TempData["ReturnUrl"] != null)
-                {
-                    return Redirect(TempData["ReturnUrl"].ToString());
-                }
-
-                if (user.Role == "SELLER" || user.Role == "BUYER")
-                {
-                    return RedirectToAction("LandingPage", "Home");
-                }
-                else
+                if(user.Role == "ADMIN")
                 {
                     return RedirectToAction("Index", "AdminDashboard");
                 }
+                if (user.Role == "SELLER" && user.Role == "BUYER")
+                {
+                    if (TempData["ReturnUrl"] != null)
+                    {
+                        return Redirect(TempData["ReturnUrl"].ToString());
+                    }
+                    return RedirectToAction("LandingPage", "Home");
+                }
+                
+                
             }
 
             ViewBag.Message = "Invalid username or password.";
             ViewBag.IsSuccess = false;
             return View(model);
         }
-
-
-
-
-
+        
+        
+        
+        
         public ActionResult Register()
         {
             if (Request.IsAuthenticated) return RedirectToAction("Index", "Home");
@@ -310,26 +311,12 @@ namespace DigitalArena.Controllers
 
         public ActionResult Logout()
         {
-            if (!Request.IsAuthenticated)
-                return RedirectToAction("Login", "Auth");
+            if (!Request.IsAuthenticated) return RedirectToAction("Login", "Auth");
 
-            // Sign out the authentication ticket
-            FormsAuthentication.SignOut();
-
-            // Clear all session variables
             Session.Clear();
             Session.Abandon();
-
-            // Get the previous URL
-            string returnUrl = Request.UrlReferrer?.ToString();
-
-            // Fallback: if referrer is null, redirect to home
-            if (string.IsNullOrEmpty(returnUrl))
-                return RedirectToAction("Index", "Home");
-
-            return Redirect(returnUrl);
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Index", "Home");
         }
-
-
     }
 }

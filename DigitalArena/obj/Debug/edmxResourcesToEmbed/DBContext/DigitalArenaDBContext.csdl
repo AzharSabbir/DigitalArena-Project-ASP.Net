@@ -5,7 +5,6 @@
     <EntitySet Name="CartItem" EntityType="DigitalArenaDBModel.CartItem" />
     <EntitySet Name="Category" EntityType="DigitalArenaDBModel.Category" />
     <EntitySet Name="Coupon" EntityType="DigitalArenaDBModel.Coupon" />
-    <EntitySet Name="GiftCard" EntityType="DigitalArenaDBModel.GiftCard" />
     <EntitySet Name="Notification" EntityType="DigitalArenaDBModel.Notification" />
     <EntitySet Name="Order" EntityType="DigitalArenaDBModel.Order" />
     <EntitySet Name="OrderItem" EntityType="DigitalArenaDBModel.OrderItem" />
@@ -15,9 +14,7 @@
     <EntitySet Name="Review" EntityType="DigitalArenaDBModel.Review" />
     <EntitySet Name="Transaction" EntityType="DigitalArenaDBModel.Transaction" />
     <EntitySet Name="User" EntityType="DigitalArenaDBModel.User" />
-    <EntitySet Name="Verification" EntityType="DigitalArenaDBModel.Verification" />
     <EntitySet Name="Wallet" EntityType="DigitalArenaDBModel.Wallet" />
-    <EntitySet Name="Wishlist" EntityType="DigitalArenaDBModel.Wishlist" />
     <AssociationSet Name="FK__Cart__UserId__03F0984C" Association="DigitalArenaDBModel.FK__Cart__UserId__03F0984C">
       <End Role="User" EntitySet="User" />
       <End Role="Cart" EntitySet="Cart" />
@@ -37,10 +34,6 @@
     <AssociationSet Name="FK__Coupon__UserId__00200768" Association="DigitalArenaDBModel.FK__Coupon__UserId__00200768">
       <End Role="User" EntitySet="User" />
       <End Role="Coupon" EntitySet="Coupon" />
-    </AssociationSet>
-    <AssociationSet Name="FK__GiftCard__UserId__72C60C4A" Association="DigitalArenaDBModel.FK__GiftCard__UserId__72C60C4A">
-      <End Role="User" EntitySet="User" />
-      <End Role="GiftCard" EntitySet="GiftCard" />
     </AssociationSet>
     <AssociationSet Name="FK__Notificat__UserI__6D0D32F4" Association="DigitalArenaDBModel.FK__Notificat__UserI__6D0D32F4">
       <End Role="User" EntitySet="User" />
@@ -82,10 +75,6 @@
       <End Role="Product" EntitySet="Product" />
       <End Role="Review" EntitySet="Review" />
     </AssociationSet>
-    <AssociationSet Name="FK__Wishlist__Produc__0D7A0286" Association="DigitalArenaDBModel.FK__Wishlist__Produc__0D7A0286">
-      <End Role="Product" EntitySet="Product" />
-      <End Role="Wishlist" EntitySet="Wishlist" />
-    </AssociationSet>
     <AssociationSet Name="FK__Review__UserId__5EBF139D" Association="DigitalArenaDBModel.FK__Review__UserId__5EBF139D">
       <End Role="User" EntitySet="User" />
       <End Role="Review" EntitySet="Review" />
@@ -94,24 +83,11 @@
       <End Role="Wallet" EntitySet="Wallet" />
       <End Role="Transaction" EntitySet="Transaction" />
     </AssociationSet>
-    <AssociationSet Name="FK__Verificat__UserI__403A8C7D" Association="DigitalArenaDBModel.FK__Verificat__UserI__403A8C7D">
-      <End Role="User" EntitySet="User" />
-      <End Role="Verification" EntitySet="Verification" />
-    </AssociationSet>
     <AssociationSet Name="FK__Wallet__UserId__44FF419A" Association="DigitalArenaDBModel.FK__Wallet__UserId__44FF419A">
       <End Role="User" EntitySet="User" />
       <End Role="Wallet" EntitySet="Wallet" />
     </AssociationSet>
-    <AssociationSet Name="FK__Wishlist__UserId__0C85DE4D" Association="DigitalArenaDBModel.FK__Wishlist__UserId__0C85DE4D">
-      <End Role="User" EntitySet="User" />
-      <End Role="Wishlist" EntitySet="Wishlist" />
-    </AssociationSet>
-    <EntitySet Name="Carousel" EntityType="DigitalArenaDBModel.Carousel" />
     <EntitySet Name="LandingPage" EntityType="DigitalArenaDBModel.LandingPage" />
-    <AssociationSet Name="FK_Carousel_Product" Association="DigitalArenaDBModel.FK_Carousel_Product">
-      <End Role="Product" EntitySet="Product" />
-      <End Role="Carousel" EntitySet="Carousel" />
-    </AssociationSet>
     <AssociationSet Name="FK__LandingPa__Produ__1BC821DD" Association="DigitalArenaDBModel.FK__LandingPa__Produ__1BC821DD">
       <End Role="Product" EntitySet="Product" />
       <End Role="LandingPage" EntitySet="LandingPage" />
@@ -124,6 +100,10 @@
     <AssociationSet Name="FK__Engagemen__UserI__2B0A656D" Association="DigitalArenaDBModel.FK__Engagemen__UserI__2B0A656D">
       <End Role="User" EntitySet="User" />
       <End Role="Engagement" EntitySet="Engagement" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Coupon_CreatedBy_User" Association="DigitalArenaDBModel.FK_Coupon_CreatedBy_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="Coupon" EntitySet="Coupon" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="Cart">
@@ -172,20 +152,8 @@
     <Property Name="UserSpecific" Type="Boolean" Nullable="false" />
     <Property Name="UserId" Type="Int32" />
     <NavigationProperty Name="User" Relationship="DigitalArenaDBModel.FK__Coupon__UserId__00200768" FromRole="Coupon" ToRole="User" />
-  </EntityType>
-  <EntityType Name="GiftCard">
-    <Key>
-      <PropertyRef Name="GiftCardId" />
-    </Key>
-    <Property Name="GiftCardId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="GiftCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="Amount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-    <Property Name="IsAvailable" Type="Boolean" Nullable="false" />
-    <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="ExpiryDate" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="UsedAt" Type="DateTime" Precision="3" />
-    <Property Name="UserId" Type="Int32" />
-    <NavigationProperty Name="User" Relationship="DigitalArenaDBModel.FK__GiftCard__UserId__72C60C4A" FromRole="GiftCard" ToRole="User" />
+    <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="User1" Relationship="DigitalArenaDBModel.FK_Coupon_CreatedBy_User" FromRole="Coupon" ToRole="User" />
   </EntityType>
   <EntityType Name="Notification">
     <Key>
@@ -263,9 +231,7 @@
     <NavigationProperty Name="User" Relationship="DigitalArenaDBModel.FK__Product__SellerI__5535A963" FromRole="Product" ToRole="User" />
     <NavigationProperty Name="ProductFile" Relationship="DigitalArenaDBModel.FK__ProductFi__Produ__5812160E" FromRole="Product" ToRole="ProductFile" />
     <NavigationProperty Name="Review" Relationship="DigitalArenaDBModel.FK__Review__ProductI__5FB337D6" FromRole="Product" ToRole="Review" />
-    <NavigationProperty Name="Wishlist" Relationship="DigitalArenaDBModel.FK__Wishlist__Produc__0D7A0286" FromRole="Product" ToRole="Wishlist" />
     <Property Name="ViewCount" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="Carousel" Relationship="DigitalArenaDBModel.FK_Carousel_Product" FromRole="Product" ToRole="Carousel" />
     <NavigationProperty Name="LandingPage" Relationship="DigitalArenaDBModel.FK__LandingPa__Produ__1BC821DD" FromRole="Product" ToRole="LandingPage" />
     <NavigationProperty Name="Engagement" Relationship="DigitalArenaDBModel.FK__Engagemen__Produ__2BFE89A6" FromRole="Product" ToRole="Engagement" />
   </EntityType>
@@ -323,28 +289,14 @@
     <Property Name="LastLoginAt" Type="DateTime" Precision="3" />
     <NavigationProperty Name="Cart" Relationship="DigitalArenaDBModel.FK__Cart__UserId__03F0984C" FromRole="User" ToRole="Cart" />
     <NavigationProperty Name="Coupon" Relationship="DigitalArenaDBModel.FK__Coupon__UserId__00200768" FromRole="User" ToRole="Coupon" />
-    <NavigationProperty Name="GiftCard" Relationship="DigitalArenaDBModel.FK__GiftCard__UserId__72C60C4A" FromRole="User" ToRole="GiftCard" />
     <NavigationProperty Name="Notification" Relationship="DigitalArenaDBModel.FK__Notificat__UserI__6D0D32F4" FromRole="User" ToRole="Notification" />
     <NavigationProperty Name="Order" Relationship="DigitalArenaDBModel.FK__Order__UserId__6477ECF3" FromRole="User" ToRole="Order" />
     <NavigationProperty Name="Permission" Relationship="DigitalArenaDBModel.FK__Permissio__UserI__778AC167" FromRole="User" ToRole="Permission" />
     <NavigationProperty Name="Product" Relationship="DigitalArenaDBModel.FK__Product__SellerI__5535A963" FromRole="User" ToRole="Product" />
     <NavigationProperty Name="Review" Relationship="DigitalArenaDBModel.FK__Review__UserId__5EBF139D" FromRole="User" ToRole="Review" />
-    <NavigationProperty Name="Verification" Relationship="DigitalArenaDBModel.FK__Verificat__UserI__403A8C7D" FromRole="User" ToRole="Verification" />
     <NavigationProperty Name="Wallet" Relationship="DigitalArenaDBModel.FK__Wallet__UserId__44FF419A" FromRole="User" ToRole="Wallet" />
-    <NavigationProperty Name="Wishlist" Relationship="DigitalArenaDBModel.FK__Wishlist__UserId__0C85DE4D" FromRole="User" ToRole="Wishlist" />
     <NavigationProperty Name="Engagement" Relationship="DigitalArenaDBModel.FK__Engagemen__UserI__2B0A656D" FromRole="User" ToRole="Engagement" />
-  </EntityType>
-  <EntityType Name="Verification">
-    <Key>
-      <PropertyRef Name="VerificationId" />
-    </Key>
-    <Property Name="VerificationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Type" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
-    <Property Name="Otp" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="ExpiresAt" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="UserId" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="User" Relationship="DigitalArenaDBModel.FK__Verificat__UserI__403A8C7D" FromRole="Verification" ToRole="User" />
+    <NavigationProperty Name="Coupon1" Relationship="DigitalArenaDBModel.FK_Coupon_CreatedBy_User" FromRole="User" ToRole="Coupon" />
   </EntityType>
   <EntityType Name="Wallet">
     <Key>
@@ -356,17 +308,6 @@
     <Property Name="UserId" Type="Int32" Nullable="false" />
     <NavigationProperty Name="Transaction" Relationship="DigitalArenaDBModel.FK__Transacti__Walle__47DBAE45" FromRole="Wallet" ToRole="Transaction" />
     <NavigationProperty Name="User" Relationship="DigitalArenaDBModel.FK__Wallet__UserId__44FF419A" FromRole="Wallet" ToRole="User" />
-  </EntityType>
-  <EntityType Name="Wishlist">
-    <Key>
-      <PropertyRef Name="WishlistId" />
-    </Key>
-    <Property Name="WishlistId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="UserId" Type="Int32" Nullable="false" />
-    <Property Name="ProductId" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="Product" Relationship="DigitalArenaDBModel.FK__Wishlist__Produc__0D7A0286" FromRole="Wishlist" ToRole="Product" />
-    <NavigationProperty Name="User" Relationship="DigitalArenaDBModel.FK__Wishlist__UserId__0C85DE4D" FromRole="Wishlist" ToRole="User" />
   </EntityType>
   <Association Name="FK__Cart__UserId__03F0984C">
     <End Type="DigitalArenaDBModel.User" Role="User" Multiplicity="1" />
@@ -424,18 +365,6 @@
         <PropertyRef Name="UserId" />
       </Principal>
       <Dependent Role="Coupon">
-        <PropertyRef Name="UserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__GiftCard__UserId__72C60C4A">
-    <End Type="DigitalArenaDBModel.User" Role="User" Multiplicity="0..1" />
-    <End Type="DigitalArenaDBModel.GiftCard" Role="GiftCard" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="User">
-        <PropertyRef Name="UserId" />
-      </Principal>
-      <Dependent Role="GiftCard">
         <PropertyRef Name="UserId" />
       </Dependent>
     </ReferentialConstraint>
@@ -560,18 +489,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Wishlist__Produc__0D7A0286">
-    <End Type="DigitalArenaDBModel.Product" Role="Product" Multiplicity="1" />
-    <End Type="DigitalArenaDBModel.Wishlist" Role="Wishlist" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Product">
-        <PropertyRef Name="ProductId" />
-      </Principal>
-      <Dependent Role="Wishlist">
-        <PropertyRef Name="ProductId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK__Review__UserId__5EBF139D">
     <End Type="DigitalArenaDBModel.User" Role="User" Multiplicity="1" />
     <End Type="DigitalArenaDBModel.Review" Role="Review" Multiplicity="*" />
@@ -596,18 +513,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Verificat__UserI__403A8C7D">
-    <End Type="DigitalArenaDBModel.User" Role="User" Multiplicity="1" />
-    <End Type="DigitalArenaDBModel.Verification" Role="Verification" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="User">
-        <PropertyRef Name="UserId" />
-      </Principal>
-      <Dependent Role="Verification">
-        <PropertyRef Name="UserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK__Wallet__UserId__44FF419A">
     <End Type="DigitalArenaDBModel.User" Role="User" Multiplicity="1" />
     <End Type="DigitalArenaDBModel.Wallet" Role="Wallet" Multiplicity="*" />
@@ -620,30 +525,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Wishlist__UserId__0C85DE4D">
-    <End Type="DigitalArenaDBModel.User" Role="User" Multiplicity="1" />
-    <End Type="DigitalArenaDBModel.Wishlist" Role="Wishlist" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="User">
-        <PropertyRef Name="UserId" />
-      </Principal>
-      <Dependent Role="Wishlist">
-        <PropertyRef Name="UserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <EntityType Name="Carousel">
-    <Key>
-      <PropertyRef Name="CarouselId" />
-    </Key>
-    <Property Name="CarouselId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Image" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="Page" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="IsActive" Type="Boolean" Nullable="false" />
-    <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="ProductId" Type="Int32" />
-    <NavigationProperty Name="Product" Relationship="DigitalArenaDBModel.FK_Carousel_Product" FromRole="Carousel" ToRole="Product" />
-  </EntityType>
   <EntityType Name="LandingPage">
     <Key>
       <PropertyRef Name="LandingPageId" />
@@ -655,20 +536,6 @@
     <Property Name="HeroImage" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="Product" Relationship="DigitalArenaDBModel.FK__LandingPa__Produ__1BC821DD" FromRole="LandingPage" ToRole="Product" />
   </EntityType>
-  <Association Name="FK_Carousel_Product">
-    <End Type="DigitalArenaDBModel.Product" Role="Product" Multiplicity="0..1">
-      <OnDelete Action="Cascade" />
-    </End>
-    <End Type="DigitalArenaDBModel.Carousel" Role="Carousel" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Product">
-        <PropertyRef Name="ProductId" />
-      </Principal>
-      <Dependent Role="Carousel">
-        <PropertyRef Name="ProductId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK__LandingPa__Produ__1BC821DD">
     <End Type="DigitalArenaDBModel.Product" Role="Product" Multiplicity="1" />
     <End Type="DigitalArenaDBModel.LandingPage" Role="LandingPage" Multiplicity="*" />
@@ -718,6 +585,18 @@
       </Principal>
       <Dependent Role="Engagement">
         <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Coupon_CreatedBy_User">
+    <End Type="DigitalArenaDBModel.User" Role="User" Multiplicity="1" />
+    <End Type="DigitalArenaDBModel.Coupon" Role="Coupon" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="Coupon">
+        <PropertyRef Name="CreatedBy" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

@@ -1,0 +1,93 @@
+﻿@model List<DigitalArena.DBContext.Permission>
+
+@{
+    ViewBag.Title = "Purchased Products for " + ViewBag.UserName;
+}
+
+<!-- Breadcrumb Navigation -->
+<nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb bg-white px-3 py-2 rounded shadow-sm">
+        <li class="breadcrumb-item">
+            <a href="@Url.Action("Index", "AdminDashboard")" class="text-decoration-none text-dark">Admin</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="@Url.RouteUrl("ManageBuyersRoute")" class="text-decoration-none text-dark">Manage Buyers</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="@Url.RouteUrl("BuyerDetailsRoute", new { id = ViewBag.UserId })" class="text-decoration-none text-dark">@ViewBag.UserName</a>
+        </li>
+        <li class="breadcrumb-item active text-primary" aria-current="page">
+            Purchased Products
+        </li>
+    </ol>
+</nav>
+
+<h2>Purchased Products for @ViewBag.UserName</h2>
+
+@if (Model == null || !Model.Any())
+{
+    <div class="alert alert-info">No purchased products found for this user.</div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+            <thead class="table-light text-center">
+                <tr>
+                    <th>Thumbnail</th>
+                    <th>Product</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Purchased At</th>
+                    <th>Seller</th>
+                    <th>Last Downloaded</th>
+                    <th>Download Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int index = 1;
+                    foreach (var permission in Model)
+                    {
+                        var product = permission.Product;
+                        <tr class="text-center">
+                            <td>
+                                @if (!string.IsNullOrEmpty(product.Thumbnail))
+                                {
+
+                                    <img src="~/Assets/@product.Category.Name/product_@product.ProductId/thumbnails/@product.Thumbnail"
+                                         alt="@product.Name"
+                                         style="width: 60px; height: 60px; object-fit: cover;"
+                                         class="rounded" />
+                                }
+                                else
+                                {
+                                    <span class="text-muted">No Image</span>
+                                }
+                            </td>
+                            <td>@product.Name</td>
+                            <td>@product.Category.Name</td> <!-- Optional -->
+                            <td>@product.Price</td>
+                            <td>@permission.CreatedAt.ToString("dd MMM yyyy")</td>
+                            <td>@product.User.Username</td>
+                            <td>@(permission.LastDownloadedAt?.ToString("dd MMM yyyy") ?? "Not downloaded")</td>
+                            <td>
+                                @if (permission.LastDownloadedAt != null)
+                                {
+                                    <span class="badge bg-success">Downloaded</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning text-dark">Not Yet</span>
+                                }
+                            </td>
+                        </tr>
+                        index++;
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+<a href="@Url.RouteUrl("BuyerDetailsRoute", new { id = ViewBag.UserId })" class="btn btn-secondary mt-3">Back to Buyer Details</a>
