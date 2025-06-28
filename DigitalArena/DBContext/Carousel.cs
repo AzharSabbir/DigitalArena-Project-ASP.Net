@@ -19,5 +19,8 @@ namespace DigitalArena.DBContext
         public string Page { get; set; }
         public bool IsActive { get; set; }
         public System.DateTime CreatedAt { get; set; }
+        public Nullable<int> ProductId { get; set; }
+    
+        public virtual Product Product { get; set; }
     }
 }

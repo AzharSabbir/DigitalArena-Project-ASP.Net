@@ -1,0 +1,17 @@
+﻿<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link href="~/Content/css/Notification.css" rel="stylesheet" />
+    <script src="~/Scripts/custom/Notification.js"></script>
+</head>
+<div class="notification-wrapper">
+    <a href="javascript:void(0);" class="icon-btn" onclick="toggleNotificationDropdown()" title="Notifications">
+        <i class="bi bi-bell"></i>
+    </a>
+
+    <div class="notification-dropdown" id="notificationDropdown" style="display: none;">
+        <div class="dropdown-header">Notifications</div>
+        <div id="notificationList" class="notification-list">
+            <!-- Will be populated dynamically -->
+        </div>
+    </div>
+</div>

@@ -1,0 +1,417 @@
+﻿@model DigitalArena.Models.UserProfileViewModel
+@using DigitalArena.Models;
+
+<head>
+    <link href="~/Content/css/user-profile.css" rel="stylesheet" />
+</head>
+
+<body>
+    @Html.Partial("_Header3")
+    <div class="profile-wrapper">
+        <div class="profile-card">
+            <div class="profile-top">
+                @{
+                    var profileImage = Session["ProfileImage"] as string;
+                    var userId = Session["UserId"]?.ToString();
+                    string profileimagePath = Url.Content("~/Assets/user_profile_image/user_" + userId + "/" + profileImage);
+                }
+
+                <img src="@profileimagePath" class="profile-img" alt="Profile Image" />
+                <div class="user-basic-info">
+                    <h2 class="full-name">@Model.User.FullName</h2>
+                    <a href="@Url.Action("Logout", "Auth")" class="logout-button">
+                        <span class="logout-icon">⎋</span> Logout
+                    </a>
+                </div>
+            </div>
+
+            <div class="mode-toggle">
+                <label class="mode-label">Switch Role:</label>
+                <label class="switch">
+                    <input type="checkbox" id="mode-toggle" @(Model.User.Role == "SELLER" ? "checked" : "") />
+                    <span class="slider"></span>
+                </label>
+                <span id="mode-label">@Model.User.Role</span>
+            </div>
+
+            <div class="info-section">
+                <h3>Account Information</h3>
+                <ul>
+                    <li><strong>Username:</strong> @Model.User.Username</li>
+                    <li><strong>Email:</strong> @Model.User.Email</li>
+                    <li><strong>Phone:</strong> @Model.User.Phone</li>
+                    <li><strong>Account Created:</strong> @Model.User.CreatedAt.ToString("dd MMM yyyy")</li>
+                    <li><strong>Last Login:</strong> @Model.User.LastLoginAt.ToString("dd MMM yyyy")</li>
+                    <li><strong>Account Status:</strong> @(Model.User.IsActive ? "Active" : "Inactive")</li>
+                </ul>
+            </div>
+
+            <div class="info-section">
+                @if (Model.User.Role == "SELLER")
+                {
+                    <h3>Uploaded Products</h3>
+
+                    if (Model.IsSellerMode && Model.UploadedProducts.Any())
+                    {
+                        <div class="purchased-products-grid">
+                            @foreach (var product in Model.UploadedProducts)
+                            {
+                                var categoryName = product.Category?.Name ?? "3D Model";
+                                var folderName = categoryName.Replace(" ", "%20");
+                                var imagePath = Url.Content($"~/Assets/{folderName}/product_{product.ProductId}/thumbnails/{product.Thumbnail}");
+
+                                <div class="enhanced-product-card">
+                                    <div class="enhanced-product-image-wrapper" onclick="location.href='@Url.Action("ProductDetails", "ProductDetails", new { id = product.ProductId })'">
+                                        <img src="@imagePath" alt="@product.Name" class="enhanced-product-image" />
+                                        <div class="overlay">
+                                            <span class="view-button">View Product</span>
+                                        </div>
+                                    </div>
+                                    <div class="enhanced-product-info">
+                                        <h4 class="enhanced-product-title">@product.Name</h4>
+                                        <span class="status-badge @(product.Status == "Approved" ? "approved" : "pending")">
+                                            @product.Status
+                                        </span>
+                                        <button type="button"
+                                                class="btn-remove"
+                                                data-product-id="@product.ProductId"
+                                                title="Delete product"
+                                                onclick="confirmDelete(this)">
+                                            ✕
+                                        </button>
+                                    </div>
+                                </div>
+                            }
+                            <div class="enhanced-product-card upload-card" onclick="openModal()">
+                                <div class="upload-card-inner">
+                                    <div class="upload-icon">＋</div>
+                                    <div class="upload-text">Upload New Product</div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <p>No uploaded products found.</p>
+                    }
+                }
+                else
+                {
+                    <h3>Purchased Products</h3>
+                    if (Model.PurchasedProducts != null && Model.PurchasedProducts.Any())
+                    {
+                        <div class="purchased-products-grid">
+                            @foreach (var product in Model.PurchasedProducts)
+                            {
+                                var categoryName = product.Category?.Name ?? "3D Model";
+                                var folderName = categoryName.Replace(" ", "%20");
+                                var imagePath = Url.Content($"~/Assets/{folderName}/product_{product.ProductId}/thumbnails/{product.Thumbnail}");
+
+                                <div class="enhanced-product-card" onclick="location.href='@Url.Action("ProductDetails", "ProductDetails", new { id = product.ProductId })'">
+                                    <div class="enhanced-product-image-wrapper">
+                                        <img src="@imagePath" alt="@product.Name" class="enhanced-product-image" />
+                                        <div class="overlay">
+                                            <span class="view-button">View Product</span>
+                                        </div>
+                                    </div>
+                                    <div class="enhanced-product-info">
+                                        <h4 class="enhanced-product-title">@product.Name</h4>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <p>No purchased products found.</p>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="uploadProductModal">
+        <div class="modal-box">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <h2>Upload New Product</h2>
+
+            <form id="uploadForm"
+                  action="@Url.Action("UploadProduct", "UserProfile")"
+                  method="post"
+                  enctype="multipart/form-data"
+                  onsubmit="return validateUploadForm()">
+                @Html.Hidden("SellerId", Model.User.UserId)
+
+                <div class="form-section">
+                    <label for="Name">Product Name</label>
+                    <input type="text" name="Name" id="Name" placeholder="Enter product name" />
+                    <div id="nameError" class="input-error"></div>
+
+                    <label for="Description">Description</label>
+                    <textarea name="Description" id="Description" rows="4" placeholder="Enter a detailed description"></textarea>
+                    <div id="descriptionError" class="input-error"></div>
+
+                    <label for="Price">Price ($)</label>
+                    <input type="number" name="Price" id="Price" step="0.01" placeholder="Enter price" />
+                    <div id="priceError" class="input-error"></div>
+
+                    <label for="CategoryId">Category</label>
+                    <select name="CategoryId" id="CategoryId">
+                        <option value="">-- Select Category --</option>
+                        @foreach (var category in ViewBag.Categories as List<CategoryModel>)
+                        {
+                            <option value="@category.CategoryId">@category.Name</option>
+                        }
+                    </select>
+                    <div id="categoryError" class="input-error"></div>
+                </div>
+
+                <div class="form-section">
+                    <label for="Thumbnail">Thumbnail Image</label>
+                    <input type="file" name="Thumbnail" id="Thumbnail" accept=".png,.jpg,.jpeg" />
+                    <div id="thumbnailError" class="input-error"></div>
+
+                    <label for="Files">Product Files (You can select multiple files)</label>
+                    <input type="file" name="Files" id="Files" multiple />
+                    <div id="filesError" class="input-error"></div>
+                </div>
+
+                <button type="submit" class="upload-btn">Upload Product</button>
+                <div id="uploadSuccess" class="upload-success-message"> </div>
+
+            </form>
+        </div>
+    </div>
+
+</body>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+    const modeToggle = document.getElementById('mode-toggle');
+    if (modeToggle) {
+        modeToggle.addEventListener('change', function () {
+            const isSeller = this.checked;
+            const newRole = isSeller ? "SELLER" : "BUYER";
+
+            fetch('@Url.Action("ToggleMode", "UserProfile")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ Role: newRole })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        showInfoDialog('Failed to toggle role.');
+                    }
+                });
+        });
+    }
+
+    window.openModal = function () {
+        document.getElementById("uploadProductModal").style.display = "flex";
+    };
+
+    window.closeModal = function () {
+        document.getElementById("uploadProductModal").style.display = "none";
+    };
+
+    window.onclick = function (event) {
+        const modal = document.getElementById("uploadProductModal");
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    };
+
+    const form = document.getElementById('uploadForm');
+    const uploadSuccess = document.createElement('div');
+    uploadSuccess.id = 'uploadSuccess';
+    uploadSuccess.style.color = 'green';
+    uploadSuccess.style.marginTop = '15px';
+    uploadSuccess.style.display = 'none';
+    uploadSuccess.style.fontWeight = '500';
+    form.appendChild(uploadSuccess);
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        if (!validateUploadForm()) return;
+
+        const formData = new FormData(form);
+
+        uploadSuccess.style.display = 'none';
+        uploadSuccess.textContent = "";
+
+        fetch(form.action, {
+            method: 'POST',
+            body: formData
+        })
+            .then(res => {
+                if (res.ok) {
+                    uploadSuccess.textContent = "Your product has been uploaded successfully and is currently pending administrative review.";
+                    uploadSuccess.style.display = "block";
+
+                    form.reset();
+
+                    document.getElementById("Thumbnail").value = "";
+                    document.getElementById("Files").value = "";
+
+                    setTimeout(() => {
+                        window.location.href = '@Url.Action("UserProfile", "UserProfile")';
+                    }, 3000);
+                }
+                else {
+                    showInfoDialog("Failed to upload the product. Please try again.");
+                }
+            })
+            .catch(error => {
+                console.error("Upload error:", error);
+                showInfoDialog("An error occurred during upload.");
+            });
+    });
+});
+
+async function confirmDelete(button) {
+    const confirmed = await showConfirmDialog("Are you sure you want to delete this product?");
+    if (!confirmed) return;
+
+    const productId = button.getAttribute('data-product-id');
+
+    fetch('@Url.Action("DeleteProduct", "UserProfile")', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ productId: parseInt(productId) })
+    })
+        .then(response => {
+            if (response.ok) {
+                console.log("Product deleted successfully.");
+                const productCard = button.closest('.enhanced-product-card');
+                productCard.style.transition = 'opacity 0.3s';
+                productCard.style.opacity = 0;
+                setTimeout(() => productCard.remove(), 300);
+            } else {
+                showInfoDialog("Failed to delete the product.");
+            }
+        })
+        .catch(error => {
+            console.error("Delete failed:", error);
+            showInfoDialog("Something went wrong.");
+        });
+}
+function validateUploadForm() {
+    const name = document.getElementById("Name").value.trim();
+    const description = document.getElementById("Description").value.trim();
+    const price = document.getElementById("Price").value.trim();
+    const category = document.getElementById("CategoryId").selectedOptions[0]?.text.trim();
+    const thumbnail = document.getElementById("Thumbnail").files[0];
+    const files = document.getElementById("Files").files;
+
+    const nameError = document.getElementById("nameError");
+    const descriptionError = document.getElementById("descriptionError");
+    const priceError = document.getElementById("priceError");
+    const categoryError = document.getElementById("categoryError");
+    const thumbnailError = document.getElementById("thumbnailError");
+    const filesError = document.getElementById("filesError");
+
+    nameError.textContent = "";
+    descriptionError.textContent = "";
+    priceError.textContent = "";
+    categoryError.textContent = "";
+    thumbnailError.textContent = "";
+    filesError.textContent = "";
+
+    let isValid = true;
+
+    if (!name) {
+        nameError.textContent = "Product name is required.";
+        isValid = false;
+    }
+
+    if (!description) {
+        descriptionError.textContent = "Description is required.";
+        isValid = false;
+    }
+
+    if (!price || parseFloat(price) <= 0) {
+        priceError.textContent = "A valid price is required.";
+        isValid = false;
+    }
+
+    const allowedCategories = [
+        "3D Model",
+        "E-Book",
+        "Graphics Template",
+        "Presentation Slide"
+    ];
+
+    if (!allowedCategories.includes(category)) {
+        categoryError.textContent = "Please select a valid category.";
+        isValid = false;
+    }
+
+    if (!thumbnail) {
+        thumbnailError.textContent = "Thumbnail image is required.";
+        isValid = false;
+    } else {
+        const thumbExt = thumbnail.name.substring(thumbnail.name.lastIndexOf(".")).toLowerCase();
+        if (![".png", ".jpg", ".jpeg"].includes(thumbExt)) {
+            thumbnailError.textContent = "Only .png, .jpg, or .jpeg formats are allowed for thumbnail.";
+            isValid = false;
+        }
+    }
+
+    if (files.length === 0) {
+        filesError.textContent = "Please upload at least one product file.";
+        isValid = false;
+    } else {
+        const allowedSingleFileTypes = {
+            "3D Model": [".glb"],
+            "E-Book": [".pdf"],
+            "Presentation Slide": [".pptx"]
+        };
+
+        const allowedMultiFileTypes = {
+            "Graphics Template": [".ai", ".jpg", ".jpeg", ".png"]
+        };
+
+        const getExtension = (filename) => filename.substring(filename.lastIndexOf(".")).toLowerCase();
+
+        if (category in allowedSingleFileTypes) {
+            if (files.length !== 1) {
+                filesError.textContent = `${category} requires exactly one file.`;
+                isValid = false;
+            } else {
+                const ext = getExtension(files[0].name);
+                if (!allowedSingleFileTypes[category].includes(ext)) {
+                    filesError.textContent = `Allowed file: ${allowedSingleFileTypes[category].join(", ")}`;
+                    isValid = false;
+                }
+            }
+        }
+
+        if (category === "Graphics Template") {
+            const hasAi = [...files].some(file => getExtension(file.name) === ".ai");
+            if (!hasAi) {
+                filesError.textContent = "Must include at least one .ai file.";
+                isValid = false;
+            }
+
+            const invalidFiles = [...files].filter(file => !allowedMultiFileTypes["Graphics Template"].includes(getExtension(file.name)));
+            if (invalidFiles.length > 0) {
+                filesError.textContent = "Only .ai, .jpg, .jpeg, .png files are allowed.";
+                isValid = false;
+            }
+        }
+    }
+
+    return isValid;
+}
+    </script>
+}
+

@@ -46,11 +46,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BouncyCastle.Cryptography, Version=2.0.0.0, Culture=neutral, PublicKeyToken=072edcf4a5328938, processorArchitecture=MSIL">
+      <HintPath>..\packages\BouncyCastle.Cryptography.2.4.0\lib\net461\BouncyCastle.Cryptography.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.4, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13.4\lib\net461\itextsharp.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
@@ -149,16 +155,18 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Admin\AdminDashboardController.cs" />
     <Compile Include="Controllers\Admin\ManageBuyerController.cs" />
-    <Compile Include="Controllers\Admin\ManageProductsController.cs" />
-    <Compile Include="Controllers\Admin\ManageReviewController.cs" />
-    <Compile Include="Controllers\Admin\ManageSellerController.cs" />
-    <Compile Include="Controllers\Api\TestController.cs" />
+    <Compile Include="Controllers\Api\TrendingProductsApiController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\BrowseProductController.cs" />
+    <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\ProductDetailsController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
+    <Compile Include="Controllers\ReviewController.cs" />
     <Compile Include="Controllers\Seller\SellerDashboardController.cs" />
+    <Compile Include="Controllers\TrendingProductsController.cs" />
+    <Compile Include="Controllers\UserProfileController.cs" />
     <Compile Include="DBContext\Carousel.cs">
       <DependentUpon>DigitalArenaDBContext.tt</DependentUpon>
     </Compile>
@@ -189,7 +197,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DigitalArenaDBContext.edmx</DependentUpon>
     </Compile>
+    <Compile Include="DBContext\Engagement.cs">
+      <DependentUpon>DigitalArenaDBContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="DBContext\GiftCard.cs">
+      <DependentUpon>DigitalArenaDBContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBContext\LandingPage.cs">
       <DependentUpon>DigitalArenaDBContext.tt</DependentUpon>
     </Compile>
     <Compile Include="DBContext\Notification.cs">
@@ -236,23 +250,31 @@
     <Compile Include="Models\CartModel.cs" />
     <Compile Include="Models\CategoryModel.cs" />
     <Compile Include="Models\CouponModel.cs" />
-    <Compile Include="Models\Custom\ProductDetailViewModel.cs" />
-    <Compile Include="Models\Custom\SellerDetailsViewModel.cs" />
+    <Compile Include="Models\EngagementModel.cs" />
     <Compile Include="Models\GiftCardModel.cs" />
-    <Compile Include="Models\Custom\LoginModel.cs" />
+    <Compile Include="Models\LandingPageModel.cs" />
+    <Compile Include="Models\LandingPageViewModel.cs" />
+    <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\NotificationModel.cs" />
     <Compile Include="Models\OrderItemModel.cs" />
     <Compile Include="Models\OrderModel.cs" />
+    <Compile Include="Models\PaymentRequestModel.cs" />
     <Compile Include="Models\PermissionModel.cs" />
+    <Compile Include="Models\ProductDetailsViewModel.cs" />
     <Compile Include="Models\ProductFileModel.cs" />
     <Compile Include="Models\ProductModel.cs" />
+    <Compile Include="Models\ProductUploadViewModel.cs" />
     <Compile Include="Models\ReviewModel.cs" />
     <Compile Include="Models\TransactionModel.cs" />
+    <Compile Include="Models\TrendingProductViewModel.cs" />
     <Compile Include="Models\UserModel.cs" />
+    <Compile Include="Models\UserProfileViewModel.cs" />
     <Compile Include="Models\VerificationModel.cs" />
     <Compile Include="Models\WalletModel.cs" />
     <Compile Include="Models\WishlistModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\TypesenseService.cs" />
+    <Compile Include="Utils\DateHelper.cs" />
     <Compile Include="Utils\SmsService.cs" />
     <Compile Include="Utils\WebRoleProvider.cs" />
   </ItemGroup>
@@ -437,9 +459,15 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\css\Cart.css" />
+    <Content Include="Content\css\Modals.css" />
+    <Content Include="Content\css\Notification.css" />
+    <Content Include="Content\css\_Header.css" />
+    <Content Include="Content\css\user-profile.css" />
     <Content Include="Content\Home.css" />
-    <Content Include="Content\ProductDetails.css" />
-    <Content Include="Content\styles.css" />
+    <Content Include="Content\css\LandingPage.css" />
+    <Content Include="Content\css\ProductDetails.css" />
+    <Content Include="Content\css\styles.css" />
     <Content Include="DBContext\DigitalArenaDBContext.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>DigitalArenaDBContext.edmx</DependentUpon>
@@ -559,10 +587,16 @@
     <Content Include="Assets\Presentation Slide\README.md" />
     <Content Include="Assets\user_profile_image\README.md" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
+    <Content Include="Scripts\custom\Cart.js" />
+    <Content Include="Scripts\custom\LandingPage.js" />
+    <Content Include="Scripts\custom\Notification.js" />
+    <Content Include="Scripts\custom\ProductDetailsOperation.js" />
     <Content Include="Scripts\custom\cubeViewer.js" />
     <Content Include="Scripts\custom\Load3DModel.js" />
+    <Content Include="Scripts\custom\modals.js" />
     <Content Include="Scripts\custom\Password_Visibility_Icon.js" />
     <Content Include="Scripts\custom\product-filters.js" />
+    <Content Include="Scripts\custom\UserProfile.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />
     <Content Include="Scripts\jquery-3.7.0.slim.js" />
@@ -606,27 +640,19 @@
     <Content Include="Views\ProductDetails\ProductDetails.cshtml" />
     <Content Include="Views\Home\Home.cshtml" />
     <Content Include="Views\BrowseProduct\BrowseCategory.cshtml" />
-    <Content Include="Views\Shared\_Header.cshtml" />
-    <Content Include="Views\Shared\_Footer.cshtml" />
-    <Content Include="Views\ManageBuyer\ViewPurchasedProducts.cshtml" />
-    <Content Include="Views\ManageBuyer\ViewTransactions.cshtml" />
-    <Content Include="Views\AdminDashboard\ManageSellers.cshtml" />
-    <Content Include="Views\Shared\_SellersTable.cshtml" />
-    <Content Include="Views\ManageSeller\SellerDetails.cshtml" />
-    <Content Include="Views\ManageSeller\ViewSellerProducts.cshtml" />
-    <Content Include="Views\ManageSeller\ViewSellerProductReviews.cshtml" />
-    <Content Include="Views\Shared\_SellerReviewsTable.cshtml" />
-    <Content Include="Views\AdminDashboard\ManageProducts.cshtml" />
-    <Content Include="Views\Shared\_ProductsTable.cshtml" />
-    <Content Include="Views\Shared\_SellerProductsTable.cshtml" />
-    <Content Include="Views\ManageProducts\ViewProductDetails.cshtml" />
-    <Content Include="Views\AdminDashboard\ManageReviews.cshtml" />
-    <Content Include="Views\Shared\_ManageReviewsPartial.cshtml" />
-    <Content Include="Views\AdminDashboard\AdminProfile.cshtml" />
+    <Content Include="Views\TrendingProducts\Trending.cshtml" />
+    <Content Include="Views\Home\LandingPage.cshtml" />
+    <Content Include="Views\Shared\_Header2.cshtml" />
+    <Content Include="Views\Cart\Cart.cshtml" />
+    <Content Include="Views\UserProfile\UserProfile.cshtml" />
+    <Content Include="Views\Shared\_Notification.cshtml" />
+    <Content Include="Views\Shared\_Header3.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\ManageReview\" />
+    <Folder Include="Views\Order\" />
+    <Folder Include="Views\Review\" />
+    <Folder Include="Views\Test\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />

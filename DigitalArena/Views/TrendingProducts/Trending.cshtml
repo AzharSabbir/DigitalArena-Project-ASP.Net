@@ -1,0 +1,100 @@
+﻿@model IEnumerable<DigitalArena.Models.TrendingProductViewModel>
+
+@{
+    ViewBag.Title = "Trending Products";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trending Products - Digital Arena</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inria+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/Content/ProductDetails.css" />
+    <link rel="stylesheet" href="~/Content/styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.js"></script>
+</head>
+
+<body>
+    @Html.Partial("_Header")
+
+    <div class="container">
+        <main class="main-content">
+            <section class="products-section">
+                <h2 class="trending-products" align>TRENDING PRODUCTS</h2>
+
+                <div class="products-grid" id="productsGrid">
+                    @if (!Model.Any())
+                    {
+                        <p>No trending products at the moment.</p>
+                    }
+                    else
+                    {
+                        foreach (var product in Model)
+                        {
+                            var imagePath = Url.Content($"~/Assets/{product.CategoryName}/product_{product.ProductId}/thumbnails/{product.Thumbnail}");
+
+                            <div class="product-card" data-product-id="@product.ProductId">
+                                <img src="@imagePath" alt="@product.Name" class="product-image" />
+                                <div class="product-info">
+                                    <div class="product-header">
+                                        <span class="product-name">@product.Name</span>
+                                        <span class="product-price">
+                                            @(product.Price == 0 ? "FREE" : product.Price.ToString("N2") + " TK")
+                                        </span>
+                                    </div>
+
+                                    <div class="rating-container">
+                                        @{
+                                            var avgRating = product.Ratings?.Average ?? 0;
+                                            var fullStars = (int)Math.Floor(avgRating);
+                                            var hasHalfStar = avgRating - fullStars >= 0.5;
+                                            var emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+                                        }
+
+                                        @for (int i = 0; i < fullStars; i++)
+                                        {
+                                            <img src="~/Assets/images/img_star.png" alt="Star" class="star" />
+                                        }
+
+                                        @if (hasHalfStar)
+                                        {
+                                            <img src="~/Assets/images/img_star_half_empty.png" alt="Half Star" class="star" />
+                                        }
+
+                                        @for (int i = 0; i < emptyStars; i++)
+                                        {
+                                            <img src="~/Assets/images/star_empty.png" alt="Empty Star" class="star" />
+                                        }
+                                    </div>
+
+                                    <div class="product-stats">
+                                        <div class="likes">
+                                            <img src="~/Assets/images/img_facebook_like.png" alt="Like" class="like-icon" />
+                                            <span class="stat-text">@product.LikeCount</span>
+                                        </div>
+                                        <div class="downloads">
+                                            <img src="~/Assets/images/img_download.png" alt="Download" class="download-icon" />
+                                            <span class="stat-text">@product.DownloadCount</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </section>
+        </main>
+    </div>
+
+    @section Scripts {
+        <script src="~/Scripts/custom/product-filters.js"></script>
+    }
+    @Html.Partial("_Footer")
+</body>
+</html>

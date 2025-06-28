@@ -23,6 +23,9 @@ namespace DigitalArena.DBContext
             this.ProductFile = new HashSet<ProductFile>();
             this.Review = new HashSet<Review>();
             this.Wishlist = new HashSet<Wishlist>();
+            this.Carousel = new HashSet<Carousel>();
+            this.LandingPage = new HashSet<LandingPage>();
+            this.Engagement = new HashSet<Engagement>();
         }
     
         public int ProductId { get; set; }
@@ -37,6 +40,7 @@ namespace DigitalArena.DBContext
         public string Status { get; set; }
         public int CategoryId { get; set; }
         public int SellerId { get; set; }
+        public int ViewCount { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CartItem> CartItem { get; set; }
@@ -45,12 +49,18 @@ namespace DigitalArena.DBContext
         public virtual ICollection<OrderItem> OrderItem { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Permission> Permission { get; set; }
+        public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProductFile> ProductFile { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Review> Review { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Wishlist> Wishlist { get; set; }
-        public virtual User User { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Carousel> Carousel { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<LandingPage> LandingPage { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Engagement> Engagement { get; set; }
     }
 }

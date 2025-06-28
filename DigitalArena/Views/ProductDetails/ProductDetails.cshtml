@@ -1,22 +1,18 @@
-﻿
-
+﻿@model DigitalArena.Models.ProductDetailsViewModel
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generated Page</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:wght@400;700&family=Poppins:wght@600&family=Roboto:wght@300;400;700&display=swap"
           rel="stylesheet">
-    <title>Product Details</title>
-    <link rel="stylesheet" href="~/Content/ProductDetails.css" />
-    <link rel="stylesheet" href="~/Content/styles.css" />
+    <link rel="stylesheet" href="~/Content/css/ProductDetails.css" />
+    <link rel="stylesheet" href="~/Content/css/styles.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
 </head>
 
 <body>
+    @Html.Partial("_Header2")
     <section id="section-main-content" class="main-content-section">
         <div class="page-wrapper">
             <div class="main-content-grid container">
@@ -32,129 +28,330 @@
                         }
                     </script>
 
-                    <!-- ✅ Canvas Container for 3D model -->
+                    @{
+                        bool isEbook = Model.Product.Category?.Name == "E-Book";
+                        string pdfFileName = System.IO.Path.GetFileNameWithoutExtension(Model.Product.Thumbnail) + ".pdf";
+                        string pdfUrl = Url.Content($"~/Assets/E-Book/product_{Model.Product.ProductId}/files/{pdfFileName}");
+                    }
+
                     <div class="product-main-canvas">
-                        <canvas id="viewer" data-model-path="@ViewBag.ModelPath"></canvas>
+                        <div class="viewer-label">
+                            @(isEbook ? "" : "3D Object Viewer")
+                        </div>
+
+                        @if (isEbook)
+                        {
+                            <div id="pdf-placeholder" class="ebook-preview-placeholder">
+                                <canvas id="pdf-blur-canvas"></canvas>
+
+                                <div class="preview-message">
+                                    <p>Click below to preview this eBook</p>
+                                    <button id="start-preview-btn" class="preview-btn">Preview E-Book</button>
+                                </div>
+                            </div>
+
+                            <div id="pdf-viewer-container" class="ebook-preview-container" style="display: none;"></div>
+
+                            <link rel="stylesheet" href="~/Content/ebook-preview.css" />
+
+                            <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+                            <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const url = '@pdfUrl';
+        const container = document.getElementById("pdf-viewer-container");
+        const placeholder = document.getElementById("pdf-placeholder");
+        const previewBtn = document.getElementById("start-preview-btn");
+        const blurCanvas = document.getElementById("pdf-blur-canvas");
+
+        previewBtn.addEventListener('click', () => {
+            placeholder.style.display = 'none';
+            container.style.display = 'flex';
+            renderPDF();
+        });
+
+        const renderBlurBackground = async () => {
+            const loadingTask = pdfjsLib.getDocument(url);
+            const pdf = await loadingTask.promise;
+            const page = await pdf.getPage(1);
+
+            const viewport = page.getViewport({ scale: 1 });
+            const scale = 2;
+            const scaledViewport = page.getViewport({ scale });
+
+            const context = blurCanvas.getContext("2d");
+            blurCanvas.width = scaledViewport.width;
+            blurCanvas.height = scaledViewport.height;
+
+            await page.render({
+                canvasContext: context,
+                viewport: scaledViewport
+            }).promise;
+        };
+
+        const renderPDF = async () => {
+            const loadingTask = pdfjsLib.getDocument(url);
+            const pdf = await loadingTask.promise;
+            const maxPages = Math.min(pdf.numPages, 15);
+            const containerWidth = container.clientWidth;
+
+            for (let pageNumber = 1; pageNumber <= maxPages; pageNumber++) {
+                const page = await pdf.getPage(pageNumber);
+                const viewport = page.getViewport({ scale: 1 });
+                const scale = containerWidth / viewport.width;
+                const scaledViewport = page.getViewport({ scale });
+
+                const canvas = document.createElement("canvas");
+                canvas.classList.add("ebook-canvas-page");
+
+                const context = canvas.getContext("2d");
+                canvas.height = scaledViewport.height;
+                canvas.width = scaledViewport.width;
+
+                await page.render({
+                    canvasContext: context,
+                    viewport: scaledViewport
+                }).promise;
+
+                container.appendChild(canvas);
+            }
+        };
+
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        renderBlurBackground();
+    });
+                            </script>
+
+
+
+
+
+                        }
+                        else
+                        {
+                            <script type="importmap">
+                                {
+                                    "imports": {
+                                        "three": "https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.module.js",
+                                        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.149.0/examples/jsm/"
+                                    }
+                                }
+                            </script>
+                            <canvas id="viewer" data-model-path="@Model.ModelPath"></canvas>
+                            <script type="module" src="~/Scripts/custom/Load3DModel.js"></script>
+                        }
                     </div>
 
-                    <!-- ✅ 3D Loader Script -->
-                    <script type="module" src="~/Scripts/custom/Load3DModel.js"></script>
 
                     <!-- ✅ Product Info -->
-                    <h3 class="product-title font-inria-sans-400-20 color-text-primary">@Model.Name</h3>
-                    <p class="product-category font-inria-sans-400-14 color-text-secondary">@Model.Category.Name</p>
+                    <h3 class="product-title font-inria-sans-400-20 color-text-primary">@Model.Product.Name</h3>
+                    <p class="product-category font-inria-sans-400-14 color-text-secondary">@Model.Product.Category.Name</p>
 
                     <!-- ✅ Buttons and Stats -->
                     <div class="product-actions-bar">
                         <div class="product-actions">
-                            <button class="wishlist-button">
-                                <img src="~/Assets/images/104de51bea09520a50b6f4c8c1615b7d79174041.png" alt="Wishlist">
-                                <span class="font-inria-sans-400-20 color-text-primary">WISHLIST</span>
-                            </button>
-                            <button class="add-button">
-                                <img src="~/Assets/images/40c3ce2ac3f3dfd1e5a8118ef7f7ce20a60d6e95.png" alt="Add">
-                                <span class="font-inria-sans-400-20 color-text-primary">ADD</span>
+                            <!-- Cart Toggle -->
+                            <button class="ajax-cart add-button" data-productid="@Model.Product.ProductId">
+                                <img src="~/Assets/images/@(Model.IsInCart ? "cart_filled" : "cart_outline").png" alt="Add">
+                                <span class="font-inria-sans-400-20 color-text-primary">@((Model.IsInCart) ? "ADDED" : "ADD")</span>
                             </button>
                         </div>
+
                         <div class="product-engagement-stats">
-                            <div class="stat-group">
-                                <img src="~/Assets/images/388aad34e695fa51ceaefe99aa6aca483a1f231b.png" alt="Likes">
-                                <span class="font-inria-sans-400-20 color-text-primary">@Model.LikeCount</span>
+                            @{
+                                var isAuthenticated = User.Identity.IsAuthenticated && Session["UserId"] != null;
+                            }
+
+                            <div class="stat-group ajax-like @(User.Identity.IsAuthenticated ? "" : "guest")" data-productid="@Model.Product.ProductId">
+                                <img src="~/Assets/images/@(Model.IsLiked ? "like_filled" : "like_outline").png" alt="Like">
+                                <span class="like-count">@Model.Product.LikeCount</span>
                             </div>
+
+                            <div class="stat-group ajax-dislike @(User.Identity.IsAuthenticated ? "" : "guest")" data-productid="@Model.Product.ProductId">
+                                <img src="~/Assets/images/@(Model.IsDisliked ? "dislike_filled" : "dislike_outline").png" alt="Dislike">
+                                <span class="dislike-count">@Model.Product.UnlikeCount</span>
+                            </div>
+
+
+
+
+
+
+
+                            <!-- View Count -->
                             <div class="stat-group">
                                 <img src="~/Assets/images/fb40bebcb2ed9b930570573bc8bb9c628dd8d085.png" alt="Views" style="opacity: 0.4;">
-                                <span class="font-inria-sans-400-20 color-text-primary">32</span>
+                                <span class="font-inria-sans-400-20 color-text-primary">@Model.Product.ViewCount</span>
                             </div>
+
+                            <!-- Download Count -->
                             <div class="stat-group">
                                 <img src="~/Assets/images/9054f403eeab6912265c577d2a7ac1f6bb86acb1.png" alt="Downloads">
-                                <span class="font-inria-sans-400-20 color-text-primary">@ViewBag.DownloadCount</span>
+                                <span class="font-inria-sans-400-20 color-text-primary">@Model.DownloadCount</span>
                             </div>
                         </div>
+
+
+
                     </div>
 
                     <!-- ✅ Styled Divider -->
+
                     <hr class="separator-line style-22" />
 
-                    <p class="product-description font-inria-sans-400-20 color-text-primary"> @Model.Description</p>
+                    <p class="product-description font-inria-sans-400-20 color-text-primary"> @Model.Product.Description</p>
 
                     <div class="product-download-area">
-                        <button class="download-button-main font-inria-sans-700-20 color-text-white">PURCHASE</button>
+                        <button class="download-button-main">PURCHASE</button>
                     </div>
 
                     <div class="publish-info">
                         <img src="~/Assets/images/00c3e69f4493bc2076a5cff445385528b3eb87c1.png" alt="Clock" style="opacity: 0.5;">
-                        <span class="font-inria-sans-700-20 color-text-light-muted">Published @ViewBag.PublishedAgo</span>
+                        <span class="font-inria-sans-700-20 color-text-light-muted">Published @Model.PublishedAgo</span>
                     </div>
 
+                    <!-- Comment Section -->
 
                     <div class="comments-section">
-                        <h3 class="comments-title font-inria-sans-700-20 color-text-muted">2 Comments</h3>
-                        <div class="add-comment-area">
-                            <img src="~/Assets/images/placeholder_avatar.png" alt="Your avatar" class="user-avatar-placeholder">
-                            <!-- Placeholder for 45:121 -->
-                            <div class="rating-stars">
-                                <img src="~/Assets/images/0e3127d4055fb987a535f49264e5edf1f63afdde.png" alt="Star">
-                                <img src="~/Assets/images/0e3127d4055fb987a535f49264e5edf1f63afdde.png" alt="Star">
-                                <img src="~/Assets/images/0e3127d4055fb987a535f49264e5edf1f63afdde.png" alt="Star">
-                                <img src="~/Assets/images/0e3127d4055fb987a535f49264e5edf1f63afdde.png" alt="Star">
-                                <img src="~/Assets/images/0e3127d4055fb987a535f49264e5edf1f63afdde.png" alt="Star">
-                            </div>
-                            <span class="add-comment-text font-inria-sans-700-20 color-text-light-muted">Add a comment</span>
-                        </div>
-                        <hr class="separator-line style-36">
+                        <h3 class="comments-title font-inria-sans-700-20 color-text-muted">
+                            <span id="comment-count">@Model.Reviews.Count</span> @((Model.Reviews.Count == 1) ? "Comment" : "Comments")
+                        </h3>
+                        @if (User.Identity.IsAuthenticated && Session["UserId"] != null)
+                        {
+                            <div class="add-comment-area">
+                                <img src="~/Assets/images/placeholder_avatar.png" alt="Your avatar" class="user-avatar-placeholder">
+                                <div id="comment-form">
+                                    <div class="rating-stars" id="star-rating" style="display: flex;">
+                                        @for (int i = 1; i <= 5; i++)
+                                        {
+                                            <img src="~/Assets/images/star_empty.png" alt="Star" class="star" data-value="@i" />
+                                        }
+                                    </div>
 
-                        <div class="comment-item">
-                            <img src="~/Assets/images/placeholder_avatar.png" alt="Marcus Ashley's avatar" class="user-avatar-placeholder">
-                            <!-- Placeholder for 45:125 -->
-                            <div class="comment-content">
-                                <div class="comment-header">
-                                    <span class="comment-author font-inria-sans-400-20 color-text-accent">Marcus Ashley</span>
-                                    <span class="comment-date font-inria-sans-400-14 color-text-muted">2 years ago</span>
+                                    <div class="comment-input-container">
+                                        <textarea id="comment-text" class="comment-textarea" maxlength="250" placeholder="Write a comment..."></textarea>
+                                        <button id="submit-comment" class="submit-icon-btn" data-value="@Model.Product.ProductId">
+                                            <img src="~/Assets/site-images/arrow.png" alt="Submit" />
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="rating-stars">
-                                    <img src="~/Assets/images/0fbca9bac704083a285a044f21724bc6b971e811.png" alt="Star">
-                                    <img src="~/Assets/images/0fbca9bac704083a285a044f21724bc6b971e811.png" alt="Star">
-                                    <img src="~/Assets/images/0fbca9bac704083a285a044f21724bc6b971e811.png" alt="Star">
-                                    <img src="~/Assets/images/0fbca9bac704083a285a044f21724bc6b971e811.png" alt="Star">
-                                </div>
-                                <p class="comment-text font-inria-sans-400-20 color-text-primary">
-                                    You have done really an excellent job
-                                    with this model, especially considering the complexity of it.
-                                </p>
-                                <a href="#" class="comment-reply-link font-inria-sans-400-20 color-text-secondary">Reply</a>
+                                <p id="comment-status" class="status-text"></p>
                             </div>
+                        }
+                        <hr class="separator-line style-36" />
+
+                        <div id="user-comment-list" class="comment-list">
+                            @foreach (var review in Model.Reviews.OrderByDescending(r => r.CreatedAt))
+                            {
+                                var timeAgo = DigitalArena.Helpers.DateHelper.GetPublishedAgo(review.CreatedAt);
+                                <div class="comment-item" data-reviewid="@review.ReviewId">
+                                    <img src="~/Assets/images/placeholder_avatar.png" alt="@review.User.Username's avatar" class="user-avatar-placeholder">
+                                    <div class="comment-content">
+                                        <div class="comment-header">
+                                            <span class="comment-author font-inria-sans-400-20 color-text-accent">@review.User.Username</span>
+                                            <span class="comment-date font-inria-sans-400-14 color-text-muted">@timeAgo</span>
+                                        </div>
+
+                                        <div class="rating-stars" data-rating="@review.Rating">
+                                            @{
+                                                double rating = review.Rating;
+                                                int fullStars = (int)Math.Floor(rating);
+                                                bool hasHalfStar = rating - fullStars >= 0.5;
+                                                int emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+                                            }
+
+                                            @for (int i = 0; i < fullStars; i++)
+                                            {
+                                                <img src="~/Assets/images/img_star.png" alt="Star" class="star img_star" />
+                                            }
+
+                                            @if (hasHalfStar)
+                                            {
+                                                <img src="~/Assets/images/img_star_half_empty.png" alt="Half Star" class="star img_star" />
+                                            }
+
+                                            @for (int i = 0; i < emptyStars; i++)
+                                            {
+                                                <img src="~/Assets/images/star_empty.png" alt="Empty Star" class="star" />
+                                            }
+                                        </div>
+
+                                        <p class="comment-text font-inria-sans-400-20 color-text-primary" data-reviewid="@review.ReviewId">
+                                            @review.Comment
+                                        </p>
+
+                                        @if (Session["UserId"] != null && review.UserId == (int)Session["UserId"])
+                                        {
+                                            <div class="comment-actions">
+                                                <span class="text-action btn-edit" data-reviewid="@review.ReviewId">🖋️ Edit</span> |
+                                                <span class="text-action btn-delete" data-reviewid="@review.ReviewId">🚫 Delete</span>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            }
                         </div>
+
                     </div>
                 </div>
 
                 <aside class="sidebar-suggested-products">
-                    <h2 class="sidebar-title font-inria-sans-400-20 color-text-accent">SUGGESTED 3D MODELS</h2>
-                    <div class="suggested-products-grid">
-                        <!-- Product Card 1: Leather Couch -->
-                        <div class="product-card">
-                            <img src="~/Assets/images/2cdff1a27affadb389225ecb939439e9b68981b5.png" alt="Leather Couch"
-                                 class="product-card__image">
-                            <div class="product-card__info">
-                                <h3 class="product-card__title font-inria-sans-400-20 color-text-primary">Leather Couch</h3>
-                                <div class="product-card__stats">
-                                    <div class="product-card__stats-bg"></div>
-                                    <div class="stat">
-                                        <img src="~/Assets/images/388aad34e695fa51ceaefe99aa6aca483a1f231b.png" alt="Likes">
-                                        <span class="font-inria-sans-400-20 color-text-primary">1.2k</span>
-                                    </div>
-                                    <div class="stat">
-                                        <img src="~/Assets/images/fb40bebcb2ed9b930570573bc8bb9c628dd8d085.png" alt="Views" style="opacity:0.4;">
-                                        <span class="font-inria-sans-400-20 color-text-primary">5.2k</span>
+                    <h2 class="suggested-heading">
+                        SUGGESTED @Model.Product.Category.Name.ToUpper()S
+                    </h2>
+
+                    <div class="suggested-products-grid" id="suggested-product-container">
+                        @foreach (var product in Model.SuggestedProducts)
+                        {
+                            var categoryName = Model.Product.Category?.Name ?? "3D Model";
+                            var folderName = categoryName.Replace(" ", "%20");
+                            var imagePath = Url.Content($"~/Assets/{folderName}/product_{product.ProductId}/thumbnails/{product.Thumbnail}");
+
+                            <div class="product-card suggested-product-slide">
+                                <a href="@Url.Action("ProductDetails", "ProductDetails", new { id = product.ProductId })">
+                                    <img src="@imagePath" alt="@product.Name" class="product-card__image" />
+                                </a>
+                                <div class="product-card__info">
+                                    <h3 class="product-card__title font-inria-sans-400-20 color-text-primary">
+                                        @product.Name
+                                    </h3>
+                                    <div class="product-card__stats">
+                                        <div class="product-card__stats-bg"></div>
+                                        <div class="stat">
+                                            <img src="~/Assets/images/388aad34e695fa51ceaefe99aa6aca483a1f231b.png" alt="Likes" />
+                                            <span class="font-inria-sans-400-20 color-text-primary">@product.LikeCount</span>
+                                        </div>
+                                        <div class="stat">
+                                            <img src="~/Assets/images/fb40bebcb2ed9b930570573bc8bb9c628dd8d085.png" alt="Views" style="opacity:0.4;" />
+                                            <span class="font-inria-sans-400-20 color-text-primary">@product.ViewCount</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        }
                     </div>
                 </aside>
             </div>
         </div>
     </section>
+    <!-- 🔶 Fake Stripe Payment Modal -->
+    <div id="PaymentModal" class="payment-modal" style="display:none;">
+        <div class="payment-modal-content">
+            <h3>Fake Stripe Payment</h3>
+            <form id="paymentForm">
+                <label>Card Number</label>
+                <input type="text" name="cardNumber" placeholder="4242 4242 4242 4242" required />
+                <label>Expiry</label>
+                <input type="text" name="expiry" placeholder="MM/YY" required />
+                <label>CVC</label>
+                <input type="text" name="cvc" placeholder="123" required />
+                <button type="submit">Pay</button>
+                <button type="button" id="cancelPayment">Cancel</button>
+            </form>
+        </div>
+    </div>
+    <input type="hidden" id="hiddenProductId" value="@Model.Product.ProductId" />
+    <input type="hidden" id="hiddenProductPrice" value="@Model.Product.Price" />
+    <script src="~/Scripts/custom/ProductDetailsOperation.js"></script>
     @Html.Partial("_Footer")
 </body>
-
 </html>

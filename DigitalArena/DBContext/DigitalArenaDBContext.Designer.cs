@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'D:\CODES\ASP_DOT_NET\PROJECT\DigitalArena\DigitalArena\DBContext\DigitalArenaDBContext.edmx'. 
+﻿// T4 code generation is enabled for model 'E:\Class\Semester - 10\ASP DOT NET\Project\DigitalArena-ASP.Net-Project\DigitalArena\DBContext\DigitalArenaDBContext.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

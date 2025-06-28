@@ -1,18 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
+using System.Data.Entity;
+using DigitalArena.DBContext;
+using DigitalArena.Models; 
 
 namespace DigitalArena.Controllers
 {
-    [AllowAnonymous]
     public class HomeController : Controller
     {
+        private readonly DigitalArenaDBContext db = new DigitalArenaDBContext();
+
+        // Redirects based on user role
         public ActionResult Index()
         {
-            if(User.IsInRole("ADMIN")) return RedirectToAction("Index", "AdminDashboard");
-            if(User.IsInRole("SELLER")) return RedirectToAction("Index", "SellerDashboard");
+            if (User.IsInRole("ADMIN"))
+                return RedirectToAction("Index", "AdminDashboard");
+
+            if (User.IsInRole("SELLER"))
+                return RedirectToAction("Index", "SellerDashboard");
 
             return View();
         }
@@ -20,15 +26,39 @@ namespace DigitalArena.Controllers
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
-
             return View();
         }
 
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
-
             return View();
+        }
+
+        [AllowAnonymous]
+        public ActionResult LandingPage()
+        {
+            var landing = db.LandingPage.Include(lp => lp.Product).FirstOrDefault();
+
+            if (landing == null) return HttpNotFound();
+
+            var model = new LandingPageViewModel
+            {
+                ProductId = landing.ProductId,
+                Headline = landing.Headline,
+                SubHeadline = landing.SubHeadline,
+                HeroImageUrl = Url.Content($"~/Assets/landing_page/{landing.Product.Thumbnail}")
+            };
+            return View(model);
+        }
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+
+            base.Dispose(disposing);
         }
     }
 }

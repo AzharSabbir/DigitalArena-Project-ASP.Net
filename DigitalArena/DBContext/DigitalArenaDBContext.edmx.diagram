@@ -8,6 +8,7 @@
         <EntityTypeShape EntityType="DigitalArenaDBModel.Cart" Width="1.5" PointX="3" PointY="11" />
         <EntityTypeShape EntityType="DigitalArenaDBModel.CartItem" Width="1.5" PointX="5.25" PointY="10.75" />
         <EntityTypeShape EntityType="DigitalArenaDBModel.Category" Width="1.5" PointX="0.75" PointY="14.375" />
+        <EntityTypeShape EntityType="DigitalArenaDBModel.Coupon" Width="1.5" PointX="3" PointY="32.875" />
         <EntityTypeShape EntityType="DigitalArenaDBModel.GiftCard" Width="1.5" PointX="3" PointY="22.375" />
         <EntityTypeShape EntityType="DigitalArenaDBModel.Notification" Width="1.5" PointX="3" PointY="40.125" />
         <EntityTypeShape EntityType="DigitalArenaDBModel.Order" Width="1.5" PointX="7.5" PointY="27" />
@@ -17,36 +18,40 @@
         <EntityTypeShape EntityType="DigitalArenaDBModel.ProductFile" Width="1.5" PointX="5.25" PointY="23.875" />
         <EntityTypeShape EntityType="DigitalArenaDBModel.Review" Width="1.5" PointX="5.25" PointY="14.125" />
         <EntityTypeShape EntityType="DigitalArenaDBModel.Transaction" Width="1.5" PointX="5.25" PointY="36.875" />
+        <EntityTypeShape EntityType="DigitalArenaDBModel.User" Width="1.5" PointX="0.75" PointY="17.75" />
         <EntityTypeShape EntityType="DigitalArenaDBModel.Verification" Width="1.5" PointX="3" PointY="29.875" />
         <EntityTypeShape EntityType="DigitalArenaDBModel.Wallet" Width="1.5" PointX="3" PointY="37" />
         <EntityTypeShape EntityType="DigitalArenaDBModel.Wishlist" Width="1.5" PointX="8.25" PointY="18.375" />
+        <AssociationConnector Association="DigitalArenaDBModel.FK__Cart__UserId__03F0984C" />
         <AssociationConnector Association="DigitalArenaDBModel.FK__CartItem__CartId__07C12930" />
         <AssociationConnector Association="DigitalArenaDBModel.FK__CartItem__Produc__08B54D69" />
         <AssociationConnector Association="DigitalArenaDBModel.FK__Product__Categor__5441852A" />
+        <AssociationConnector Association="DigitalArenaDBModel.FK__Coupon__UserId__00200768" />
+        <AssociationConnector Association="DigitalArenaDBModel.FK__GiftCard__UserId__72C60C4A" />
+        <AssociationConnector Association="DigitalArenaDBModel.FK__Notificat__UserI__6D0D32F4" />
         <AssociationConnector Association="DigitalArenaDBModel.FK__Order__Transacti__6383C8BA" />
+        <AssociationConnector Association="DigitalArenaDBModel.FK__Order__UserId__6477ECF3" />
         <AssociationConnector Association="DigitalArenaDBModel.FK__OrderItem__Order__6754599E" />
         <AssociationConnector Association="DigitalArenaDBModel.FK__OrderItem__Produ__68487DD7" />
         <AssociationConnector Association="DigitalArenaDBModel.FK__Permissio__Produ__787EE5A0" />
+        <AssociationConnector Association="DigitalArenaDBModel.FK__Permissio__UserI__778AC167" />
+        <AssociationConnector Association="DigitalArenaDBModel.FK__Product__SellerI__5535A963" />
         <AssociationConnector Association="DigitalArenaDBModel.FK__ProductFi__Produ__5812160E" />
         <AssociationConnector Association="DigitalArenaDBModel.FK__Review__ProductI__5FB337D6" />
         <AssociationConnector Association="DigitalArenaDBModel.FK__Wishlist__Produc__0D7A0286" />
-        <AssociationConnector Association="DigitalArenaDBModel.FK__Transacti__Walle__47DBAE45" />
-        <EntityTypeShape EntityType="DigitalArenaDBModel.Carousel" Width="1.5" PointX="7.875" PointY="8.875" />
-        <EntityTypeShape EntityType="DigitalArenaDBModel.Coupon" Width="1.5" PointX="3" PointY="44.125" />
-        <EntityTypeShape EntityType="DigitalArenaDBModel.User" Width="1.5" PointX="0.75" PointY="24.125" />
-        <AssociationConnector Association="DigitalArenaDBModel.FK__Cart__UserId__03F0984C" />
-        <AssociationConnector Association="DigitalArenaDBModel.FK__Coupon__UserId__00200768" />
-        <AssociationConnector Association="DigitalArenaDBModel.FK_Coupon_CreatedBy_User" />
-        <AssociationConnector Association="DigitalArenaDBModel.FK__GiftCard__UserId__72C60C4A" />
-        <AssociationConnector Association="DigitalArenaDBModel.FK__Notificat__UserI__6D0D32F4" />
-        <AssociationConnector Association="DigitalArenaDBModel.FK__Order__UserId__6477ECF3" />
-        <AssociationConnector Association="DigitalArenaDBModel.FK__Permissio__UserI__778AC167" />
-        <AssociationConnector Association="DigitalArenaDBModel.FK__Product__SellerI__5535A963" />
         <AssociationConnector Association="DigitalArenaDBModel.FK__Review__UserId__5EBF139D" />
+        <AssociationConnector Association="DigitalArenaDBModel.FK__Transacti__Walle__47DBAE45" />
         <AssociationConnector Association="DigitalArenaDBModel.FK__Verificat__UserI__403A8C7D" />
         <AssociationConnector Association="DigitalArenaDBModel.FK__Wallet__UserId__44FF419A" />
         <AssociationConnector Association="DigitalArenaDBModel.FK__Wishlist__UserId__0C85DE4D" />
-        </Diagram>
+        <EntityTypeShape EntityType="DigitalArenaDBModel.Carousel" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="DigitalArenaDBModel.LandingPage" Width="1.5" PointX="5.25" PointY="26.625" />
+        <AssociationConnector Association="DigitalArenaDBModel.FK_Carousel_Product" />
+        <AssociationConnector Association="DigitalArenaDBModel.FK__LandingPa__Produ__1BC821DD" />
+        <EntityTypeShape EntityType="DigitalArenaDBModel.Engagement" Width="1.5" PointX="8.25" PointY="14.375" />
+        <AssociationConnector Association="DigitalArenaDBModel.FK__Engagemen__Produ__2BFE89A6" />
+        <AssociationConnector Association="DigitalArenaDBModel.FK__Engagemen__UserI__2B0A656D" />
+      </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

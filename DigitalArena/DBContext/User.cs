@@ -19,7 +19,6 @@ namespace DigitalArena.DBContext
         {
             this.Cart = new HashSet<Cart>();
             this.Coupon = new HashSet<Coupon>();
-            this.Coupon1 = new HashSet<Coupon>();
             this.GiftCard = new HashSet<GiftCard>();
             this.Notification = new HashSet<Notification>();
             this.Order = new HashSet<Order>();
@@ -29,6 +28,7 @@ namespace DigitalArena.DBContext
             this.Verification = new HashSet<Verification>();
             this.Wallet = new HashSet<Wallet>();
             this.Wishlist = new HashSet<Wishlist>();
+            this.Engagement = new HashSet<Engagement>();
         }
     
         public int UserId { get; set; }
@@ -48,8 +48,6 @@ namespace DigitalArena.DBContext
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Coupon> Coupon { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Coupon> Coupon1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<GiftCard> GiftCard { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Notification> Notification { get; set; }
@@ -67,5 +65,7 @@ namespace DigitalArena.DBContext
         public virtual ICollection<Wallet> Wallet { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Wishlist> Wishlist { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Engagement> Engagement { get; set; }
     }
 }
