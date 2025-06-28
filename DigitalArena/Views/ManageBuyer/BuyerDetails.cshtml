@@ -36,7 +36,15 @@
 </nav>
 
 
-<h1 class="mb-4 fw-bold text-primary">Buyer Details</h1>
+<div class="d-flex justify-content-between align-items-center mb-2">
+    <h1 class="fw-bold text-primary mb-0">Buyer Details</h1>
+    <button type="button"
+            class="btn btn-sm btn-outline-secondary"
+            onclick="openBuyerStatusModal(@Model.UserId, @(Model.IsActive.ToString().ToLower()))">
+        <i class="bi bi-pencil-square me-1"></i> Change Status
+    </button>
+</div>
+
 
 <div class="card shadow-sm p-4">
     <div class="row mb-3">
@@ -100,15 +108,11 @@
             <i class="bi bi-bag-check me-1"></i> View Orders
         </a>
 
-        <a href="@Url.Action("PurchasedProducts", "Order", new { userId = Model.UserId })" class="btn btn-outline-dark">
+        <a href="@Url.RouteUrl("ViewPurchasedProductsRoute", new { userId = Model.UserId })" class="btn btn-outline-dark">
             <i class="bi bi-cart-check me-1"></i> Purchased Products
         </a>
 
-        <a href="@Url.Action("ReviewsByUser", "Review", new { userId = Model.UserId })" class="btn btn-outline-info">
-            <i class="bi bi-chat-left-dots me-1"></i> View Reviews
-        </a>
-
-        <a href="@Url.Action("TransactionsByUser", "Transaction", new { userId = Model.UserId })" class="btn btn-outline-warning">
+        <a href="@Url.RouteUrl("ViewTransactionsRoute", new { userId = Model.UserId })" class="btn btn-outline-warning">
             <i class="bi bi-currency-exchange me-1"></i> View Transactions
         </a>
     </div>
@@ -116,3 +120,45 @@
 
     <a href="@Url.RouteUrl("ManageBuyersRoute")" class="btn btn-secondary mt-3">Back to Buyer List</a>
 </div>
+
+
+
+<!-- Change Buyer Status Modal -->
+<div class="modal fade" id="buyerStatusModal" tabindex="-1" aria-labelledby="buyerStatusModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <form method="post" action="@Url.Action("UpdateBuyerStatus", "ManageBuyer")">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="buyerStatusModalLabel">Change Buyer Status</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="userId" id="modalBuyerUserId" />
+                    <div class="mb-3">
+                        <label for="modalBuyerStatus" class="form-label">New Status</label>
+                        <select name="newStatus" id="modalBuyerStatus" class="form-select">
+                            <option value="true">Active</option>
+                            <option value="false">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer pt-0">
+                    <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+    function openBuyerStatusModal(userId, isActive) {
+        document.getElementById("modalBuyerUserId").value = userId;
+        document.getElementById("modalBuyerStatus").value = isActive;
+        var modal = new bootstrap.Modal(document.getElementById("buyerStatusModal"));
+        modal.show();
+    }
+</script>

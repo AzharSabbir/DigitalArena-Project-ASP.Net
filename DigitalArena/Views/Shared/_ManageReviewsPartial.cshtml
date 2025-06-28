@@ -1,0 +1,96 @@
+﻿@model List<DigitalArena.DBContext.Review>
+
+@{
+    Func<DateTime, string> formatDate = d => d.ToString("dd MMM yyyy hh:mm tt");
+}
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No reviews found with current filters.</div>
+}
+else
+{
+    foreach (var review in Model)
+    {
+        var product = review.Product;
+        var categoryName = product.Category?.Name ?? "Unknown";
+        var buyer = review.User;
+
+        var buyerImg = !string.IsNullOrEmpty(buyer?.ProfileImage)
+            ? $"~/Assets/user_profile_image/user_{buyer.UserId}/{buyer.ProfileImage}"
+            : "~/Assets/user_profile_image/avatar.jpg";
+
+        var productImg = !string.IsNullOrEmpty(product?.Thumbnail)
+            ? $"~/Assets/{categoryName}/product_{product.ProductId}/thumbnails/{product.Thumbnail}"
+            : "~/Assets/ebook/default-thumb.jpg";
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body d-flex justify-content-between align-items-stretch">
+                <div class="d-flex flex-grow-1 me-3">
+                    <img src="@Url.Content(buyerImg)" class="rounded-circle me-3 border"
+                         alt="Buyer" style="width: 60px; height: 60px; object-fit: cover;" />
+                    <div>
+                        <h5 class="mb-0">@buyer.FullName</h5>
+                        <small class="text-muted">@buyer.Username</small>
+                        <div class="mt-1">
+                            <span class="badge bg-warning text-dark me-1">@review.Rating / 5</span>
+                            <span class="badge @(review.Status == "Approved" ? "bg-success" : review.Status == "Pending" ? "bg-warning text-dark" : "bg-danger")">
+                                @review.Status
+                            </span>
+                        </div>
+                        <hr />
+                        <p class="mb-1"><strong>Product ID:</strong> @product.ProductId</p>
+                        <p class="mb-1"><strong>Product Name:</strong> @product.Name</p>
+                        <p class="mb-1"><strong>Category:</strong> @categoryName</p>
+                        <p class="mb-1 text-muted"><strong>Reviewed At:</strong> @formatDate(review.CreatedAt)</p>
+                        <p class="mb-2"><strong>Comment:</strong> @review.Comment</p>
+
+                        <!-- Status Change Dropdown -->
+                        <form method="post" action="@Url.Action("ChangeReviewStatus", "ManageReview", FormMethod.Post)" class="d-flex align-items-center">
+                            <input type="hidden" name="reviewId" value="@review.ReviewId" />
+                            <select name="newStatus" class="form-select me-2" style="width: 160px;">
+                                <option value="Approved" @(review.Status == "Approved" ? "selected" : "")>Approved</option>
+                                <option value="Pending" @(review.Status == "Pending" ? "selected" : "")>Pending</option>
+                                <option value="Rejected" @(review.Status == "Rejected" ? "selected" : "")>Rejected</option>
+                            </select>
+                            <button type="submit" class="btn btn-sm btn-primary">Change</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="ms-3 d-flex align-items-center">
+                    <img src="@Url.Content(productImg)" alt="Product Thumbnail"
+                         class="rounded border"
+                         style="width: 120px; height: auto; object-fit: cover;" />
+                </div>
+            </div>
+        </div>
+    }
+}
+
+@{
+    int currentPage = ViewBag.CurrentPage ?? 1;
+    int totalPages = ViewBag.TotalPages ?? 1;
+}
+
+@if (totalPages > 1)
+{
+    <nav aria-label="Review pagination">
+        <ul class="pagination pagination-sm justify-content-center mt-4">
+            <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                <a href="#" class="page-link rounded-pill px-3" data-page="@(currentPage - 1)">« Prev</a>
+            </li>
+
+            @for (int i = 1; i <= totalPages; i++)
+            {
+                <li class="page-item @(i == currentPage ? "active" : "")">
+                    <a href="#" class="page-link rounded-pill px-3 @(i == currentPage ? "bg-primary text-white border-0" : "")" data-page="@i">@i</a>
+                </li>
+            }
+
+            <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                <a href="#" class="page-link rounded-pill px-3" data-page="@(currentPage + 1)">Next »</a>
+            </li>
+        </ul>
+    </nav>
+}
+

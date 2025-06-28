@@ -56,6 +56,11 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression, Version=4.1.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Compression.4.3.0\lib\net46\System.IO.Compression.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
@@ -144,6 +149,9 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Admin\AdminDashboardController.cs" />
     <Compile Include="Controllers\Admin\ManageBuyerController.cs" />
+    <Compile Include="Controllers\Admin\ManageProductsController.cs" />
+    <Compile Include="Controllers\Admin\ManageReviewController.cs" />
+    <Compile Include="Controllers\Admin\ManageSellerController.cs" />
     <Compile Include="Controllers\Api\TestController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\BrowseProductController.cs" />
@@ -228,8 +236,10 @@
     <Compile Include="Models\CartModel.cs" />
     <Compile Include="Models\CategoryModel.cs" />
     <Compile Include="Models\CouponModel.cs" />
+    <Compile Include="Models\Custom\ProductDetailViewModel.cs" />
+    <Compile Include="Models\Custom\SellerDetailsViewModel.cs" />
     <Compile Include="Models\GiftCardModel.cs" />
-    <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\Custom\LoginModel.cs" />
     <Compile Include="Models\NotificationModel.cs" />
     <Compile Include="Models\OrderItemModel.cs" />
     <Compile Include="Models\OrderModel.cs" />
@@ -242,7 +252,6 @@
     <Compile Include="Models\VerificationModel.cs" />
     <Compile Include="Models\WalletModel.cs" />
     <Compile Include="Models\WishlistModel.cs" />
-    <Compile Include="obj\Debug\.NETFramework,Version=v4.7.2.AssemblyAttributes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\SmsService.cs" />
     <Compile Include="Utils\WebRoleProvider.cs" />
@@ -288,7 +297,7 @@
     <Content Include="Assets\E-Book\product_24\thumbnails\Improving Your Self-Esteem.png" />
     <Content Include="Assets\E-Book\product_25\thumbnails\Machine learning - The power and promise of computers that learn by example.png" />
     <Content Include="Assets\E-Book\product_26\thumbnails\Machine Learning Algorithms, Model and Applications.png" />
-    <Content Include="Assets\E-Book\product_27\thumbnails\McKinsey Special CollectionBusiness strategy.png" />
+    <Content Include="Assets\E-Book\product_27\thumbnails\McKinsey Special Collection Business strategy.png" />
     <Content Include="Assets\E-Book\product_28\thumbnails\Mind Tools on Motivation.png" />
     <Content Include="Assets\E-Book\product_29\thumbnails\Modern Methods of Construction.png" />
     <Content Include="Assets\E-Book\product_30\thumbnails\Motivating Skills.png" />
@@ -412,79 +421,6 @@
     <Content Include="Assets\site-images\x-icon.png" />
     <Content Include="Assets\user_profile_image\avatar.jpg" />
     <Content Include="Assets\user_profile_image\user_2\ProfileImage-BUYER-2-1733949040998.jpg" />
-    <Content Include="bin\Antlr3.Runtime.dll" />
-    <Content Include="bin\Antlr3.Runtime.pdb" />
-    <Content Include="bin\DigitalArena.dll" />
-    <Content Include="bin\DigitalArena.pdb" />
-    <Content Include="bin\EntityFramework.dll" />
-    <Content Include="bin\EntityFramework.SqlServer.dll" />
-    <Content Include="bin\EntityFramework.SqlServer.xml" />
-    <Content Include="bin\EntityFramework.xml" />
-    <Content Include="bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll" />
-    <Content Include="bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml" />
-    <Content Include="bin\Microsoft.Web.Infrastructure.dll" />
-    <Content Include="bin\Newtonsoft.Json.dll" />
-    <Content Include="bin\Newtonsoft.Json.xml" />
-    <Content Include="bin\roslyn\csc.exe" />
-    <Content Include="bin\roslyn\csi.exe" />
-    <Content Include="bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll" />
-    <Content Include="bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll" />
-    <Content Include="bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll" />
-    <Content Include="bin\roslyn\Microsoft.CodeAnalysis.dll" />
-    <Content Include="bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll" />
-    <Content Include="bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll" />
-    <Content Include="bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll" />
-    <Content Include="bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll" />
-    <Content Include="bin\roslyn\Microsoft.Win32.Primitives.dll" />
-    <Content Include="bin\roslyn\System.AppContext.dll" />
-    <Content Include="bin\roslyn\System.Collections.Immutable.dll" />
-    <Content Include="bin\roslyn\System.Console.dll" />
-    <Content Include="bin\roslyn\System.Diagnostics.DiagnosticSource.dll" />
-    <Content Include="bin\roslyn\System.Diagnostics.FileVersionInfo.dll" />
-    <Content Include="bin\roslyn\System.Diagnostics.StackTrace.dll" />
-    <Content Include="bin\roslyn\System.Globalization.Calendars.dll" />
-    <Content Include="bin\roslyn\System.IO.Compression.dll" />
-    <Content Include="bin\roslyn\System.IO.Compression.ZipFile.dll" />
-    <Content Include="bin\roslyn\System.IO.FileSystem.dll" />
-    <Content Include="bin\roslyn\System.IO.FileSystem.Primitives.dll" />
-    <Content Include="bin\roslyn\System.Net.Http.dll" />
-    <Content Include="bin\roslyn\System.Net.Sockets.dll" />
-    <Content Include="bin\roslyn\System.Reflection.Metadata.dll" />
-    <Content Include="bin\roslyn\System.Runtime.InteropServices.RuntimeInformation.dll" />
-    <Content Include="bin\roslyn\System.Security.Cryptography.Algorithms.dll" />
-    <Content Include="bin\roslyn\System.Security.Cryptography.Encoding.dll" />
-    <Content Include="bin\roslyn\System.Security.Cryptography.Primitives.dll" />
-    <Content Include="bin\roslyn\System.Security.Cryptography.X509Certificates.dll" />
-    <Content Include="bin\roslyn\System.Text.Encoding.CodePages.dll" />
-    <Content Include="bin\roslyn\System.Threading.Tasks.Extensions.dll" />
-    <Content Include="bin\roslyn\System.ValueTuple.dll" />
-    <Content Include="bin\roslyn\System.Xml.ReaderWriter.dll" />
-    <Content Include="bin\roslyn\System.Xml.XmlDocument.dll" />
-    <Content Include="bin\roslyn\System.Xml.XPath.dll" />
-    <Content Include="bin\roslyn\System.Xml.XPath.XDocument.dll" />
-    <Content Include="bin\roslyn\vbc.exe" />
-    <Content Include="bin\roslyn\VBCSCompiler.exe" />
-    <Content Include="bin\System.Net.Http.Formatting.dll" />
-    <Content Include="bin\System.Net.Http.Formatting.xml" />
-    <Content Include="bin\System.Web.Helpers.dll" />
-    <Content Include="bin\System.Web.Helpers.xml" />
-    <Content Include="bin\System.Web.Http.dll" />
-    <Content Include="bin\System.Web.Http.WebHost.dll" />
-    <Content Include="bin\System.Web.Http.WebHost.xml" />
-    <Content Include="bin\System.Web.Http.xml" />
-    <Content Include="bin\System.Web.Mvc.dll" />
-    <Content Include="bin\System.Web.Mvc.xml" />
-    <Content Include="bin\System.Web.Optimization.dll" />
-    <Content Include="bin\System.Web.Optimization.xml" />
-    <Content Include="bin\System.Web.Razor.dll" />
-    <Content Include="bin\System.Web.Razor.xml" />
-    <Content Include="bin\System.Web.WebPages.Deployment.dll" />
-    <Content Include="bin\System.Web.WebPages.Deployment.xml" />
-    <Content Include="bin\System.Web.WebPages.dll" />
-    <Content Include="bin\System.Web.WebPages.Razor.dll" />
-    <Content Include="bin\System.Web.WebPages.Razor.xml" />
-    <Content Include="bin\System.Web.WebPages.xml" />
-    <Content Include="bin\WebGrease.dll" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-grid.rtl.css" />
@@ -517,12 +453,6 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="obj\Debug\DigitalArena.csproj.FileListAbsolute.txt" />
-    <Content Include="obj\Debug\DigitalArena.dll" />
-    <Content Include="obj\Debug\DigitalArena.pdb" />
-    <Content Include="obj\Debug\TempPE\DBContext.DigitalArenaDBContext.Context.cs.dll" />
-    <Content Include="obj\Debug\TempPE\DBContext.DigitalArenaDBContext.cs.dll" />
-    <Content Include="obj\Debug\TempPE\DBContext.DigitalArenaDBContext.Designer.cs.dll" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -628,25 +558,6 @@
     <Content Include="Assets\Graphics Template\README.md" />
     <Content Include="Assets\Presentation Slide\README.md" />
     <Content Include="Assets\user_profile_image\README.md" />
-    <Content Include="bin\DigitalArena.dll.config" />
-    <Content Include="bin\roslyn\csc.exe.config" />
-    <Content Include="bin\roslyn\csc.rsp" />
-    <Content Include="bin\roslyn\csi.exe.config" />
-    <Content Include="bin\roslyn\csi.rsp" />
-    <Content Include="bin\roslyn\Microsoft.CSharp.Core.targets" />
-    <Content Include="bin\roslyn\Microsoft.Managed.Core.targets" />
-    <Content Include="bin\roslyn\Microsoft.VisualBasic.Core.targets" />
-    <Content Include="bin\roslyn\vbc.exe.config" />
-    <Content Include="bin\roslyn\vbc.rsp" />
-    <Content Include="bin\roslyn\VBCSCompiler.exe.config" />
-    <Content Include="obj\Debug\DesignTimeResolveAssemblyReferences.cache" />
-    <Content Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
-    <Content Include="obj\Debug\DigitalA.9D854542.Up2Date" />
-    <Content Include="obj\Debug\DigitalArena.csproj.AssemblyReference.cache" />
-    <Content Include="obj\Debug\DigitalArena.csproj.CoreCompileInputs.cache" />
-    <Content Include="obj\Debug\edmxResourcesToEmbed\DBContext\DigitalArenaDBContext.csdl" />
-    <Content Include="obj\Debug\edmxResourcesToEmbed\DBContext\DigitalArenaDBContext.msl" />
-    <Content Include="obj\Debug\edmxResourcesToEmbed\DBContext\DigitalArenaDBContext.ssdl" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\custom\cubeViewer.js" />
     <Content Include="Scripts\custom\Load3DModel.js" />
@@ -697,9 +608,25 @@
     <Content Include="Views\BrowseProduct\BrowseCategory.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\Shared\_Footer.cshtml" />
+    <Content Include="Views\ManageBuyer\ViewPurchasedProducts.cshtml" />
+    <Content Include="Views\ManageBuyer\ViewTransactions.cshtml" />
+    <Content Include="Views\AdminDashboard\ManageSellers.cshtml" />
+    <Content Include="Views\Shared\_SellersTable.cshtml" />
+    <Content Include="Views\ManageSeller\SellerDetails.cshtml" />
+    <Content Include="Views\ManageSeller\ViewSellerProducts.cshtml" />
+    <Content Include="Views\ManageSeller\ViewSellerProductReviews.cshtml" />
+    <Content Include="Views\Shared\_SellerReviewsTable.cshtml" />
+    <Content Include="Views\AdminDashboard\ManageProducts.cshtml" />
+    <Content Include="Views\Shared\_ProductsTable.cshtml" />
+    <Content Include="Views\Shared\_SellerProductsTable.cshtml" />
+    <Content Include="Views\ManageProducts\ViewProductDetails.cshtml" />
+    <Content Include="Views\AdminDashboard\ManageReviews.cshtml" />
+    <Content Include="Views\Shared\_ManageReviewsPartial.cshtml" />
+    <Content Include="Views\AdminDashboard\AdminProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\ManageReview\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />

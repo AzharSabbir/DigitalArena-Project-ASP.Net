@@ -3,68 +3,221 @@
     string currentAction = ViewContext.RouteData.Values["action"]?.ToString();
 }
 
-<!-- Sidebar Start -->
-<div class="d-flex flex-column p-3 bg-light position-fixed"
-     style="width: 250px; height: 100vh; top: 0; left: 0; z-index: 1000;">
+<style>
+    :root {
+        --sidebar-expanded-width: 240px;
+        --sidebar-collapsed-width: 60px;
+        --primary-color: #2563eb;
+        --text-color: #1f2937;
+        --hover-bg: #f3f4f6;
+    }
 
-    <a href="@Url.Action("Index", "AdminDashboard")"
-       class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
-        <img src="~/assets/site-images/site-logo.png" alt="Digital Arena Logo" width="30" height="30" class="me-2" />
-        <span class="fs-4 fw-semibold">Digital Arena</span>
-    </a>
+    .sidebar {
+        width: var(--sidebar-expanded-width);
+        height: 100vh;
+        background: linear-gradient(180deg, #ffffff, #f9fafb);
+        position: fixed;
+        top: 0;
+        left: 0;
+        transition: width 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
+        z-index: 1000;
+        padding: 1rem 0;
+    }
 
-    <hr />
+        .sidebar.collapsed {
+            width: var(--sidebar-collapsed-width);
+        }
 
-    <ul class="nav nav-pills flex-column mb-auto">
-        <li class="nav-item">
-            <a href="@Url.Action("Index", "AdminDashboard")"
-               class="nav-link @(currentAction == "Index" && currentController == "AdminDashboard" ? "active" : "text-dark")">
-                Dashboard
-            </a>
-        </li>
+    .sidebar-header {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem 1rem;
+        margin-bottom: 1.5rem;
+    }
 
-        <li>
-            <a href="@Url.Action("ManageBuyers", "AdminDashboard")"
-               class="nav-link @(currentAction == "ManageBuyers" && currentController == "AdminDashboard" ? "active" : "text-dark")">
-                Manage Buyers
-            </a>
-        </li>
+    .sidebar-logo {
+        width: 32px;
+        height: 32px;
+        border-radius: 6px;
+    }
 
-        <li>
-            <a href="@Url.Action("ManageSellers", "AdminDashboard")"
-               class="nav-link @(currentAction == "ManageSellers" && currentController == "AdminDashboard" ? "active" : "text-dark")">
-                Manage Sellers
-            </a>
-        </li>
+    .sidebar-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--text-color);
+        margin-left: 0.75rem;
+        opacity: 1;
+        transition: opacity 0.3s ease;
+    }
 
-        <li>
-            <a href="@Url.Action("ManageProducts", "AdminDashboard")"
-               class="nav-link @(currentAction == "ManageProducts" && currentController == "AdminDashboard" ? "active" : "text-dark")">
-                Manage Products
-            </a>
-        </li>
-        
-        <li>
-            <a href="@Url.Action("ManageReview", "AdminDashboard")"
-               class="nav-link @(currentAction == "ManageReview" && currentController == "AdminDashboard" ? "active" : "text-dark")">
-                Manage Reviews
-            </a>
-        </li>
+    .sidebar.collapsed .sidebar-title {
+        opacity: 0;
+        width: 0;
+    }
 
-        <li>
-            <a href="@Url.Action("Profile", "AdminDashboard")"
-               class="nav-link @(currentAction == "Profile" && currentController == "AdminDashboard" ? "active" : "text-dark")">
-                Profile
-            </a>
-        </li>
-    </ul>
+    .toggle-btn {
+        position: absolute;
+        right: -16px;
+        top: 1rem;
+        width: 32px;
+        height: 32px;
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
 
-    <div class="mt-auto pt-3">
-        <a href="@Url.Action("Logout", "Auth")"
-           class="btn btn-outline-danger btn-sm w-100"
-           title="Logout"
-           onclick="return confirm('Are you sure you want to logout?');">
-            <i class="bi bi-box-arrow-right me-1"></i> Logout
+    .sidebar.collapsed .toggle-btn {
+        transform: rotate(180deg);
+    }
+
+    .sidebar-nav {
+        flex: 1;
+        padding: 0 0.5rem;
+    }
+
+    .nav-link {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        color: var(--text-color);
+        text-decoration: none;
+        border-radius: 6px;
+        margin-bottom: 0.25rem;
+        transition: background-color 0.2s ease;
+    }
+
+        .nav-link:hover {
+            background: var(--hover-bg);
+        }
+
+        .nav-link.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .nav-link i {
+            font-size: 1.1rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        .nav-link span {
+            margin-left: 1rem;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+    .sidebar.collapsed .nav-link span {
+        opacity: 0;
+        width: 0;
+    }
+
+    .logout-btn {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        color: #dc2626;
+        border: 1px solid #fee2e2;
+        border-radius: 6px;
+        margin: 1rem;
+        text-decoration: none;
+        transition: background-color 0.2s ease;
+    }
+
+        .logout-btn:hover {
+            background: #fef2f2;
+        }
+
+        .logout-btn span {
+            margin-left: 1rem;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+    .sidebar.collapsed .logout-btn span {
+        opacity: 0;
+        width: 0;
+    }
+
+    #adminBodyWrapper {
+        margin-left: var(--sidebar-expanded-width);
+        transition: margin-left 0.3s ease;
+    }
+
+    .sidebar.collapsed + #adminBodyWrapper {
+        margin-left: var(--sidebar-collapsed-width);
+    }
+</style>
+
+<div id="adminSidebar" class="sidebar">
+    <div class="sidebar-header">
+        <a href="@Url.Action("Index", "AdminDashboard")" class="d-flex align-items-center text-decoration-none">
+            <img src="~/assets/site-images/site-logo.png" alt="Logo" class="sidebar-logo" />
+            <span class="sidebar-title">Digital Arena</span>
         </a>
+        <div class="toggle-btn" onclick="toggleSidebar()" title="Toggle Sidebar">
+            <i class="bi bi-chevron-left"></i>
+        </div>
     </div>
+
+    <nav class="sidebar-nav">
+        <a href="@Url.Action("Index", "AdminDashboard")"
+           class="nav-link @(currentAction == "Index" ? "active" : "")">
+            <i class="bi bi-speedometer2"></i><span>Dashboard</span>
+        </a>
+        <a href="@Url.Action("ManageBuyers", "AdminDashboard")"
+           class="nav-link @(currentAction == "ManageBuyers" ? "active" : "")">
+            <i class="bi bi-people"></i><span>Manage Buyers</span>
+        </a>
+        <a href="@Url.Action("ManageSellers", "AdminDashboard")"
+           class="nav-link @(currentAction == "ManageSellers" ? "active" : "")">
+            <i class="bi bi-shop"></i><span>Manage Sellers</span>
+        </a>
+        <a href="@Url.Action("ManageProducts", "AdminDashboard")"
+           class="nav-link @(currentAction == "ManageProducts" ? "active" : "")">
+            <i class="bi bi-box"></i><span>Manage Products</span>
+        </a>
+        <a href="@Url.Action("ManageReviews", "AdminDashboard")"
+           class="nav-link @(currentAction == "ManageReviews" ? "active" : "")">
+            <i class="bi bi-star"></i><span>Manage Reviews</span>
+        </a>
+        <a href="@Url.Action("AdminProfile", "AdminDashboard")"
+           class="nav-link @(currentAction == "AdminProfile" ? "active" : "")">
+            <i class="bi bi-person-circle"></i><span>Profile</span>
+        </a>
+    </nav>
+
+    <a href="@Url.Action("Logout", "Auth")"
+       class="logout-btn"
+       onclick="return confirm('Are you sure you want to logout?');">
+        <i class="bi bi-box-arrow-right"></i><span>Logout</span>
+    </a>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const sidebar = document.getElementById("adminSidebar");
+        const bodyWrapper = document.getElementById("adminBodyWrapper");
+        const isCollapsed = localStorage.getItem("sidebar-collapsed") === "true";
+
+        if (isCollapsed) {
+            sidebar.classList.add("collapsed");
+            bodyWrapper.style.marginLeft = "60px";
+        }
+
+        window.toggleSidebar = function () {
+            const collapsed = sidebar.classList.toggle("collapsed");
+            bodyWrapper.style.marginLeft = collapsed ? "60px" : "240px";
+            localStorage.setItem("sidebar-collapsed", collapsed);
+        };
+    });
+</script>

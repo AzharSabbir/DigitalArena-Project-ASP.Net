@@ -1,0 +1,81 @@
+﻿@model List<DigitalArena.DBContext.Product>
+
+<table class="table table-hover table-bordered align-middle">
+    <thead class="table-light text-center">
+        <tr>
+            <th>Thumbnail</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Category</th>
+            <th>Seller</th>
+            <th>Status</th>
+            <th>Created At</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td class="text-center align-middle">
+                    @if (!string.IsNullOrEmpty(product.Thumbnail))
+                    {
+                        var thumbPath = $"~/Assets/{product.Category.Name}/product_{product.ProductId}/thumbnails/{product.Thumbnail}";
+                        <img src="@Url.Content(thumbPath)" alt="Thumbnail" width="40" height="40" class="rounded" />
+                    }
+                    else
+                    {
+                        <img src="~/Assets/default-thumb.jpg" alt="No Image" width="40" height="40" class="rounded opacity-50" />
+                    }
+                </td>
+                <td class="align-middle">@product.Name</td>
+                <td class="text-center align-middle">@product.Price</td>
+                <td class="text-center align-middle">@product.Category.Name</td>
+                <td class="text-center align-middle">@product.User.Username</td>
+                <td class="text-center align-middle">
+                    @switch (product.Status)
+                    {
+                        case "Pending":
+                            <span class="badge bg-warning text-dark">Pending</span>; break;
+                        case "Approved":
+                            <span class="badge bg-success">Approved</span>; break;
+                        case "Rejected":
+                            <span class="badge bg-danger">Rejected</span>; break;
+                        default:
+                            <span class="badge bg-secondary">Unknown</span>; break;
+                    }
+                </td>
+
+                <td class="text-center align-middle">@product.CreatedAt.ToString("dd MMM yyyy")</td>
+                <td class="text-center align-middle">
+                    <a href="@Url.RouteUrl("ViewProductDetailsRoute", new { id = product.ProductId })" class="btn btn-sm btn-primary">View</a>
+                    @* Add other actions like Edit/Delete here if needed *@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@{
+    int currentPage = ViewBag.CurrentPage ?? 1;
+    int totalPages = ViewBag.TotalPages ?? 1;
+}
+
+<nav aria-label="Product pagination">
+    <ul class="pagination pagination-sm justify-content-center mt-4">
+        <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+            <a href="#" class="page-link rounded-pill px-3" data-page="@(currentPage - 1)">« Prev</a>
+        </li>
+
+        @for (int i = 1; i <= totalPages; i++)
+        {
+            <li class="page-item @(i == currentPage ? "active" : "")">
+                <a href="#" class="page-link rounded-pill px-3 @(i == currentPage ? "bg-primary text-white border-0" : "")" data-page="@i">@i</a>
+            </li>
+        }
+
+        <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+            <a href="#" class="page-link rounded-pill px-3" data-page="@(currentPage + 1)">Next »</a>
+        </li>
+    </ul>
+</nav>

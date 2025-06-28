@@ -48,7 +48,7 @@ else
                 {
                     <tr class="text-center">
                         <td>@order.OrderId</td>
-                        <td>@String.Format("{0:C}", order.Amount)</td>
+                        <td>@order.Amount</td>
                         <td>@order.BillingAddress</td>
                         <td>
                             <span class="badge @(order.Status == "Completed" ? "bg-success" : "bg-warning")">
