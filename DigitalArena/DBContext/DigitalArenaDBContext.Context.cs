@@ -28,7 +28,6 @@ namespace DigitalArena.DBContext
         public virtual DbSet<Cart> Cart { get; set; }
         public virtual DbSet<CartItem> CartItem { get; set; }
         public virtual DbSet<Category> Category { get; set; }
-        public virtual DbSet<Coupon> Coupon { get; set; }
         public virtual DbSet<GiftCard> GiftCard { get; set; }
         public virtual DbSet<Notification> Notification { get; set; }
         public virtual DbSet<Order> Order { get; set; }
@@ -38,7 +37,6 @@ namespace DigitalArena.DBContext
         public virtual DbSet<ProductFile> ProductFile { get; set; }
         public virtual DbSet<Review> Review { get; set; }
         public virtual DbSet<Transaction> Transaction { get; set; }
-        public virtual DbSet<User> User { get; set; }
         public virtual DbSet<Verification> Verification { get; set; }
         public virtual DbSet<Wallet> Wallet { get; set; }
         public virtual DbSet<Wishlist> Wishlist { get; set; }

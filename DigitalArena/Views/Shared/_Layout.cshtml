@@ -15,27 +15,18 @@
 <body>
     @if (User.Identity.IsAuthenticated && User.IsInRole("ADMIN"))
     {
-        <!-- Admin layout with sidebar and header -->
-        <div class="container-fluid">
-            <div class="row">
-                <!-- Sidebar -->
-                <div class="col-md-3 col-lg-2 p-0">
-                    @Html.Partial("_AdminSidebar")
-                </div>
+        <!-- Admin layout with flex-based sidebar and content -->
+        <div class="d-flex" style="height: 100vh; overflow: hidden;">
+            <!-- Sidebar -->
+            @Html.Partial("_AdminSidebar")
 
-                <!-- Main content area: header + page body -->
-                <div class="col-md-9 col-lg-10 p-0 d-flex flex-column" style="min-height: 100vh;">
+            <!-- Main Content -->
+            <div id="adminBodyWrapper" class="flex-grow-1 d-flex flex-column" style="transition: margin-left 0.3s ease;">
+                <header class="bg-light border-bottom px-4 py-2"></header>
 
-                    <!-- Admin Header (fits full width here) -->
-                    <header class="bg-light border-bottom px-4 py-2">
-                        @*@Html.Partial("_AdminHeader")*@
-                    </header>
-
-                    <!-- Page content below header, with some padding -->
-                    <main class="flex-grow-1 p-4">
-                        @RenderBody()
-                    </main>
-                </div>
+                <main class="flex-grow-1 overflow-auto p-4">
+                    @RenderBody()
+                </main>
             </div>
         </div>
     }
