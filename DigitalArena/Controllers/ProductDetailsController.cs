@@ -10,12 +10,10 @@ using System.Collections.Generic;
 
 namespace DigitalArena.Controllers
 {
+    [AllowAnonymous]
     public class ProductDetailsController : Controller
     {
         private DigitalArenaDBContext db = new DigitalArenaDBContext();
-
-        // GET: ProductDetails/Details/5
-        // GET: ProductDetails/Details/5
         public ActionResult ProductDetails(int id)
         {
             var productEntity = db.Product
@@ -41,7 +39,7 @@ namespace DigitalArena.Controllers
             bool isLiked = false;
             bool isDisliked = false;
 
-            if (engagement != null)
+            if (User.Identity.IsAuthenticated && engagement != null)
             {
                 isLiked = engagement.Liked;
                 isDisliked = engagement.Disliked;
@@ -156,8 +154,6 @@ namespace DigitalArena.Controllers
             return View(viewModel);
         }
 
-
-        // Toggle Add to Cart (Add/Remove from Cart)
         [HttpPost]
         public JsonResult ToggleCart(int productId)
         {
@@ -191,15 +187,22 @@ namespace DigitalArena.Controllers
             return Json(new { success = true, inCart });
         }
 
-        // Toggle Like (Add/Remove Like)
         [HttpPost]
         public JsonResult ToggleLike(int productId)
         {
-            int userId = 5; // Get the current user's ID (from session or authentication)
+            int userId = GetCurrentUserId();
+            if (userId == 0) return Json(new { success = false, message = "Unauthorized" });
 
-            // Check if the product already exists in the engagement table
             var engagement = db.Engagement
                                .FirstOrDefault(e => e.ProductId == productId && e.UserId == userId);
+
+            var product = db.Product.FirstOrDefault(p => p.ProductId == productId);
+            if (product == null)
+            {
+                return Json(new { success = false, message = "Product not found" });
+            }
+
+            bool wasDisliked = false;
 
             if (engagement == null)
             {
@@ -211,65 +214,56 @@ namespace DigitalArena.Controllers
                     Disliked = false
                 };
                 db.Engagement.Add(engagement);
-                db.SaveChanges();
-
-                // Increment the like count in the Product table
-                var product = db.Product.FirstOrDefault(p => p.ProductId == productId);
-                if (product != null)
-                {
-                    product.LikeCount++;  // Increase Like count
-                    db.SaveChanges();
-                }
+                product.LikeCount++;
             }
             else
             {
-                // Toggle like status
                 if (engagement.Liked)
                 {
-                    // If it's already liked, we will remove the like and decrease the count
                     engagement.Liked = false;
-
-                    // Decrease like count in the Product table
-                    var product = db.Product.FirstOrDefault(p => p.ProductId == productId);
-                    if (product != null)
-                    {
-                        product.LikeCount--;  // Decrease Like count
-                        db.SaveChanges();
-                    }
+                    product.LikeCount = Math.Max(0, product.LikeCount - 1);
                 }
                 else
                 {
-                    // If it's not liked, add the like and increase the count
                     engagement.Liked = true;
-                    engagement.Disliked = false; // Dislike is removed when liking the product
+                    product.LikeCount++;
 
-                    // Increase like count in the Product table
-                    var product = db.Product.FirstOrDefault(p => p.ProductId == productId);
-                    if (product != null)
+                    if (engagement.Disliked)
                     {
-                        product.LikeCount++;  // Increase Like count
-                        db.SaveChanges();
+                        engagement.Disliked = false;
+                        product.UnlikeCount = Math.Max(0, product.UnlikeCount - 1);
+                        wasDisliked = true;
                     }
                 }
             }
 
             db.SaveChanges();
 
-            // Get updated like count
-            int newLikeCount = db.Product.FirstOrDefault(p => p.ProductId == productId)?.LikeCount ?? 0;
-
-            return Json(new { success = true, liked = engagement.Liked, newLikeCount });
+            return Json(new
+            {
+                success = true,
+                liked = engagement.Liked,
+                disliked = engagement.Disliked,
+                newLikeCount = product.LikeCount,
+                newDislikeCount = product.UnlikeCount
+            });
         }
-
-        // Toggle Dislike (Add/Remove Dislike)
         [HttpPost]
         public JsonResult ToggleDislike(int productId)
         {
-            int userId = 5; // Get the current user's ID (from session or authentication)
+            int userId = GetCurrentUserId();
+            if (userId == 0) return Json(new { success = false, message = "Unauthorized" });
 
-            // Check if the product already exists in the engagement table
             var engagement = db.Engagement
                                .FirstOrDefault(e => e.ProductId == productId && e.UserId == userId);
+
+            var product = db.Product.FirstOrDefault(p => p.ProductId == productId);
+            if (product == null)
+            {
+                return Json(new { success = false, message = "Product not found" });
+            }
+
+            bool wasLiked = false;
 
             if (engagement == null)
             {
@@ -281,63 +275,50 @@ namespace DigitalArena.Controllers
                     Disliked = true
                 };
                 db.Engagement.Add(engagement);
-                db.SaveChanges();
-
-                // Increment the dislike count in the Product table
-                var product = db.Product.FirstOrDefault(p => p.ProductId == productId);
-                if (product != null)
-                {
-                    product.UnlikeCount++;  // Increase Dislike count
-                    db.SaveChanges();
-                }
+                product.UnlikeCount++;
             }
             else
             {
-                // Toggle dislike status
                 if (engagement.Disliked)
                 {
-                    // If it's already disliked, we will remove the dislike and decrease the count
                     engagement.Disliked = false;
-
-                    // Decrease dislike count in the Product table
-                    var product = db.Product.FirstOrDefault(p => p.ProductId == productId);
-                    if (product != null)
-                    {
-                        product.UnlikeCount--;  // Decrease Dislike count
-                        db.SaveChanges();
-                    }
+                    product.UnlikeCount = Math.Max(0, product.UnlikeCount - 1);
                 }
                 else
                 {
-                    // If it's not disliked, add the dislike and increase the count
                     engagement.Disliked = true;
-                    engagement.Liked = false; // Like is removed when disliking the product
+                    product.UnlikeCount++;
 
-                    // Increase dislike count in the Product table
-                    var product = db.Product.FirstOrDefault(p => p.ProductId == productId);
-                    if (product != null)
+                    if (engagement.Liked)
                     {
-                        product.UnlikeCount++;  // Increase Dislike count
-                        db.SaveChanges();
+                        engagement.Liked = false;
+                        product.LikeCount = Math.Max(0, product.LikeCount - 1);
+                        wasLiked = true;
                     }
                 }
             }
 
             db.SaveChanges();
 
-            // Get updated dislike count
-            int newDislikeCount = db.Product.FirstOrDefault(p => p.ProductId == productId)?.UnlikeCount ?? 0;
-
-            return Json(new { success = true, disliked = engagement.Disliked, newDislikeCount });
+            return Json(new
+            {
+                success = true,
+                liked = engagement.Liked,
+                disliked = engagement.Disliked,
+                newLikeCount = product.LikeCount,
+                newDislikeCount = product.UnlikeCount
+            });
         }
 
 
-        private int GetCurrentUserId()
+        int GetCurrentUserId()
         {
-            // Replace this with your actual user authentication/session logic
-            return 5; // Example hardcoded User ID for testing
+            if (Session["UserId"] != null)
+            {
+                return (int)Session["UserId"];
+            }
+            return 0;
         }
-
 
     }
 }

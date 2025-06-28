@@ -240,7 +240,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener('DOMContentLoaded', function () {
-    // Helper function to handle AJAX requests for Like/Dislike
     function handleActionButtonClick(button, url, data) {
         fetch(url, {
             method: 'POST',
@@ -250,27 +249,28 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    console.log(data);  // Debugging the response
-                    // Update the button states and counts for Like and Dislike
-                    if (data.liked !== undefined) {
-                        const likeIcon = button.querySelector('img');
-                        const likeCount = button.querySelector('.like-count');
-                        likeIcon.src = `/Assets/images/${data.liked ? 'like_filled' : 'like_outline'}.png`;
-                        likeCount.innerText = data.newLikeCount;
+                    // Update Like and Dislike Together
+                    if (data.liked !== undefined && data.disliked !== undefined) {
+                        const container = button.closest('.product-engagement-stats'); // ✅ scope to wrapper
+                        if (!container) return;
+
+                        const likeIcon = container.querySelector('.ajax-like img');
+                        const likeCount = container.querySelector('.ajax-like .like-count');
+                        if (likeIcon) likeIcon.src = `/Assets/images/${data.liked ? 'like_filled' : 'like_outline'}.png`;
+                        if (likeCount) likeCount.innerText = data.newLikeCount;
+
+                        const dislikeIcon = container.querySelector('.ajax-dislike img');
+                        const dislikeCount = container.querySelector('.ajax-dislike .dislike-count');
+                        if (dislikeIcon) dislikeIcon.src = `/Assets/images/${data.disliked ? 'dislike_filled' : 'dislike_outline'}.png`;
+                        if (dislikeCount) dislikeCount.innerText = data.newDislikeCount;
                     }
 
-                    if (data.disliked !== undefined) {
-                        const dislikeIcon = button.querySelector('img');
-                        const dislikeCount = button.querySelector('.dislike-count');
-                        dislikeIcon.src = `/Assets/images/${data.disliked ? 'dislike_filled' : 'dislike_outline'}.png`;
-                        dislikeCount.textContent = data.newDislikeCount;  // Update dislike count dynamically
-                    }
-
+                    // Cart logic remains untouched
                     if (data.inCart !== undefined) {
                         const cartIcon = button.querySelector('img');
                         const cartText = button.querySelector('span');
-                        cartIcon.src = `/Assets/images/${data.inCart ? 'cart_filled' : 'cart_outline'}.png`;
-                        cartText.textContent = data.inCart ? 'ADDED' : 'ADD';
+                        if (cartIcon) cartIcon.src = `/Assets/images/${data.inCart ? 'cart_filled' : 'cart_outline'}.png`;
+                        if (cartText) cartText.textContent = data.inCart ? 'ADDED' : 'ADD';
                     }
                 } else {
                     console.error('Action failed');
@@ -281,11 +281,11 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
-    // Add to Cart
+    // Cart Button
     document.querySelectorAll('.ajax-cart').forEach(button => {
-        button.addEventListener('click', (e) => {
+        button.addEventListener('click', e => {
             e.preventDefault();
-            const productId = button.dataset.productid;  // Correctly access productId from data attribute
+            const productId = button.dataset.productid;
             const url = '/ProductDetails/ToggleCart';
             handleActionButtonClick(button, url, { productId });
         });
@@ -293,10 +293,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Like Button
     document.querySelectorAll('.ajax-like').forEach(button => {
-        button.addEventListener('click', (e) => {
+        button.addEventListener('click', e => {
             e.preventDefault();
-            const productId = button.dataset.productid;  // Correctly access productId from data attribute
-            console.log(productId);
+
+            if (button.classList.contains('guest')) {
+                showInfoDialog("Please login to like this product.");
+                return;
+            }
+
+            const productId = button.dataset.productid;
             const url = '/ProductDetails/ToggleLike';
             handleActionButtonClick(button, url, { productId });
         });
@@ -304,14 +309,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Dislike Button
     document.querySelectorAll('.ajax-dislike').forEach(button => {
-        button.addEventListener('click', (e) => {
+        button.addEventListener('click', e => {
             e.preventDefault();
-            const productId = button.dataset.productid;  // Correctly access productId from data attribute
+
+            if (button.classList.contains('guest')) {
+                showInfoDialog("Please login to dislike this product.");
+                return;
+            }
+
+            const productId = button.dataset.productid;
             const url = '/ProductDetails/ToggleDislike';
             handleActionButtonClick(button, url, { productId });
         });
     });
 });
+
+
 
 
 

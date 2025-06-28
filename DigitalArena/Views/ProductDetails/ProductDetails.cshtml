@@ -3,16 +3,10 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generated Page</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:wght@400;700&family=Poppins:wght@600&family=Roboto:wght@300;400;700&display=swap"
           rel="stylesheet">
-    <title>Product Details</title>
-    <link rel="stylesheet" href="~/Content/ProductDetails.css" />
-    <link rel="stylesheet" href="~/Content/styles.css" />
+    <link rel="stylesheet" href="~/Content/css/ProductDetails.css" />
+    <link rel="stylesheet" href="~/Content/css/styles.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
 </head>
@@ -163,15 +157,23 @@
                         </div>
 
                         <div class="product-engagement-stats">
-                            <div class="stat-group ajax-like" data-productid="@Model.Product.ProductId">
-                                <img class="img_like" src="~/Assets/images/@(Model.IsLiked ? "like_filled" : "like_outline").png" alt="Likes">
-                                <span class="like-count font-inria-sans-400-20 color-text-primary">@Model.Product.LikeCount</span>
+                            @{
+                                var isAuthenticated = User.Identity.IsAuthenticated && Session["UserId"] != null;
+                            }
+
+                            <div class="stat-group ajax-like @(User.Identity.IsAuthenticated ? "" : "guest")" data-productid="@Model.Product.ProductId">
+                                <img src="~/Assets/images/@(Model.IsLiked ? "like_filled" : "like_outline").png" alt="Like">
+                                <span class="like-count">@Model.Product.LikeCount</span>
                             </div>
 
-                            <div class="stat-group ajax-dislike" data-productid="@Model.Product.ProductId">
-                                <img class="img_dislike" src="~/Assets/images/@(Model.IsDisliked ? "dislike_filled" : "dislike_outline").png" alt="Dislike">
-                                <span class="dislike-count font-inria-sans-400-20 color-text-primary">@Model.Product.UnlikeCount</span>
+                            <div class="stat-group ajax-dislike @(User.Identity.IsAuthenticated ? "" : "guest")" data-productid="@Model.Product.ProductId">
+                                <img src="~/Assets/images/@(Model.IsDisliked ? "dislike_filled" : "dislike_outline").png" alt="Dislike">
+                                <span class="dislike-count">@Model.Product.UnlikeCount</span>
                             </div>
+
+
+
+
 
 
 

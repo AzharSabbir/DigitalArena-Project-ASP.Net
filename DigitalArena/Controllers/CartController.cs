@@ -124,10 +124,12 @@ public class CartController : Controller
         // Possibly redirect to a payment gateway or summary page
         return RedirectToAction("Index", "Checkout");
     }
-
-    private int GetCurrentUserId()
+    int GetCurrentUserId()
     {
-        // Replace this with your actual user session logic
-        return 5;
+        if (Session["UserId"] != null)
+        {
+            return (int)Session["UserId"];
+        }
+        return 0;
     }
 }
