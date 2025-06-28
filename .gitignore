@@ -3,6 +3,7 @@
 
 /DigitalArena/bin/
 /DigitalArena/obj/
+/DigitalArena/.vs
 
 
 # Ignore everything in 3D Model except selected files
