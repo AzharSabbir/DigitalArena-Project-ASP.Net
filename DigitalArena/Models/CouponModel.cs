@@ -18,7 +18,6 @@ namespace DigitalArena.Models
         public int UsageCount { get; set; }
         public bool UserSpecific { get; set; }
         public Nullable<int> UserId { get; set; }
-        public int CreatedBy { get; set; }
 
         public virtual UserModel User { get; set; }
     }

@@ -63,12 +63,6 @@ namespace DigitalArena.Controllers
                 }
             }
 
-            if (!user.IsActive) {
-                ViewBag.Message = "User is not Active. Contact Admin";
-                ViewBag.IsSuccess = false;
-                return View(model);
-            }
-
             ViewBag.Message = "Invalid username or password.";
             ViewBag.IsSuccess = false;
             return View(model);

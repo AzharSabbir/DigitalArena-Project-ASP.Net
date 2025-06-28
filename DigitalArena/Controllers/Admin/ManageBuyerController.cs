@@ -10,11 +10,12 @@ using System.Web.Mvc;
 namespace DigitalArena.Controllers.Admin
 {
     [Authorize(Roles = "ADMIN")]
+    [Route("admin/manage-buyers")]
     public class ManageBuyerController : Controller
     {
         private readonly DigitalArenaDBContext _dbContext = new DigitalArenaDBContext();
 
-        [Route("admin/manage-buyers/buyer-details", Name = "BuyerDetailsRoute")]
+        [Route("buyer-details", Name = "BuyerDetailsRoute")]
         public ActionResult BuyerDetails(int id)
         {
             var userEntity = _dbContext.User.FirstOrDefault(u => u.UserId == id && u.Role == "Buyer");
@@ -53,13 +54,12 @@ namespace DigitalArena.Controllers.Admin
             return View(userModel);
         }
 
-
-
-
-
-
-
-        [Route("admin/manage-buyers/buyer-details/{userId}/coupons", Name = "ViewCouponsRoute")]
+        
+        
+        
+        
+        
+        [Route("{userId}/coupons", Name = "ViewCouponsRoute")]
         public ActionResult ViewCoupons(int userId)
         {
             // Validate buyer exists
@@ -71,6 +71,19 @@ namespace DigitalArena.Controllers.Admin
             var coupons = _dbContext.Coupon
                 .Where(c => c.UserSpecific == true && c.UserId == userId)
                 .OrderByDescending(c => c.CreatedAt)
+                .Select(c => new CouponModel
+                {
+                    CouponId = c.CouponId,
+                    CouponCode = c.CouponCode,
+                    DiscountPercentage = c.DiscountPercentage,
+                    CreatedAt = c.CreatedAt,
+                    ValidFrom = c.ValidFrom,
+                    ExpiryDate = c.ExpiryDate,
+                    MaxUsage = c.MaxUsage,
+                    UsageCount = c.UsageCount,
+                    UserSpecific = c.UserSpecific,
+                    UserId = c.UserId
+                })
                 .ToList();
 
             ViewBag.UserName = user.FullName ?? user.Username;
@@ -84,7 +97,7 @@ namespace DigitalArena.Controllers.Admin
         
         
         
-        [Route("admin/manage-buyers/buyer-details/{userId}/orders", Name = "ViewOrdersRoute")]
+        [Route("{userId}/orders", Name = "ViewOrdersRoute")]
         public ActionResult ViewOrders(int userId)
         {
             // Validate buyer exists
@@ -119,7 +132,7 @@ namespace DigitalArena.Controllers.Admin
         
         
         
-        [Route("admin/manage-buyers/buyer-details/{userId}/orders/{orderId}/order-details", Name = "ViewOrderDetailsRoute")]
+        [Route("{userId}/orders/{orderId}/details", Name = "ViewOrderDetailsRoute")]
         public ActionResult ViewOrderDetails(int userId, int orderId)
         {
             // Validate buyer exists
@@ -144,74 +157,6 @@ namespace DigitalArena.Controllers.Admin
             return View(orderItems);
         }
 
-
-
-
-
-        [Route("admin/manage-buyers/buyer-details/{userId}/purchased-products", Name = "ViewPurchasedProductsRoute")]
-        public ActionResult ViewPurchasedProducts(int userId)
-        {
-            // Check if user is a Buyer
-            var user = _dbContext.User.FirstOrDefault(u => u.UserId == userId && u.Role == "Buyer");
-            if (user == null)
-                return HttpNotFound("Buyer not found");
-
-            // Get purchased products (valid permissions)
-            var purchasedProducts = _dbContext.Permission
-                .Where(p => p.UserId == userId && p.IsValid)
-                .OrderByDescending(p => p.CreatedAt)
-                .ToList();
-
-            // ViewBag or ViewModel
-            ViewBag.UserName = user.FullName ?? user.Username;
-            ViewBag.UserId = userId;
-
-            return View(purchasedProducts);
-        }
-
-
-
-
-
-
-        [Route("admin/manage-buyers/buyer-details/{userId}/transactions", Name = "ViewTransactionsRoute")]
-        public ActionResult ViewTransactions(int userId)
-        {
-            // Validate buyer
-            var user = _dbContext.User.FirstOrDefault(u => u.UserId == userId && u.Role == "Buyer");
-            if (user == null)
-                return HttpNotFound("Buyer not found");
-
-            // Fetch transactions through Wallets
-            var transactions = _dbContext.Transaction
-                .Where(t => t.Wallet.UserId == userId)
-                .OrderByDescending(t => t.TransactionId)
-                .ToList();
-
-            ViewBag.UserName = user.FullName ?? user.Username;
-            ViewBag.UserId = userId;
-
-            return View(transactions);
-        }
-
-
-
-
-
-
-
-        [HttpPost]
-        public ActionResult UpdateBuyerStatus(int userId, bool newStatus)
-        {
-            var buyer = _dbContext.User.FirstOrDefault(u => u.UserId == userId && u.Role == "BUYER");
-            if (buyer == null)
-                return HttpNotFound();
-
-            buyer.IsActive = newStatus;
-            _dbContext.SaveChanges();
-
-            return RedirectToAction("BuyerDetails", new { id = userId });
-        }
 
     }
 }

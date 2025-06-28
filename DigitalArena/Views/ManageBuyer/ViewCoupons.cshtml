@@ -1,4 +1,4 @@
-﻿@model List<DigitalArena.DBContext.Coupon>
+﻿@model List<DigitalArena.Models.CouponModel>
 
 @{
     ViewBag.Title = "Coupons for " + ViewBag.UserName;
@@ -41,7 +41,6 @@ else
                     <th>Max Usage</th>
                     <th>Used</th>
                     <th>User Specific</th>
-                    <th>Seller</th>
                 </tr>
             </thead>
             <tbody>
@@ -64,7 +63,6 @@ else
                                 <span class="badge bg-secondary">No</span>
                             }
                         </td>
-                        <td>@coupon.User1.Username</td>
                     </tr>
                 }
             </tbody>
