@@ -249,9 +249,8 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Update Like and Dislike Together
                     if (data.liked !== undefined && data.disliked !== undefined) {
-                        const container = button.closest('.product-engagement-stats'); // ✅ scope to wrapper
+                        const container = button.closest('.product-engagement-stats');
                         if (!container) return;
 
                         const likeIcon = container.querySelector('.ajax-like img');
@@ -265,7 +264,6 @@ document.addEventListener('DOMContentLoaded', function () {
                         if (dislikeCount) dislikeCount.innerText = data.newDislikeCount;
                     }
 
-                    // Cart logic remains untouched
                     if (data.inCart !== undefined) {
                         const cartIcon = button.querySelector('img');
                         const cartText = button.querySelector('span');
@@ -281,7 +279,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
-    // Cart Button
+    // Cart
     document.querySelectorAll('.ajax-cart').forEach(button => {
         button.addEventListener('click', e => {
             e.preventDefault();
@@ -291,11 +289,10 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Like Button
+    // Like
     document.querySelectorAll('.ajax-like').forEach(button => {
         button.addEventListener('click', e => {
             e.preventDefault();
-
             if (button.classList.contains('guest')) {
                 showInfoDialog("Please login to like this product.");
                 return;
@@ -307,11 +304,10 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Dislike Button
+    // Dislike
     document.querySelectorAll('.ajax-dislike').forEach(button => {
         button.addEventListener('click', e => {
             e.preventDefault();
-
             if (button.classList.contains('guest')) {
                 showInfoDialog("Please login to dislike this product.");
                 return;
@@ -322,10 +318,62 @@ document.addEventListener('DOMContentLoaded', function () {
             handleActionButtonClick(button, url, { productId });
         });
     });
+
+    // PURCHASE button → Show modal
+    const purchaseBtn = document.querySelector('.download-button-main');
+    if (purchaseBtn) {
+        purchaseBtn.addEventListener('click', function () {
+            const modal = document.getElementById('PaymentModal');
+            if (modal) modal.style.display = 'block';
+        });
+    }
+
+    // Cancel payment
+    const cancelBtn = document.getElementById('cancelPayment');
+    if (cancelBtn) {
+        cancelBtn.addEventListener('click', function () {
+            const modal = document.getElementById('PaymentModal');
+            if (modal) modal.style.display = 'none';
+        });
+    }
+
+    // Fake payment form
+    const paymentForm = document.getElementById('paymentForm');
+    if (paymentForm) {
+        paymentForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(paymentForm);
+            const productId = document.getElementById('hiddenProductId').value;
+            const amount = document.getElementById('hiddenProductPrice').value;
+
+            fetch('/Order/FakePay', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    cardNumber: formData.get('cardNumber'),
+                    expiry: formData.get('expiry'),
+                    cvc: formData.get('cvc'),
+                    productId: productId,
+                    amount: amount
+                })
+            })
+                .then(res => res.json())
+                .then(result => {
+                    if (result.success) {
+                        document.getElementById('PaymentModal').style.display = 'none';
+                        alert('Payment successful!');
+                        window.location.href = result.pdfUrl;
+                    } else {
+                        alert('Payment failed: ' + result.error);
+                    }
+                })
+                .catch(err => {
+                    alert('Error: ' + err.message);
+                });
+        });
+    }
 });
-
-
-
 
 
 

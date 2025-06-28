@@ -17,6 +17,8 @@ namespace DigitalArena.Models
         public Nullable<int> TransactionId { get; set; }
         public int UserId { get; set; }
 
+        public virtual ICollection<OrderItemModel> OrderItems { get; set; }
+
         public virtual TransactionModel Transaction { get; set; }
         public virtual UserModel User { get; set; }
     }

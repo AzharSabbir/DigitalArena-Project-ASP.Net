@@ -176,3 +176,7 @@ E:\Class\Semester - 10\ASP DOT NET\Project\DigitalArena-ASP.Net-Project\DigitalA
 E:\Class\Semester - 10\ASP DOT NET\Project\DigitalArena-ASP.Net-Project\DigitalArena\obj\Debug\DigitalA.9D854542.Up2Date
 E:\Class\Semester - 10\ASP DOT NET\Project\DigitalArena-ASP.Net-Project\DigitalArena\obj\Debug\DigitalArena.dll
 E:\Class\Semester - 10\ASP DOT NET\Project\DigitalArena-ASP.Net-Project\DigitalArena\obj\Debug\DigitalArena.pdb
+E:\Class\Semester - 10\ASP DOT NET\Project\DigitalArena-ASP.Net-Project\DigitalArena\bin\BouncyCastle.Cryptography.dll
+E:\Class\Semester - 10\ASP DOT NET\Project\DigitalArena-ASP.Net-Project\DigitalArena\bin\itextsharp.dll
+E:\Class\Semester - 10\ASP DOT NET\Project\DigitalArena-ASP.Net-Project\DigitalArena\bin\BouncyCastle.Cryptography.xml
+E:\Class\Semester - 10\ASP DOT NET\Project\DigitalArena-ASP.Net-Project\DigitalArena\bin\itextsharp.xml

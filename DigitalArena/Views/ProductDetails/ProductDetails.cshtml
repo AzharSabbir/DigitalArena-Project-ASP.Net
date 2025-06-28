@@ -34,28 +34,28 @@
                         string pdfUrl = Url.Content($"~/Assets/E-Book/product_{Model.Product.ProductId}/files/{pdfFileName}");
                     }
 
-                <div class="product-main-canvas">
-                    <div class="viewer-label">
-                        @(isEbook ? "" : "3D Object Viewer")
-                    </div>
-
-                    @if (isEbook)
-                    {
-                        <div id="pdf-placeholder" class="ebook-preview-placeholder">
-                            <canvas id="pdf-blur-canvas"></canvas>
-
-                            <div class="preview-message">
-                                <p>Click below to preview this eBook</p>
-                                <button id="start-preview-btn" class="preview-btn">Preview E-Book</button>
-                            </div>
+                    <div class="product-main-canvas">
+                        <div class="viewer-label">
+                            @(isEbook ? "" : "3D Object Viewer")
                         </div>
 
-                        <div id="pdf-viewer-container" class="ebook-preview-container" style="display: none;"></div>
+                        @if (isEbook)
+                        {
+                            <div id="pdf-placeholder" class="ebook-preview-placeholder">
+                                <canvas id="pdf-blur-canvas"></canvas>
 
-                        <link rel="stylesheet" href="~/Content/ebook-preview.css" />
+                                <div class="preview-message">
+                                    <p>Click below to preview this eBook</p>
+                                    <button id="start-preview-btn" class="preview-btn">Preview E-Book</button>
+                                </div>
+                            </div>
 
-                        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-                        <script>
+                            <div id="pdf-viewer-container" class="ebook-preview-container" style="display: none;"></div>
+
+                            <link rel="stylesheet" href="~/Content/ebook-preview.css" />
+
+                            <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+                            <script>
     document.addEventListener('DOMContentLoaded', function () {
         const url = '@pdfUrl';
         const container = document.getElementById("pdf-viewer-container");
@@ -119,27 +119,27 @@
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
         renderBlurBackground();
     });
-                        </script>
+                            </script>
 
 
 
 
 
-                    }
-                    else
-                    {
-                        <script type="importmap">
-                            {
-                                "imports": {
-                                    "three": "https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.module.js",
-                                    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.149.0/examples/jsm/"
+                        }
+                        else
+                        {
+                            <script type="importmap">
+                                {
+                                    "imports": {
+                                        "three": "https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.module.js",
+                                        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.149.0/examples/jsm/"
+                                    }
                                 }
-                            }
-                        </script>
-                        <canvas id="viewer" data-model-path="@Model.ModelPath"></canvas>
-                        <script type="module" src="~/Scripts/custom/Load3DModel.js"></script>
-                    }
-                </div>
+                            </script>
+                            <canvas id="viewer" data-model-path="@Model.ModelPath"></canvas>
+                            <script type="module" src="~/Scripts/custom/Load3DModel.js"></script>
+                        }
+                    </div>
 
 
                     <!-- ✅ Product Info -->
@@ -293,8 +293,6 @@
 
                     </div>
                 </div>
-                <!-- JS for comment operations -->
-                <script src="~/Scripts/custom/CommentOperation.js"></script>
 
                 <aside class="sidebar-suggested-products">
                     <h2 class="suggested-heading">
@@ -308,7 +306,7 @@
                             var folderName = categoryName.Replace(" ", "%20");
                             var imagePath = Url.Content($"~/Assets/{folderName}/product_{product.ProductId}/thumbnails/{product.Thumbnail}");
 
-                            <div class="product-card suggested-product-slide" style="display: none;">
+                            <div class="product-card suggested-product-slide">
                                 <a href="@Url.Action("ProductDetails", "ProductDetails", new { id = product.ProductId })">
                                     <img src="@imagePath" alt="@product.Name" class="product-card__image" />
                                 </a>
@@ -332,10 +330,28 @@
                         }
                     </div>
                 </aside>
-                <script src="~/Scripts/custom/ProductDetailsOperation.js"></script>
             </div>
         </div>
     </section>
+    <!-- 🔶 Fake Stripe Payment Modal -->
+    <div id="PaymentModal" class="payment-modal" style="display:none;">
+        <div class="payment-modal-content">
+            <h3>Fake Stripe Payment</h3>
+            <form id="paymentForm">
+                <label>Card Number</label>
+                <input type="text" name="cardNumber" placeholder="4242 4242 4242 4242" required />
+                <label>Expiry</label>
+                <input type="text" name="expiry" placeholder="MM/YY" required />
+                <label>CVC</label>
+                <input type="text" name="cvc" placeholder="123" required />
+                <button type="submit">Pay</button>
+                <button type="button" id="cancelPayment">Cancel</button>
+            </form>
+        </div>
+    </div>
+    <input type="hidden" id="hiddenProductId" value="@Model.Product.ProductId" />
+    <input type="hidden" id="hiddenProductPrice" value="@Model.Product.Price" />
+    <script src="~/Scripts/custom/ProductDetailsOperation.js"></script>
     @Html.Partial("_Footer")
 </body>
 </html>
