@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using DigitalArena.Models;
 
 namespace DigitalArena.Controllers
 {
@@ -14,21 +15,35 @@ namespace DigitalArena.Controllers
         [HttpPost]
         public JsonResult AddReview(int productId, int rating, string comment)
         {
+            int userId = GetCurrentUserId();
             try
             {
                 // Create a new instance of the Review entity (not ReviewModel)
                 var review = new Review
                 {
                     ProductId = productId,
-                    UserId = 5,
+                    UserId = userId,
                     Rating = rating,
                     Comment = comment,
                     CreatedAt = DateTime.Now,
-                    Status = "Approved"
+                    Status = "Pending"
                 };
-
                 // Add the Review entity to the database context
                 db.Review.Add(review);
+                db.SaveChanges();
+
+                // Create a notification for the user
+                var notification = new Notification
+                {
+                    Subject = "Review Submitted",
+                    Message = "Your review has been submitted and is currently pending approval.",
+                    CreatedAt = DateTime.Now,
+                    Type = "Review",
+                    Status = "Pending",
+                    UserId = userId
+                };
+
+                db.Notification.Add(notification);
                 db.SaveChanges();
                 var timeAgo = DigitalArena.Helpers.DateHelper.GetPublishedAgo(review.CreatedAt);
 
@@ -42,8 +57,10 @@ namespace DigitalArena.Controllers
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, error = ex.Message });
+                var errorMessage = ex.InnerException?.InnerException?.Message ?? ex.Message;
+                return Json(new { success = false, error = errorMessage });
             }
+
         }
 
         [HttpPost]
@@ -83,6 +100,14 @@ namespace DigitalArena.Controllers
             {
                 return Json(new { success = false, message = ex.Message });
             }
+        }
+        int GetCurrentUserId()
+        {
+            if (Session["UserId"] != null)
+            {
+                return (int)Session["UserId"];
+            }
+            return 0;
         }
     }
 }

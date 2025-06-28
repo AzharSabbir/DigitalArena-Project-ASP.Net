@@ -271,7 +271,7 @@ public class UserProfileController : Controller
         }
 
         var notificationsQuery = db.Notification
-            .Where(n => n.UserId == userId && n.Status == "Sent")
+            .Where(n => n.UserId == userId)
             .OrderByDescending(n => n.CreatedAt)
             .Take(20)
             .ToList();

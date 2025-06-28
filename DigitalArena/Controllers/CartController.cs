@@ -113,7 +113,7 @@ public class CartController : Controller
             db.SaveChanges();
         }
 
-        return RedirectToAction("Index");
+        return RedirectToAction("Cart", "Cart");
     }
 
     // GET: Cart/Checkout

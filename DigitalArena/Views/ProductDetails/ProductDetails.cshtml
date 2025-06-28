@@ -201,7 +201,7 @@
                     <p class="product-description font-inria-sans-400-20 color-text-primary"> @Model.Product.Description</p>
 
                     <div class="product-download-area">
-                        <button class="download-button-main font-inria-sans-700-20 color-text-white">PURCHASE</button>
+                        <button class="download-button-main">PURCHASE</button>
                     </div>
 
                     <div class="publish-info">
@@ -215,26 +215,28 @@
                         <h3 class="comments-title font-inria-sans-700-20 color-text-muted">
                             <span id="comment-count">@Model.Reviews.Count</span> @((Model.Reviews.Count == 1) ? "Comment" : "Comments")
                         </h3>
-                        <div class="add-comment-area">
-                            <img src="~/Assets/images/placeholder_avatar.png" alt="Your avatar" class="user-avatar-placeholder">
-                            <div id="comment-form">
-                                <div class="rating-stars" id="star-rating" style="display: flex;">
-                                    @for (int i = 1; i <= 5; i++)
-                                    {
-                                        <img src="~/Assets/images/star_empty.png" alt="Star" class="star" data-value="@i" />
-                                    }
-                                </div>
+                        @if (User.Identity.IsAuthenticated && Session["UserId"] != null)
+                        {
+                            <div class="add-comment-area">
+                                <img src="~/Assets/images/placeholder_avatar.png" alt="Your avatar" class="user-avatar-placeholder">
+                                <div id="comment-form">
+                                    <div class="rating-stars" id="star-rating" style="display: flex;">
+                                        @for (int i = 1; i <= 5; i++)
+                                        {
+                                            <img src="~/Assets/images/star_empty.png" alt="Star" class="star" data-value="@i" />
+                                        }
+                                    </div>
 
-                                <div class="comment-input-container">
-                                    <textarea id="comment-text" class="comment-textarea" maxlength="250" placeholder="Write a comment..."></textarea>
-                                    <button id="submit-comment" class="submit-icon-btn" data-value="@Model.Product.ProductId">
-                                        <img src="~/Assets/site-images/arrow.png" alt="Submit" />
-                                    </button>
+                                    <div class="comment-input-container">
+                                        <textarea id="comment-text" class="comment-textarea" maxlength="250" placeholder="Write a comment..."></textarea>
+                                        <button id="submit-comment" class="submit-icon-btn" data-value="@Model.Product.ProductId">
+                                            <img src="~/Assets/site-images/arrow.png" alt="Submit" />
+                                        </button>
+                                    </div>
                                 </div>
+                                <p id="comment-status" class="status-text"></p>
                             </div>
-                            <p id="comment-status" class="status-text"></p>
-                        </div>
-
+                        }
                         <hr class="separator-line style-36" />
 
                         <div id="user-comment-list" class="comment-list">
@@ -277,14 +279,18 @@
                                             @review.Comment
                                         </p>
 
-                                        <div class="comment-actions">
-                                            <span class="text-action btn-edit" data-reviewid="@review.ReviewId">🖋️ Edit</span> |
-                                            <span class="text-action btn-delete" data-reviewid="@review.ReviewId">🚫 Delete</span>
-                                        </div>
+                                        @if (Session["UserId"] != null && review.UserId == (int)Session["UserId"])
+                                        {
+                                            <div class="comment-actions">
+                                                <span class="text-action btn-edit" data-reviewid="@review.ReviewId">🖋️ Edit</span> |
+                                                <span class="text-action btn-delete" data-reviewid="@review.ReviewId">🚫 Delete</span>
+                                            </div>
+                                        }
                                     </div>
                                 </div>
                             }
                         </div>
+
                     </div>
                 </div>
                 <!-- JS for comment operations -->
