@@ -30,7 +30,7 @@ Use the following credentials to explore different user roles:
 
 ## ⚠️ Important Note on Demo Content
 
-Due to free-tier hosting and limited storage, only a select number of products are available for full preview functionality. You can test the core features with the following items:
+Due to free-tier hosting and limited storage, only a few products currently have full preview functionality. Some UI bugs may also appear due to hosting limitations, but they will be fixed soon. You can test the core features using the following items:
 
 -   **Interactive 3D Models:**
     -   Shoe 3D Model
